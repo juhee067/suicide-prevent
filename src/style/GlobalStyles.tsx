@@ -4,12 +4,14 @@ const GlobalStyles = createGlobalStyle`
     
     html {
   box-sizing: border-box;
+  font-size: 10px;
 }
 
 *,
 *:before,
 *:after {
-  box-sizing: inherit;
+  box-sizing:border-box;
+  /* outline: 1px solid #f00; */
 }
 
 body {

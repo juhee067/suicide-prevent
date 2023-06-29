@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexCenterDiv, FlexColumnCenterDiv } from "./styled/FlexDiv";
-import { Btn, ErrorText, H3, HighlightText, MutedText, Paragraph } from "./styled/styledSpanagraph";
+import { Btn, ErrorText, H3, HighlightText, Paragraph } from "./styled/styledSpanagraph";
 import { AiFillFileAdd } from "react-icons/ai";
 
 const FileAttachmentWrap = styled.div`

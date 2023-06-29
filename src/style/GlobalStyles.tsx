@@ -5,6 +5,7 @@ const GlobalStyles = createGlobalStyle`
     html {
   box-sizing: border-box;
   font-size: 10px;
+  
 }
 
 *,
@@ -12,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
 *:after {
   box-sizing:border-box;
   /* outline: 1px solid #f00; */
+  
 }
 
 body {

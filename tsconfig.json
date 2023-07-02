@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+      "moduleResolution": "node",
       "target": "es5",                       // 컴파일된 JavaScript 코드의 대상 버전
       "module": "es6",                       // 모듈 시스템 설정 (예: "commonjs", "es2015", "es2020" 등)
       "lib": ["dom", "es2017"],               // 사용 가능한 라이브러리
@@ -11,7 +12,8 @@
       "rootDir": "./src",                     // 소스 파일의 루트 디렉토리
       "baseUrl": "./src",                     // 상대 경로를 계산하기 위한 기본 경로
       "paths": {
-        "@/*": ["*"]                          // 사용자 정의 모듈 별칭 설정
+        "@/*": ["*"],
+        "react-icons/ai": ["node_modules/react-icons/ai"]                          // 사용자 정의 모듈 별칭 설정
       }
     },
     "include": ["src/**/*.ts", "src/**/*.tsx"],    // 컴파일에 포함할 파일 패턴

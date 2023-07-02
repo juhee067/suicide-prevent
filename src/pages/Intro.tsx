@@ -146,7 +146,7 @@ const Intro = () => {
   return (
     <LetterImage>
       <AnimatedMail>
-        <BackFold></BackFold>
+        <BackFold />
         <Link to="/attachment">
           <Letter>
             <ClickText>Click !</ClickText>
@@ -156,12 +156,11 @@ const Intro = () => {
             <Paragraph>할 것인가</Paragraph>
           </Letter>
         </Link>
-
-        <TopFold></TopFold>
-        <Body></Body>
-        <LeftFold></LeftFold>
+        <TopFold />
+        <Body />
+        <LeftFold />
       </AnimatedMail>
-      <Shadow></Shadow>
+      <Shadow />
     </LetterImage>
   );
 };

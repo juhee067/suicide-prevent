@@ -6,6 +6,7 @@ import GlobalStyles from "./style/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import theme from "./style/Theme";
 import { Routes, Route } from "react-router-dom";
+import Main from "./pages/Main";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
       </Routes>
       <Routes>
         <Route path={"/snap"} element={<Snap />} />
+      </Routes>
+      <Routes>
+        <Route path={"/Main"} element={<Main />} />
       </Routes>
     </ThemeProvider>
   );

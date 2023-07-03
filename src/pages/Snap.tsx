@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PhotoCard from "../components/snap/PhotoCard";
 import { CenterAlign } from "../components/styled/CenterAlignment";
 import { H3 } from "../components/styled/styledSpanagraph";
 
@@ -9,6 +10,7 @@ const Snap = () => {
   return (
     <SnapBox>
       <H3>곰곰히 생각해보자 당장 당신에게 내일이 의미가 있는가</H3>
+      <PhotoCard />
     </SnapBox>
   );
 };

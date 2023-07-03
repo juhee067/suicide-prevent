@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { Img } from "../common/Img";
 
-const PictureBox = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-`;
+import { Img } from "../common/Img";
+import { CenterAlign } from "../styled/CenterAlignment";
+
+const PictureBox = styled(CenterAlign)``;
+
 const Picture = styled.div`
   display: inline-block;
   position: absolute;
@@ -71,7 +70,9 @@ const PhotoCard = () => {
     };
 
     const startDrag: EventListener = (event: MouseEvent | TouchEvent) => {
-      const element = (event.target as HTMLDivElement)?.closest(".picture") as HTMLDivElement | null;
+      const element = (event.currentTarget as HTMLDivElement)?.closest(
+        ".picture"
+      ) as HTMLDivElement | null;
       if (!element) return;
 
       const updateFunction = (event: MouseEvent | TouchEvent) => updateElementPosition(element, event);
@@ -106,9 +107,8 @@ const PhotoCard = () => {
         picture.style.left = `${randomX}px`;
         picture.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg)`;
 
-        const startFunction = (event: MouseEvent | TouchEvent) => startDrag(event);
-        picture.addEventListener("mousedown", startFunction);
-        picture.addEventListener("touchstart", startFunction);
+        picture.addEventListener("mousedown", startDrag);
+        picture.addEventListener("touchstart", startDrag);
       }
     });
 
@@ -123,14 +123,12 @@ const PhotoCard = () => {
   }, []);
   return (
     <PictureBox>
-      {attachedFileList.map((image, id) => {
-        return (
-          <Picture key={id} ref={(el) => (picturesRef.current[id] = el)}>
-            <PictureImg src={image} />
-            <PictureNote></PictureNote>
-          </Picture>
-        );
-      })}
+      {attachedFileList.map((image, id) => (
+        <Picture className="picture" key={id} ref={(el) => (picturesRef.current[id] = el)}>
+          <PictureImg src={image} />
+          <PictureNote></PictureNote>
+        </Picture>
+      ))}
     </PictureBox>
   );
 };

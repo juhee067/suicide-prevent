@@ -53,7 +53,9 @@ const FileAttachment = () => {
         <UploadBtn>
           <Link to="/snap">Upload</Link>
         </UploadBtn>
-        <SkipBtn>Skip</SkipBtn>
+        <SkipBtn>
+          <Link to="/main">Skip</Link>
+        </SkipBtn>
       </ButtonBox>
     </FileAttachmentWrap>
   );

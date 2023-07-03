@@ -7,11 +7,13 @@ import { ThemeProvider } from "styled-components";
 import theme from "./style/Theme";
 import { Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
+import Nav from "./components/nav/Nav";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
+      <Nav />
       <Routes>
         <Route path={"/"} element={<Intro />} />
       </Routes>

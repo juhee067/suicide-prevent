@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Icon from "../components/common/Icon";
 import { Img } from "../components/common/Img";
-import { Paragraph } from "../components/styled/styledSpanagraph";
 import { FaSmile } from "react-icons/fa";
 import { FlexRowCenterDiv } from "../components/styled/FlexDiv";
 
@@ -28,8 +27,11 @@ const Path = styled.path``;
 
 const Text = styled.text`
   font-size: 8rem;
-
   letter-spacing: 0.05em;
+`;
+const MainBg = styled.div`
+  position: absolute;
+  bottom: 0;
 `;
 
 const Main = () => {
@@ -65,7 +67,9 @@ const Main = () => {
         </SvgRight>
       </SvgBox>
 
-      <Img src={`${process.env.PUBLIC_URL}/images/mainBg.png`} />
+      <MainBg>
+        <Img src={`${process.env.PUBLIC_URL}/images/mainBg.png`} />
+      </MainBg>
     </MainWrapper>
   );
 };

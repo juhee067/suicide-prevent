@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import PhotoCard from "../components/snap/PhotoCard";
 import { CenterAlign } from "../components/styled/CenterAlignment";
 import { H3 } from "../components/styled/styledSpanagraph";
-import { BsFillArrowRightCircleFill } from "react-icons/bs";
+import { BsArrowLeftCircle, BsFillArrowRightCircleFill } from "react-icons/bs";
 import Icon from "../components/common/Icon";
 
 const GlobalStyle = createGlobalStyle`
@@ -30,6 +30,9 @@ const Snap = () => {
           <BsFillArrowRightCircleFill />
         </Icon>
         <H3>곰곰히 생각해보자 당장 당신에게 내일이 의미가 있는가</H3>
+        <Icon fontSize="5rem">
+          <BsArrowLeftCircle />
+        </Icon>
       </SnapBox>
       <PhotoCard />
     </>

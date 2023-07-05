@@ -8,6 +8,7 @@ import theme from "./style/Theme";
 import { Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
 import Nav from "./components/nav/Nav";
+import Test from "./pages/Test";
 
 function App() {
   return (
@@ -25,7 +26,10 @@ function App() {
         <Route path={"/snap"} element={<Snap />} />
       </Routes>
       <Routes>
-        <Route path={"/Main"} element={<Main />} />
+        <Route path={"/main"} element={<Main />} />
+      </Routes>
+      <Routes>
+        <Route path={"/test"} element={<Test />} />
       </Routes>
     </ThemeProvider>
   );

@@ -1,4 +1,4 @@
-import styled, { ThemeConsumer } from "styled-components";
+import styled from "styled-components";
 
 export const H1 = styled.span`
   font-size: 4rem;
@@ -38,6 +38,11 @@ export const Btn = styled.span`
 
 export const Paragraph = styled.p`
   font-size: 1.6rem;
+  font-weight: 400;
+`;
+
+export const Description = styled.p`
+  font-size: 1.3rem;
   font-weight: 400;
 `;
 

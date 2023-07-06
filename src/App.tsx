@@ -9,6 +9,7 @@ import { Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
 import Nav from "./components/nav/Nav";
 import Test from "./pages/Test";
+import Information from "./pages/Information";
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
       </Routes>
       <Routes>
         <Route path={"/test"} element={<Test />} />
+      </Routes>
+      <Routes>
+        <Route path={"/information"} element={<Information />} />
       </Routes>
     </ThemeProvider>
   );

@@ -16,7 +16,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Nav />
-
       <Routes>
         <Route path={"/"} element={<Intro />} />
       </Routes>

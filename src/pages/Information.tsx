@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
+import Map from "../components/Map";
 import { FlexColumnDiv, FlexRowDiv } from "../components/styled/FlexDiv";
-import { Btn, Caption, H2, H3, Paragraph, Subtitle } from "../components/styled/styledSpanagraph";
+import { Btn, Caption, H2, H3, Paragraph } from "../components/styled/styledSpanagraph";
 
 const Wrapper = styled.div`
   padding: 100px;
@@ -21,7 +22,6 @@ const TitleBox = styled(H2)`
 const ContentBox = styled(FlexRowDiv)`
   padding: 50px 0;
   justify-content: space-between;
-  /* background-color: #f00; */
 `;
 const Article = styled(FlexColumnDiv)`
   justify-content: space-between;
@@ -36,19 +36,9 @@ const Desc = styled(FlexColumnDiv)`
   margin-bottom: 50px;
   gap: 5px;
 `;
-const Aside = styled(FlexRowDiv)`
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  height: 100px;
-  gap: 20px;
-  text-align: center;
-`;
-const CenterBtn = styled(Btn)`
-  width: 40%;
-  height: 40px;
-  padding: 10px 20px;
-  font-size: 1.2rem;
-  background-color: #ff0;
+
+const Aside = styled(FlexColumnDiv)`
+  gap: 10px;
 `;
 
 const DemandBox = styled.div`
@@ -56,11 +46,27 @@ const DemandBox = styled.div`
   color: ${({ theme }) => theme.color.mainGray};
 `;
 
+const CenterBtnBox = styled(FlexRowDiv)`
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: space-between;
+  width: 400px;
+  gap: 10px;
+  position: relative;
+`;
+const CenterBtn = styled(Btn)`
+  width: 48.7%;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+`;
+
 let center = [
   { id: 0, title: "자살예방상담전화", number: 1393 },
   { id: 1, title: "보건복지상담센터", number: 129 },
   { id: 2, title: "한국생명의전화", number: 15889191 },
   { id: 3, title: "정신건강상담전화", number: 15770199 },
+  { id: 4, title: "청소년 전화", number: 1388 },
+  { id: 5, title: "가족 및 지인", number: 1393 },
 ];
 const Information = () => {
   return (
@@ -84,10 +90,14 @@ const Information = () => {
             <Caption>지도를 클릭하면, 해당 지역의 센터 웹사이트로 이동합니다</Caption>
           </DemandBox>
         </Article>
+
         <Aside>
-          {center.map((item) => {
-            return <CenterBtn>{item.title}</CenterBtn>;
-          })}
+          <Map />
+          <CenterBtnBox>
+            {center.map((item) => {
+              return <CenterBtn>{item.title}</CenterBtn>;
+            })}
+          </CenterBtnBox>
         </Aside>
       </ContentBox>
     </Wrapper>

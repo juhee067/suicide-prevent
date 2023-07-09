@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 1000px;
 `;
+
 const TitleBox = styled(H2)`
   padding: 15px;
   display: block;
@@ -19,19 +20,20 @@ const TitleBox = styled(H2)`
   border-bottom: 2px solid ${({ theme }) => theme.color.mainGray};
   letter-spacing: 0.1em;
 `;
+
 const ContentBox = styled(FlexRowDiv)`
-  padding: 50px 0;
-  justify-content: space-between;
+  padding: 40px 0;
 `;
-const Article = styled(FlexColumnDiv)`
-  justify-content: space-between;
-`;
+
+const Article = styled(FlexColumnDiv)``;
+
 const SubTitleBox = styled.div``;
 
 const KeyRemark = styled(FlexColumnDiv)`
   margin-bottom: 30px;
   gap: 5px;
 `;
+
 const Desc = styled(FlexColumnDiv)`
   margin-bottom: 50px;
   gap: 5px;
@@ -54,6 +56,7 @@ const CenterBtnBox = styled(FlexRowDiv)`
   gap: 10px;
   position: relative;
 `;
+
 const CenterBtn = styled(Btn)`
   width: 48.7%;
   padding: 10px 20px;
@@ -71,7 +74,7 @@ let center = [
 const Information = () => {
   return (
     <Wrapper>
-      <TitleBox>나는 살고 싶습니다</TitleBox>
+      <TitleBox>이또한 지나가리라.</TitleBox>
       <ContentBox>
         <Article>
           <SubTitleBox>

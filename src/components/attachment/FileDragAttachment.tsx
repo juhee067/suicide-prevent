@@ -9,8 +9,6 @@ import { useSelector } from "react-redux";
 import { setAttachedFileList } from "../../store/reducer/attachedFileList";
 
 const DragBox = styled(FlexColumnCenterDiv)`
-  padding: 0 20px;
-  gap: 30px;
   height: 400px;
   line-height: 1.5;
 `;
@@ -54,7 +52,7 @@ const FileDragAttachment = () => {
         <AiFillFileAdd />
       </Icon>
       <FileUploadForm>
-        <Paragraph>파일을 드래그하여 여기에 끌어 놓거나 </Paragraph>
+        <Paragraph> 자신이 좋아하는 사진 6장을 드래그하거나 </Paragraph>
         <FileAttachmentButton onChange={handleAddImages}>첨부하기</FileAttachmentButton>
         <Paragraph>버튼을 클릭하세요</Paragraph>
         <ErrorText>* 파일을 첨부하지 않으면 이미지가 나오지 않습니다</ErrorText>

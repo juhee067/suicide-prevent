@@ -45,7 +45,7 @@ const FileAttachment = () => {
   return (
     <FileAttachmentWrap>
       <FileAttachmentBox>
-        <RequestBox>자신이 좋아하는 사진 6장을 첨부해주세요</RequestBox>
+        <RequestBox>오늘이 인생의 마지막 날 이라면 지금 하고 있는 일을 할 것인가</RequestBox>
         <FileDragAttachment />
       </FileAttachmentBox>
       <FileList />

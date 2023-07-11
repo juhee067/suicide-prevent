@@ -2,8 +2,16 @@ import { FlexColumnCenterDiv, FlexColumnDiv } from "../components/styled/FlexDiv
 import React from "react";
 import styled from "styled-components";
 import FileAttachment from "../components/attachment/FileAttachment";
-import { H3 } from "../components/styled/styledSpanagraph";
-import { CenterAlign } from "../components/styled/CenterAlignment";
+
+const AttachmentWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  text-align: center;
+`;
+const AttachmentBox = styled.div``;
 
 const TitleBox = styled(FlexColumnDiv)`
   margin-bottom: 20px;
@@ -12,15 +20,12 @@ const TitleBox = styled(FlexColumnDiv)`
 
 const Attachment = () => {
   return (
-    <CenterAlign>
-      <FlexColumnCenterDiv>
-        <TitleBox>
-          <H3>오늘이 인생의</H3>
-          <H3>마지막 날 이라면 지금 하고 있는 일을 할 것인가</H3>
-        </TitleBox>
+    <AttachmentWrapper>
+      <AttachmentBox>
+        <TitleBox />
         <FileAttachment />
-      </FlexColumnCenterDiv>
-    </CenterAlign>
+      </AttachmentBox>
+    </AttachmentWrapper>
   );
 };
 

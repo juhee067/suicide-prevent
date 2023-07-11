@@ -7,18 +7,17 @@ const GlobalStyles = createGlobalStyle`
      font-weight: normal;
      font-style: normal;
 }
+
     html {
   box-sizing: border-box;
   font-size: 10px;
-  
 }
 
 *,
 *:before,
 *:after {
-  box-sizing:border-box;
-  /* outline: 1px solid #f00; */
-  
+box-sizing:border-box;
+outline: 1px solid #f00;
 }
 
 body {

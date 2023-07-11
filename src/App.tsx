@@ -15,11 +15,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
+      {/* <MobileNav /> */}
       <Nav />
       <Routes>
         <Route path={"/"} element={<Intro />} />
-      </Routes>
-      <Routes>
         <Route path={"/attachment"} element={<Attachment />} />
       </Routes>
       <Routes>

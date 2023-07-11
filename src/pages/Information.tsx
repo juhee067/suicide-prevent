@@ -25,9 +25,12 @@ const ContentBox = styled(FlexRowDiv)`
   padding: 40px 0;
 `;
 
-const Article = styled(FlexColumnDiv)``;
+const Article = styled(FlexColumnDiv)`
+  justify-content: space-between;
+`;
 
 const SubTitleBox = styled.div``;
+const AiBox = styled.div``;
 
 const KeyRemark = styled(FlexColumnDiv)`
   margin-bottom: 30px;
@@ -64,14 +67,19 @@ const CenterBtn = styled(Btn)`
 `;
 
 let center = [
-  { id: 0, title: "자살예방상담전화", number: 1393 },
-  { id: 1, title: "보건복지상담센터", number: 129 },
-  { id: 2, title: "한국생명의전화", number: 15889191 },
-  { id: 3, title: "정신건강상담전화", number: 15770199 },
-  { id: 4, title: "청소년 전화", number: 1388 },
-  { id: 5, title: "가족 및 지인", number: 1393 },
+  { id: 0, title: "자살예방상담전화", number: "1393" },
+  { id: 1, title: "보건복지상담센터", number: "129" },
+  { id: 2, title: "한국생명의전화", number: "15889191" },
+  { id: 3, title: "정신건강상담전화", number: "15770199" },
+  { id: 4, title: "청소년 전화", number: "1388" },
+  { id: 5, title: "가족 및 지인", number: "1393" },
 ];
+
 const Information = () => {
+  const makePhoneCall = (phoneNumber: any) => {
+    const telLink = `tel:${phoneNumber}`;
+    window.location.href = telLink;
+  };
   return (
     <Wrapper>
       <TitleBox>이또한 지나가리라.</TitleBox>
@@ -87,18 +95,24 @@ const Information = () => {
               <Paragraph>누리지 못할 두번째 삶</Paragraph>
             </Desc>
           </SubTitleBox>
-
-          <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="40%" />
+          <AiBox>
+            <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="47%" />
+          </AiBox>
           <DemandBox>
-            <Caption>지도를 클릭하면, 해당 지역의 센터 웹사이트로 이동합니다</Caption>
+            <Caption>지도의 마커를 클릭하면, 해당 지역의 센터 웹사이트로 이동합니다</Caption>
           </DemandBox>
         </Article>
-
         <Aside>
           <Map />
           <CenterBtnBox>
             {center.map((item) => {
-              return <CenterBtn>{item.title}</CenterBtn>;
+              return (
+                <CenterBtn>
+                  <a href={`tel : ${item.number}`} onClick={() => makePhoneCall(item.number)}>
+                    {item.title}
+                  </a>
+                </CenterBtn>
+              );
             })}
           </CenterBtnBox>
         </Aside>

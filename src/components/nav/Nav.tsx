@@ -1,30 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Icon from "../common/Icon";
-import { HiMenuAlt1 } from "react-icons/hi";
+import { FlexCenterDiv } from "../styled/FlexDiv";
 
 const NavWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  background-color: ${({ theme }) => theme.color.mainBlack};
+  margin: 0 auto;
+  width: 100%;
+  border-bottom: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
-const MenuIcon = styled(Icon)`
-  color: #fff;
-  font-size: 3rem;
+
+const Menus = styled(FlexCenterDiv)`
+  padding: 30px 0;
+  gap: 100px;
+  font-size: 1.8em;
+  font-weight: 500;
 `;
 
 const Nav = () => {
   return (
     <NavWrapper>
-      <MenuIcon>
-        <HiMenuAlt1 />
-      </MenuIcon>
+      <Menus>
+        <Link to="/attachment">Intro</Link>
+        <Link to="/main">Home</Link>
+        <Link to="/test">Test</Link>
+        <Link to="/information">Info</Link>
+      </Menus>
     </NavWrapper>
   );
 };

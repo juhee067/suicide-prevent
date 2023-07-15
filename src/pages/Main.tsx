@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import Icon from "../components/common/Icon";
 import { Img } from "../components/common/Img";
@@ -27,7 +27,7 @@ const Path = styled.path``;
 
 const Text = styled.text`
   font-size: 8rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
 `;
 const MainBg = styled.div`
   position: absolute;
@@ -40,7 +40,7 @@ const Main = () => {
       <SvgBox>
         <SvgLeft xmlns="http://www.w3.org/2000/svg">
           <Defs>
-            <Path id="text-left" d="M 40 100 Q 100 50 320 80" />
+            <Path id="text-left" d="M 40 100 Q 100 50 320 70" />
           </Defs>
 
           <Text>
@@ -50,9 +50,7 @@ const Main = () => {
             </textPath>
           </Text>
         </SvgLeft>
-        <Icon color="#ffbd2e" fontSize="15rem">
-          <FaSmile />
-        </Icon>
+        <Img src={`${process.env.PUBLIC_URL}/images/smile.svg`} width="130px" />
         <SvgRight xmlns="http://www.w3.org/2000/svg">
           <Defs>
             <Path id="text-right" d="M 20 110 Q 200 190 550 100 " />

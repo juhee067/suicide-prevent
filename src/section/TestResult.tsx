@@ -53,7 +53,7 @@ const ResultBox = styled(FlexRowDiv)`
 
 const ResultContent = styled(FlexColumnDiv)`
   padding: 20px;
-  width: 250px;
+  width: 30%;
   height: 400px;
   justify-content: space-between;
   border-left: 2px solid ${({ theme }) => theme.color.mainBlack};
@@ -82,22 +82,22 @@ type Data = {
   des: string;
 };
 const testResultData: Data[] = [
-  { id: 0, score: "0 - 4", title: "없음", des: "유의한 수준의 우울감이 시사되지 않습니다." },
   {
-    id: 1,
-    score: "5 - 9",
-    title: "낮은 우울",
-    des: "다소 경미한 수준의 우울감이 있으나 일상생활에 지장을 줄 정도는 아닙니다. 다만, 이러한 기분상태가 지속될 경우 개인의 신체적, 심리적 대처자원을 저하시킬 수 있습니다. 그러한 경우, 적극적으로 전문가와 상의하시기 바랍니다.",
+    id: 0,
+    score: "16점 이하",
+    title: "없음",
+    des: "유의한 수준의 우울감이 시사되지 않습니다.",
   },
   {
-    id: 2,
-    score: "10 - 19",
+    id: 1,
+    score: "21 - 40점",
     title: "중증도 우울",
     des: "중간정도 수준의 우울감이 시사됩니다. 이러한 수준의 우울감은 흔히 신체적, 심리적 대처자원을 저하시키며 개인의 일상생활을 어렵게 만들기도 합니다. 전문가와 상담을 통하여 보다 상세한 평가와 도움을 받아보시기 바랍니다.",
   },
+
   {
-    id: 3,
-    score: "20 - 27",
+    id: 2,
+    score: "40 - 60점",
     title: "높은 우울",
     des: "심한 수준의 우울감이 시사됩니다. 전문가의 치료적 개입과 평가가 요구됩니다.",
   },

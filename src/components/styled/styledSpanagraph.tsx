@@ -30,8 +30,9 @@ export const Link = styled.span`
   font-weight: 300;
 `;
 
-export const Btn = styled.span`
+export const Btn = styled.button`
   padding: 20px 0;
+  border: none;
   font-size: 1.6rem;
   font-weight: 500;
 `;

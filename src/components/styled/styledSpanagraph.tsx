@@ -35,6 +35,7 @@ export const Btn = styled.button`
   border: none;
   font-size: 1.6rem;
   font-weight: 500;
+  cursor: pointer;
 `;
 
 export const Paragraph = styled.p`

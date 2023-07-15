@@ -66,10 +66,14 @@ interface TestModalProps {
 
 const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
+  const [score, setScore] = useState(0);
   if (!isOpen) {
     return null;
   }
-
+  const resetTest = () => {
+    setActive(0);
+    setScore(0);
+  };
   return (
     <Container>
       <ModalBackdrop>
@@ -94,6 +98,9 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
                 />
               ))}
             </TestContent>
+            {active === Question.length && (
+              <AnswerButton content="다시 테스트하기" onClick={resetTest} />
+            )}
           </ContentBox>
         </ModalView>
       </ModalBackdrop>

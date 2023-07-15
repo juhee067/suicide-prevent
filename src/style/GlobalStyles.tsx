@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
 *:before,
 *:after {
 box-sizing:border-box;
-outline: 1px solid #f00;
+/* outline: 1px solid #f00; */
 }
 
 body {

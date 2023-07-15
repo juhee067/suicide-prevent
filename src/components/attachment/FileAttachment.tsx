@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FlexCenterDiv } from "../styled/FlexDiv";
 import { Btn, Paragraph } from "../styled/styledSpanagraph";
@@ -49,8 +50,12 @@ const FileAttachment = () => {
       </FileAttachmentBox>
       <FileList />
       <ButtonBox>
-        <UploadBtn>Upload</UploadBtn>
-        <SkipBtn>Skip</SkipBtn>
+        <UploadBtn>
+          <Link to="/snap">Upload</Link>
+        </UploadBtn>
+        <SkipBtn>
+          <Link to="/main">Skip</Link>
+        </SkipBtn>
       </ButtonBox>
     </FileAttachmentWrap>
   );

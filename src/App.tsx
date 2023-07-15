@@ -1,6 +1,7 @@
 import React from "react";
 import Intro from "./pages/Intro";
 import Attachment from "./pages/Attachment";
+import Snap from "./pages/Snap";
 import GlobalStyles from "./style/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import theme from "./style/Theme";
@@ -8,17 +9,18 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path={"/"} element={<Intro />} />
-        </Routes>
-        <Routes>
-          <Route path={"/attachment"} element={<Attachment />} />
-        </Routes>
-      </ThemeProvider>
-    </div>
+      <Routes>
+        <Route path={"/"} element={<Intro />} />
+      </Routes>
+      <Routes>
+        <Route path={"/attachment"} element={<Attachment />} />
+      </Routes>
+      <Routes>
+        <Route path={"/snap"} element={<Snap />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 

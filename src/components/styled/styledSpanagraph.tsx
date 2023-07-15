@@ -50,6 +50,7 @@ export const HighlightText = styled.p<{ showUnderline?: boolean }>`
   font-size: 1.6rem;
   font-weight: 600;
   text-decoration: ${(props) => (props.showUnderline ? "underline" : "none")};
+  cursor: pointer;
 `;
 
 export const MutedText = styled.p`

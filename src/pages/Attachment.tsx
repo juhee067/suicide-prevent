@@ -1,7 +1,7 @@
 import { FlexColumnCenterDiv, FlexColumnDiv } from "../components/styled/FlexDiv";
 import React from "react";
 import styled from "styled-components";
-import FileAttachment from "../components/FileAttachment";
+import FileAttachment from "../components/attachment/FileAttachment";
 import { H3 } from "../components/styled/styledSpanagraph";
 import { CenterAlign } from "../components/styled/CenterAlignment";
 

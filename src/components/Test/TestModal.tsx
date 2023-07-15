@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
@@ -51,13 +51,21 @@ const GaugeBox = styled.div`
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
-
+const GaugeBar = styled.div<GaugeBarProps>`
+  width: ${({ active }) => (active + 1) * 5}%;
+  height: 100%;
+  background-color: ${({ theme }) => theme.color.mainBlack};
+`;
+interface GaugeBarProps {
+  active: number;
+}
 interface TestModalProps {
   isOpen: boolean;
   closeModal: () => void;
 }
 
 const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
+  const [active, setActive] = useState(0);
   if (!isOpen) {
     return null;
   }
@@ -71,14 +79,18 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
           </CloseModal>
           <ContentBox>
             <Title>나의 우울증 지수는?</Title>
-            <GaugeBox></GaugeBox>
-            <TestContent>
+            <GaugeBox>
+              <GaugeBar active={active} />
+            </GaugeBox>
+            <TestContent active={active} setActive={setActive}>
               {Question.map((items, i) => (
                 <Card
                   description={items.question}
                   btn={items.answers.map((answer, answerIndex) => (
                     <AnswerButton key={answerIndex} content={answer.content} />
                   ))}
+                  active={active}
+                  setActive={setActive}
                 />
               ))}
             </TestContent>

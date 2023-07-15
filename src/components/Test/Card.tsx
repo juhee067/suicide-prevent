@@ -31,15 +31,23 @@ const SelectBox = styled.div`
 interface CardProps {
   description: string;
   btn: React.ReactNode[];
+  active: number;
+  setActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Card = ({ description, btn }: CardProps) => {
+const Card = ({ description, btn, active, setActive }: CardProps) => {
   return (
     <CardBox>
       <DescBox>
         <Paragraph>{description}</Paragraph>
       </DescBox>
-      <SelectBox>{btn}</SelectBox>
+      <SelectBox
+        onClick={() => {
+          setActive((i) => i + 1);
+        }}
+      >
+        {btn}
+      </SelectBox>
     </CardBox>
   );
 };

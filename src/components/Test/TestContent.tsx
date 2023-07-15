@@ -26,11 +26,14 @@ const RightIcon = styled(Icon)`
   font-size: 3rem;
   cursor: pointer;
 `;
-
-const TestContent = ({ children }: any) => {
-  const [active, setActive] = useState(0);
+interface TestContentProps {
+  children: any;
+  active: number;
+  setActive: React.Dispatch<React.SetStateAction<number>>;
+}
+const TestContent = ({ children, active, setActive }: TestContentProps) => {
   const count = React.Children.count(children);
-  console.log(active);
+
   return (
     <TestContentBox>
       {active > 0 && (

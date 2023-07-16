@@ -26,6 +26,7 @@ const RightIcon = styled(Icon)`
   font-size: 3rem;
   cursor: pointer;
 `;
+
 interface TestContentProps {
   children: any;
   active: number;
@@ -37,7 +38,11 @@ const TestContent = ({ children, active, setActive }: TestContentProps) => {
   return (
     <TestContentBox>
       {active > 0 && (
-        <LeftIcon onClick={() => setActive((i) => i - 1)}>
+        <LeftIcon
+          onClick={() => {
+            setActive((i) => i - 1);
+          }}
+        >
           <BsFillArrowLeftCircleFill />
         </LeftIcon>
       )}
@@ -51,7 +56,11 @@ const TestContent = ({ children, active, setActive }: TestContentProps) => {
         </CardContainer>
       ))}
       {active < count - 1 && (
-        <RightIcon onClick={() => setActive((i) => i + 1)}>
+        <RightIcon
+          onClick={() => {
+            setActive((i) => i + 1);
+          }}
+        >
           <BsFillArrowRightCircleFill />
         </RightIcon>
       )}

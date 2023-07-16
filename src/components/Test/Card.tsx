@@ -22,9 +22,6 @@ const SelectBox = styled.div`
 
   > * {
     flex: 1;
-    border: 1px solid ${({ theme }) => theme.color.mainGray};
-    border-radius: 5px;
-    cursor: pointer;
   }
 `;
 
@@ -41,13 +38,7 @@ const Card = ({ description, btn, active, setActive }: CardProps) => {
       <DescBox>
         <Paragraph>{description}</Paragraph>
       </DescBox>
-      <SelectBox
-        onClick={() => {
-          setActive((i) => i + 1);
-        }}
-      >
-        {btn}
-      </SelectBox>
+      <SelectBox>{btn}</SelectBox>
     </CardBox>
   );
 };

@@ -1,8 +1,6 @@
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "styled-components";
-import Icon from "../components/common/Icon";
 import { Img } from "../components/common/Img";
-import { FaSmile } from "react-icons/fa";
 import { FlexRowCenterDiv } from "../components/styled/FlexDiv";
 
 const MainWrapper = styled.div``;
@@ -18,8 +16,9 @@ const SvgBox = styled(FlexRowCenterDiv)`
 const SvgLeft = styled.svg`
   width: 320px;
 `;
+
 const SvgRight = styled.svg`
-  width: 550px;
+  width: 600px;
 `;
 
 const Defs = styled.defs``;
@@ -40,7 +39,7 @@ const Main = () => {
       <SvgBox>
         <SvgLeft xmlns="http://www.w3.org/2000/svg">
           <Defs>
-            <Path id="text-left" d="M 40 100 Q 100 50 320 70" />
+            <Path id="text-left" d="M 20 100 Q 100 50 320 100" />
           </Defs>
 
           <Text>
@@ -53,9 +52,8 @@ const Main = () => {
         <Img src={`${process.env.PUBLIC_URL}/images/smile.svg`} width="130px" />
         <SvgRight xmlns="http://www.w3.org/2000/svg">
           <Defs>
-            <Path id="text-right" d="M 20 110 Q 200 190 550 100 " />
+            <Path id="text-right" d="M 15 110 Q 100 150 550 60 " />
           </Defs>
-
           <Text>
             <textPath href="#text-right">
               <tspan style={{ fontFamily: "DungGeunMo", fontSize: "10rem" }}>Gate</tspan> Keep

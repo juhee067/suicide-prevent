@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
@@ -48,6 +48,7 @@ const Title = styled(H2)``;
 const GaugeBox = styled.div`
   width: 70%;
   height: 10px;
+  overflow: hidden;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
@@ -66,14 +67,40 @@ interface TestModalProps {
 
 const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
+  const [scoreArr, setScoreArr] = useState<number[]>([]);
   const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    // console.log(active, "active문제번호use");
+    console.log(scoreArr, "scoreArr");
+  }, [active]);
+
   if (!isOpen) {
     return null;
   }
+  interface QuestionProps {
+    questionId: number;
+    selectedScore: number;
+  }
+  const handleAnswerNumber = ({ questionId, selectedScore }: QuestionProps) => {
+    setActive(questionId);
+    scoreArr[questionId - 1] = selectedScore;
+  };
+
   const resetTest = () => {
     setActive(0);
-    setScore(0);
+    setScoreArr([]);
   };
+
+  const calculateResult = () => {
+    let totalScore = 0;
+    totalScore = scoreArr.reduce((acc, cur) => {
+      return acc + cur;
+    });
+
+    return totalScore;
+  };
+
   return (
     <Container>
       <ModalBackdrop>
@@ -86,20 +113,32 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
             <GaugeBox>
               <GaugeBar active={active} />
             </GaugeBox>
-            <TestContent active={active} setActive={setActive}>
-              {Question.map((items, i) => (
-                <Card
-                  description={items.question}
-                  btn={items.answers.map((answer, answerIndex) => (
-                    <AnswerButton key={answerIndex} content={answer.content} />
-                  ))}
-                  active={active}
-                  setActive={setActive}
-                />
-              ))}
-            </TestContent>
-            {active === Question.length && (
-              <AnswerButton content="다시 테스트하기" onClick={resetTest} />
+
+            {active === Question.length - 1 ? (
+              <>
+                <H2>최종점수 : {calculateResult()}</H2>
+                <AnswerButton content="다시 테스트하기" onClick={resetTest} />
+              </>
+            ) : (
+              <TestContent active={active} setActive={setActive}>
+                {Question.map((items, i) => (
+                  <Card
+                    key={i}
+                    description={items.question}
+                    btn={items.answers.map((answer, answerIndex) => (
+                      <AnswerButton
+                        key={answerIndex}
+                        content={answer.content}
+                        onClick={() =>
+                          handleAnswerNumber({ questionId: items.id, selectedScore: answer.score })
+                        }
+                      />
+                    ))}
+                    active={active}
+                    setActive={setActive}
+                  />
+                ))}
+              </TestContent>
             )}
           </ContentBox>
         </ModalView>

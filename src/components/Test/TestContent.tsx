@@ -55,7 +55,7 @@ const TestContent = ({ children, active, setActive }: TestContentProps) => {
           {child}
         </CardContainer>
       ))}
-      {active < count - 1 && (
+      {active < count && (
         <RightIcon
           onClick={() => {
             setActive((i) => i + 1);

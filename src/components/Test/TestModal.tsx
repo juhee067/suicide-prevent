@@ -29,7 +29,7 @@ const ModalView = styled(FlexColumnCenterDiv)`
   border-radius: 20px;
   width: 60%;
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
 const ContentBox = styled(FlexColumnCenterDiv)`
@@ -44,7 +44,9 @@ const CloseModal = styled(Icon)`
   font-size: 3rem;
   cursor: pointer;
 `;
+
 const Title = styled(H2)``;
+
 const GaugeBox = styled.div`
   width: 70%;
   height: 10px;
@@ -52,14 +54,17 @@ const GaugeBox = styled.div`
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
+
 const GaugeBar = styled.div<GaugeBarProps>`
   width: ${({ active }) => (active + 1) * 5}%;
   height: 100%;
   background-color: ${({ theme }) => theme.color.mainBlack};
 `;
+
 interface GaugeBarProps {
   active: number;
 }
+
 interface TestModalProps {
   isOpen: boolean;
   closeModal: () => void;
@@ -68,17 +73,19 @@ interface TestModalProps {
 const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
   const [scoreArr, setScoreArr] = useState<number[]>([]);
+  const [selectedAnswerScore, setSelectedAnswerScore] = useState<number>();
 
   useEffect(() => {
-    console.log(scoreArr, "scoreArr");
-  }, [scoreArr]);
+    console.log(active, "active");
+  }, [active]);
 
   if (!isOpen) {
     return null;
   }
 
   const handleAnswerNumber = (questionId: number, selectedScore: number) => {
-    setActive(questionId);
+    // setActive(questionId);
+    setSelectedAnswerScore(selectedScore);
     setScoreArr((prevScoreArr) => {
       const updatedScoreArr = [...prevScoreArr];
       updatedScoreArr[questionId - 1] = selectedScore;
@@ -89,18 +96,22 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const resetTest = () => {
     setActive(0);
     setScoreArr([]);
+    setSelectedAnswerScore(undefined);
   };
 
   const calculateResult = () => {
     const totalScore = scoreArr.reduce((acc, cur) => acc + cur, 0);
     return totalScore;
   };
-
+  const handleCloseModal = () => {
+    resetTest();
+    closeModal();
+  };
   return (
     <Container>
       <ModalBackdrop>
         <ModalView onClick={(e) => e.stopPropagation()}>
-          <CloseModal onClick={closeModal}>
+          <CloseModal onClick={handleCloseModal}>
             <AiOutlineCloseCircle />
           </CloseModal>
           <ContentBox>
@@ -111,24 +122,18 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
             <TestContent active={active} setActive={setActive}>
               {Question.map((items) => (
                 <Card
-                  key={items.id}
                   description={items.question}
-                  btn={items.answers.map((answer) => (
-                    <AnswerButton
-                      key={answer.content}
-                      content={answer.content}
-                      onClick={() => handleAnswerNumber(items.id, answer.score)}
-                    />
-                  ))}
+                  answers={items.answers}
+                  handleAnswerNumber={handleAnswerNumber}
                   active={active}
-                  setActive={setActive}
+                  selectedAnswerScore={selectedAnswerScore}
                 />
               ))}
             </TestContent>
             {active === Question.length && (
               <>
                 <H2>최종점수 : {calculateResult()}</H2>
-                <AnswerButton content="다시 테스트하기" onClick={resetTest} />
+                <AnswerButton content="다시 테스트하기" onClick={resetTest} selected id={21} />
               </>
             )}
           </ContentBox>

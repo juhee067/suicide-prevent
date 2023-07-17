@@ -8,9 +8,10 @@ const AnswerBtn = styled(Btn)<{ selected: boolean }>`
   ${({ selected }) =>
     selected &&
     ` background-color: #ffce0a;
+    
   `}
   &:hover {
-    background-color: #e3e3e3;
+    background-color: ${({ selected }) => (selected ? "#ffce0a" : "#e3e3e3")};
   }
 `;
 

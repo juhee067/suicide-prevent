@@ -37,18 +37,16 @@ const TestContent = ({ children, active, setActive, scoreArr }: TestContentProps
   const count = React.Children.count(children);
 
   const checkAnswer = () => {
-    const error = scoreArr.indexOf(undefined);
-    if (error !== -1) {
-      return alert(`선택하지 않은 항목을 확인해주세요`);
+    if (scoreArr.includes(undefined) || scoreArr.length !== 20) {
+      alert("선택하지 않은 항목을 확인해주세요");
+      return;
     }
-    setActive((i) => i + 1);
+
+    setActive((prevActive) => prevActive + 1);
   };
-  // useEffect(() => {
-  //   checkAnswer();
-  // }, []);
   return (
     <TestContentBox>
-      {active > 0 && (
+      {active > 0 && active < 20 && (
         <LeftIcon
           onClick={() => {
             setActive((i) => i - 1);

@@ -49,7 +49,7 @@ const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswer
         <Paragraph>{description}</Paragraph>
       </DescBox>
       <SelectBox as="li">
-        {answers.map((answer, actvie, id) => (
+        {answers.map((answer) => (
           <AnswerButton
             id={answer.id}
             key={answer.content}

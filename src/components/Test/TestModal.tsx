@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
-import { H2 } from "../styled/styledSpanagraph";
+import { Description, H2, H3, Paragraph, Subtitle } from "../styled/styledSpanagraph";
 import { Question } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../styled/FlexDiv";
 import Card from "./Card";
@@ -60,6 +60,9 @@ const GaugeBar = styled.div<GaugeBarProps>`
   height: 100%;
   background-color: ${({ theme }) => theme.color.mainBlack};
 `;
+const ResultBox = styled(FlexColumnCenterDiv)`
+  gap: 30px;
+`;
 
 interface GaugeBarProps {
   active: number;
@@ -89,7 +92,7 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
     setSelectedAnswerScore(selectedScore);
     setScoreArr((prevScoreArr) => {
       const updatedScoreArr = [...prevScoreArr];
-      updatedScoreArr[questionId - 1] = selectedScore;
+      updatedScoreArr[questionId] = selectedScore;
       return updatedScoreArr;
     });
   };
@@ -116,10 +119,15 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
             <AiOutlineCloseCircle />
           </CloseModal>
           <ContentBox>
-            <Title>나의 우울증 지수는?</Title>
-            <GaugeBox>
-              <GaugeBar active={active} />
-            </GaugeBox>
+            {active === Question.length ? null : (
+              <>
+                <Title>나의 우울증 지수는?</Title>
+                <GaugeBox>
+                  <GaugeBar active={active} />
+                </GaugeBox>
+              </>
+            )}
+
             <TestContent active={active} setActive={setActive} scoreArr={scoreArr}>
               {Question.map((items) => (
                 <Card
@@ -132,10 +140,12 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
               ))}
             </TestContent>
             {active === Question.length && (
-              <>
-                <H2>최종점수 : {calculateResult()}</H2>
+              <ResultBox>
+                <H2>당신의 테스트 결과 점수는</H2>
+                <H3>{calculateResult()}점</H3>
+                <Paragraph>하단의 설명을 확인하세요</Paragraph>
                 <AnswerButton content="다시 테스트하기" onClick={resetTest} selected id={21} />
-              </>
+              </ResultBox>
             )}
           </ContentBox>
         </ModalView>

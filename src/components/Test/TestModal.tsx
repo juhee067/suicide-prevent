@@ -77,7 +77,8 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
 
   useEffect(() => {
     console.log(active, "active");
-  }, [active]);
+    console.log(scoreArr, "scoreArr");
+  }, [active, scoreArr]);
 
   if (!isOpen) {
     return null;
@@ -119,7 +120,7 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
             <GaugeBox>
               <GaugeBar active={active} />
             </GaugeBox>
-            <TestContent active={active} setActive={setActive}>
+            <TestContent active={active} setActive={setActive} scoreArr={scoreArr}>
               {Question.map((items) => (
                 <Card
                   description={items.question}

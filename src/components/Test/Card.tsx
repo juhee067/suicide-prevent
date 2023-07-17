@@ -40,9 +40,9 @@ interface CardProps {
 }
 
 const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswerScore }: CardProps) => {
-  useEffect(() => {
-    console.log(answers);
-  });
+  // useEffect(() => {
+  //   console.log(answers);
+  // });
   return (
     <CardBox>
       <DescBox>

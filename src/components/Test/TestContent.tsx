@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import styled from "styled-components";
 import Icon from "../common/Icon";
@@ -31,10 +31,21 @@ interface TestContentProps {
   children: any;
   active: number;
   setActive: React.Dispatch<React.SetStateAction<number>>;
+  scoreArr: (number | undefined)[];
 }
-const TestContent = ({ children, active, setActive }: TestContentProps) => {
+const TestContent = ({ children, active, setActive, scoreArr }: TestContentProps) => {
   const count = React.Children.count(children);
 
+  const checkAnswer = () => {
+    const error = scoreArr.indexOf(undefined);
+    if (error !== -1) {
+      return alert(`선택하지 않은 항목을 확인해주세요`);
+    }
+    setActive((i) => i + 1);
+  };
+  // useEffect(() => {
+  //   checkAnswer();
+  // }, []);
   return (
     <TestContentBox>
       {active > 0 && (
@@ -58,6 +69,10 @@ const TestContent = ({ children, active, setActive }: TestContentProps) => {
       {active < count && (
         <RightIcon
           onClick={() => {
+            if (active === 19) {
+              checkAnswer();
+              return;
+            }
             setActive((i) => i + 1);
           }}
         >

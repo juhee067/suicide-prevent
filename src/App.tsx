@@ -11,17 +11,7 @@ import Nav from "./components/nav/Nav";
 import Test from "./pages/Test";
 import Information from "./pages/Information";
 
-const handlePageChange = (location: Location) => {
-  console.log("페이지 이동:", location.pathname);
-};
-
 const App = React.memo(() => {
-  const location = useLocation();
-
-  useEffect(() => {
-    handlePageChange(location);
-  }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

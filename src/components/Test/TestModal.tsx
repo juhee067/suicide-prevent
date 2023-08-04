@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
-import { H2 } from "../styled/styledSpanagraph";
+import { Description, H2, H3, Paragraph, Subtitle } from "../styled/styledSpanagraph";
 import { Question } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../styled/FlexDiv";
 import Card from "./Card";
@@ -29,7 +29,7 @@ const ModalView = styled(FlexColumnCenterDiv)`
   border-radius: 20px;
   width: 60%;
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
 const ContentBox = styled(FlexColumnCenterDiv)`
@@ -44,21 +44,30 @@ const CloseModal = styled(Icon)`
   font-size: 3rem;
   cursor: pointer;
 `;
+
 const Title = styled(H2)``;
+
 const GaugeBox = styled.div`
   width: 70%;
   height: 10px;
+  overflow: hidden;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
+
 const GaugeBar = styled.div<GaugeBarProps>`
   width: ${({ active }) => (active + 1) * 5}%;
   height: 100%;
   background-color: ${({ theme }) => theme.color.mainBlack};
 `;
+const ResultBox = styled(FlexColumnCenterDiv)`
+  gap: 30px;
+`;
+
 interface GaugeBarProps {
   active: number;
 }
+
 interface TestModalProps {
   isOpen: boolean;
   closeModal: () => void;
@@ -66,34 +75,78 @@ interface TestModalProps {
 
 const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
+  const [scoreArr, setScoreArr] = useState<number[]>([]);
+  const [selectedAnswerScore, setSelectedAnswerScore] = useState<number>();
+
+  useEffect(() => {
+    console.log(active, "active");
+    console.log(scoreArr, "scoreArr");
+  }, [active, scoreArr]);
+
   if (!isOpen) {
     return null;
   }
 
+  const handleAnswerNumber = (questionId: number, selectedScore: number) => {
+    // setActive(questionId);
+    setSelectedAnswerScore(selectedScore);
+    setScoreArr((prevScoreArr) => {
+      const updatedScoreArr = [...prevScoreArr];
+      updatedScoreArr[questionId] = selectedScore;
+      return updatedScoreArr;
+    });
+  };
+
+  const resetTest = () => {
+    setActive(0);
+    setScoreArr([]);
+    setSelectedAnswerScore(undefined);
+  };
+
+  const calculateResult = () => {
+    const totalScore = scoreArr.reduce((acc, cur) => acc + cur, 0);
+    return totalScore;
+  };
+  const handleCloseModal = () => {
+    resetTest();
+    closeModal();
+  };
   return (
     <Container>
       <ModalBackdrop>
         <ModalView onClick={(e) => e.stopPropagation()}>
-          <CloseModal onClick={closeModal}>
+          <CloseModal onClick={handleCloseModal}>
             <AiOutlineCloseCircle />
           </CloseModal>
           <ContentBox>
-            <Title>나의 우울증 지수는?</Title>
-            <GaugeBox>
-              <GaugeBar active={active} />
-            </GaugeBox>
-            <TestContent active={active} setActive={setActive}>
-              {Question.map((items, i) => (
+            {active === Question.length ? null : (
+              <>
+                <Title>나의 우울증 지수는?</Title>
+                <GaugeBox>
+                  <GaugeBar active={active} />
+                </GaugeBox>
+              </>
+            )}
+
+            <TestContent active={active} setActive={setActive} scoreArr={scoreArr}>
+              {Question.map((items) => (
                 <Card
                   description={items.question}
-                  btn={items.answers.map((answer, answerIndex) => (
-                    <AnswerButton key={answerIndex} content={answer.content} />
-                  ))}
+                  answers={items.answers}
+                  handleAnswerNumber={handleAnswerNumber}
                   active={active}
-                  setActive={setActive}
+                  selectedAnswerScore={selectedAnswerScore}
                 />
               ))}
             </TestContent>
+            {active === Question.length && (
+              <ResultBox>
+                <H2>당신의 테스트 결과 점수는</H2>
+                <H3>{calculateResult()}점</H3>
+                <Paragraph>하단의 설명을 확인하세요</Paragraph>
+                <AnswerButton content="다시 테스트하기" onClick={resetTest} selected id={21} />
+              </ResultBox>
+            )}
           </ContentBox>
         </ModalView>
       </ModalBackdrop>

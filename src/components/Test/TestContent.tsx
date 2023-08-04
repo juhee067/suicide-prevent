@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import styled from "styled-components";
 import Icon from "../common/Icon";
@@ -26,18 +26,32 @@ const RightIcon = styled(Icon)`
   font-size: 3rem;
   cursor: pointer;
 `;
+
 interface TestContentProps {
   children: any;
   active: number;
   setActive: React.Dispatch<React.SetStateAction<number>>;
+  scoreArr: (number | undefined)[];
 }
-const TestContent = ({ children, active, setActive }: TestContentProps) => {
+const TestContent = ({ children, active, setActive, scoreArr }: TestContentProps) => {
   const count = React.Children.count(children);
 
+  const checkAnswer = () => {
+    if (scoreArr.includes(undefined) || scoreArr.length !== 20) {
+      alert("선택하지 않은 항목을 확인해주세요");
+      return;
+    }
+
+    setActive((prevActive) => prevActive + 1);
+  };
   return (
     <TestContentBox>
-      {active > 0 && (
-        <LeftIcon onClick={() => setActive((i) => i - 1)}>
+      {active > 0 && active < 20 && (
+        <LeftIcon
+          onClick={() => {
+            setActive((i) => i - 1);
+          }}
+        >
           <BsFillArrowLeftCircleFill />
         </LeftIcon>
       )}
@@ -50,8 +64,16 @@ const TestContent = ({ children, active, setActive }: TestContentProps) => {
           {child}
         </CardContainer>
       ))}
-      {active < count - 1 && (
-        <RightIcon onClick={() => setActive((i) => i + 1)}>
+      {active < count && (
+        <RightIcon
+          onClick={() => {
+            if (active === 19) {
+              checkAnswer();
+              return;
+            }
+            setActive((i) => i + 1);
+          }}
+        >
           <BsFillArrowRightCircleFill />
         </RightIcon>
       )}

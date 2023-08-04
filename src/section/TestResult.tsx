@@ -117,9 +117,9 @@ const TestResult = () => {
       </QuestWrapper>
       <ResultWrapper>
         <ResultBox>
-          {testResultData.map((data) => {
+          {testResultData.map((data, index) => {
             return (
-              <ResultContent>
+              <ResultContent key={index}>
                 <Result>
                   <Score>{data.score}</Score>
                   <Title>{data.title}</Title>

@@ -20,11 +20,12 @@ interface AnswerButtonProps {
   onClick: () => void;
   selected: boolean;
   id: number;
+  score: number;
 }
-const AnswerButton = ({ content, onClick, selected, id }: AnswerButtonProps) => {
+const AnswerButton = ({ content, onClick, selected, id, score }: AnswerButtonProps) => {
   return (
     <AnswerBtn onClick={onClick} selected={selected}>
-      {content}({id})
+      {content}({id},{score})
     </AnswerBtn>
   );
 };

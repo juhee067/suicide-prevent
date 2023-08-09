@@ -1,10 +1,10 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { MutedText, Paragraph } from "../components/styled/styledSpanagraph";
-import { FlexColumnDiv } from "../components/styled/FlexDiv";
+import { MutedText, Paragraph } from "./styled/styledSpanagraph";
+import { FlexColumnDiv } from "./styled/FlexDiv";
 import { Link } from "react-router-dom";
 
-const Intro = () => {
+const Letter = () => {
   const Body = styled.div``;
 
   const moveUpDown = keyframes`
@@ -165,4 +165,4 @@ const Intro = () => {
   );
 };
 
-export default Intro;
+export default Letter;

@@ -40,8 +40,8 @@ const Content = styled(Paragraph)`
 
 const ResultWrapper = styled.div`
   width: 100%;
-  border-top: 2px solid ${({ theme }) => theme.color.mainGray};
-  border-bottom: 2px solid ${({ theme }) => theme.color.mainGray};
+  border-top: 2px solid ${({ theme }) => theme.color.mainBlack};
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 const ResultBox = styled(FlexRowDiv)`

@@ -40,9 +40,10 @@ interface CardProps {
 }
 
 const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswerScore }: CardProps) => {
-  // useEffect(() => {
-  //   console.log(answers);
-  // });
+  useEffect(() => {
+    console.log(answers);
+  });
+
   return (
     <CardBox>
       <DescBox>
@@ -52,7 +53,7 @@ const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswer
         {answers.map((answer) => (
           <AnswerButton
             id={answer.id}
-            key={answer.content}
+            score={answer.score}
             content={answer.content}
             onClick={() => handleAnswerNumber(active, answer.score)}
             selected={selectedAnswerScore === answer.score && active + 1 === answer.id}

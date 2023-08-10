@@ -23,6 +23,7 @@ export const Subtitle = styled.span`
 export const Caption = styled.span`
   font-size: 1.4rem;
   font-weight: 400;
+  line-height: 1.2;
 `;
 
 export const Link = styled.span`

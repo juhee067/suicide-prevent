@@ -83,11 +83,6 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [scoreArr, setScoreArr] = useState<number[]>([]);
   const [selectedAnswerScore, setSelectedAnswerScore] = useState<number>();
 
-  useEffect(() => {
-    console.log(active, "active");
-    console.log(scoreArr, "scoreArr");
-  }, [active, scoreArr]);
-
   if (!isOpen) {
     return null;
   }

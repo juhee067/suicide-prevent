@@ -13,6 +13,7 @@ const DescBox = styled.div`
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
+const Button = styled.div``;
 
 const SelectBox = styled.div`
   width: 60%;
@@ -26,6 +27,7 @@ const SelectBox = styled.div`
   }
 `;
 interface Answer {
+  selected: boolean;
   id: number;
   score: number;
   content: string;
@@ -41,7 +43,7 @@ interface CardProps {
 
 const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswerScore }: CardProps) => {
   useEffect(() => {
-    console.log(answers);
+    // console.log(answers, "sss");
   });
 
   return (
@@ -50,13 +52,19 @@ const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswer
         <Paragraph>{description}</Paragraph>
       </DescBox>
       <SelectBox as="li">
-        {answers.map((answer) => (
+        {answers.map((answer, index) => (
           <AnswerButton
+            key={index}
             id={answer.id}
             score={answer.score}
             content={answer.content}
-            onClick={() => handleAnswerNumber(active, answer.score)}
-            selected={selectedAnswerScore === answer.score && active + 1 === answer.id}
+            selected={answer.selected}
+            onClick={() => {
+              handleAnswerNumber(active, answer.score);
+              console.log(answer.id, "answer.id");
+              console.log(active, "active");
+            }}
+            // selected={true}
           />
         ))}
       </SelectBox>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import styled from "styled-components";
+import { Question } from "../../data/testData";
 import Icon from "../common/Icon";
 
 const MAX_VISIBILITY = 0;
@@ -55,6 +56,7 @@ const TestContent = ({ children, active, setActive, scoreArr }: TestContentProps
           <BsFillArrowLeftCircleFill />
         </LeftIcon>
       )}
+
       {React.Children.map(children, (child, i) => (
         <CardContainer
           style={{

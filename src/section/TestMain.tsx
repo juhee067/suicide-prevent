@@ -60,6 +60,7 @@ const TestBtn = styled(Btn)`
     background-color: #000000;
   }
 `;
+
 const LeftDoor = styled.div`
   position: absolute;
   left: 0;

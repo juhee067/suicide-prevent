@@ -108,6 +108,7 @@ const RightDoorHand = styled.div`
   background-color: #474747;
   border-radius: 10px;
 `;
+
 const TestMain = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -137,7 +138,7 @@ const TestMain = () => {
         </ImgBox>
         <TestBtn onClick={openModal}>진단하기</TestBtn>
       </Container>
-      <ScrollDown>Scroll down</ScrollDown>
+      <ScrollDown>Scroll Down</ScrollDown>
       <RightDoor>
         <RightDoorHand />
       </RightDoor>

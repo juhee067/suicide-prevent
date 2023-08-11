@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import styled from "styled-components";
-import { Question } from "../../data/testData";
+
 import Icon from "../common/Icon";
 
 const MAX_VISIBILITY = 0;
@@ -33,8 +33,19 @@ interface TestContentProps {
   active: number;
   setActive: React.Dispatch<React.SetStateAction<number>>;
   scoreArr: (number | undefined)[];
+  selectedAnswerScore: number | undefined;
+
+  selectedQuestionIndex: number | null;
 }
-const TestContent = ({ children, active, setActive, scoreArr }: TestContentProps) => {
+const TestContent = ({
+  children,
+  active,
+  setActive,
+  scoreArr,
+  selectedAnswerScore,
+
+  selectedQuestionIndex,
+}: TestContentProps) => {
   const count = React.Children.count(children);
 
   const checkAnswer = () => {
@@ -66,6 +77,7 @@ const TestContent = ({ children, active, setActive, scoreArr }: TestContentProps
           {child}
         </CardContainer>
       ))}
+
       {active < count && (
         <RightIcon
           onClick={() => {
@@ -73,7 +85,10 @@ const TestContent = ({ children, active, setActive, scoreArr }: TestContentProps
               checkAnswer();
               return;
             }
-            setActive((i) => i + 1);
+
+            {
+              selectedQuestionIndex === active ? setActive((i) => i + 1) : alert("문항을 선택해주세요");
+            }
           }}
         >
           <BsFillArrowRightCircleFill />

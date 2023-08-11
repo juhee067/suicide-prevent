@@ -7,11 +7,15 @@ import { Btn, Caption, H2, H3, Paragraph } from "../components/styled/styledSpan
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 const Wrapper = styled.div`
+  width: 100%;
+  background-color: #fff8d7;
+`;
+const InformationContainer = styled.div`
   padding: 100px;
   margin: 0 auto;
   width: 100%;
   max-width: 1000px;
-  background-color: #fff8d7;
+  height: calc(100vh - 52px);
 `;
 
 const TitleBox = styled(FlexRowDiv)`
@@ -144,57 +148,60 @@ const Information = () => {
   };
   return (
     <Wrapper>
-      <LeftDoor>
-        <LeftDoorHand />
-      </LeftDoor>
-      <TitleBox style={{ fontFamily: "DungGeunMo", fontSize: "4rem" }}>
-        <LeftBox>
-          <FiAlertOctagon />
-          <span> Hello! GateKeeper</span>
-        </LeftBox>
+      {" "}
+      <InformationContainer>
+        <LeftDoor>
+          <LeftDoorHand />
+        </LeftDoor>
+        <TitleBox style={{ fontFamily: "DungGeunMo", fontSize: "4rem" }}>
+          <LeftBox>
+            <FiAlertOctagon />
+            <span> Hello! GateKeeper</span>
+          </LeftBox>
 
-        <BsSuitHeartFill style={{ fontSize: "3rem", color: "#ff4332" }} />
-      </TitleBox>
-      <ContentBox>
-        <Article>
-          <SubTitleBox>
-            <KeyRemark>
-              <H3>망설이지 말고 </H3>
-              <H3>언제든지 연락해</H3>
-            </KeyRemark>
-            <Desc>
-              <Paragraph>자살 위기를 넘기지 못했다면</Paragraph>
-              <Paragraph>누리지 못할 두번째 삶</Paragraph>
-            </Desc>
-          </SubTitleBox>
-          <AiBox>
-            <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="47%" />
-          </AiBox>
-          <DemandBox>
-            <Caption>
-              <Paragraph>지도의 마커를 클릭하면,</Paragraph>{" "}
-              <Paragraph>해당 지역의 센터 웹사이트로 이동합니다</Paragraph>
-            </Caption>
-          </DemandBox>
-        </Article>
-        <Aside>
-          <Map />
-          <CenterBtnBox>
-            {center.map((item) => {
-              return (
-                <CenterBtn>
-                  <a href={`tel : ${item.number}`} onClick={() => makePhoneCall(item.number)}>
-                    {item.title}
-                  </a>
-                </CenterBtn>
-              );
-            })}
-          </CenterBtnBox>
-        </Aside>
-      </ContentBox>
-      <RightDoor>
-        <RightDoorHand />
-      </RightDoor>
+          <BsSuitHeartFill style={{ fontSize: "3rem", color: "#ff4332" }} />
+        </TitleBox>
+        <ContentBox>
+          <Article>
+            <SubTitleBox>
+              <KeyRemark>
+                <H3>망설이지 말고 </H3>
+                <H3>언제든지 연락해</H3>
+              </KeyRemark>
+              <Desc>
+                <Paragraph>자살 위기를 넘기지 못했다면</Paragraph>
+                <Paragraph>누리지 못할 두번째 삶</Paragraph>
+              </Desc>
+            </SubTitleBox>
+            <AiBox>
+              <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="47%" />
+            </AiBox>
+            <DemandBox>
+              <Caption>
+                <Paragraph>지도의 마커를 클릭하면,</Paragraph>{" "}
+                <Paragraph>해당 지역의 센터 웹사이트로 이동합니다</Paragraph>
+              </Caption>
+            </DemandBox>
+          </Article>
+          <Aside>
+            <Map />
+            <CenterBtnBox>
+              {center.map((item) => {
+                return (
+                  <CenterBtn>
+                    <a href={`tel : ${item.number}`} onClick={() => makePhoneCall(item.number)}>
+                      {item.title}
+                    </a>
+                  </CenterBtn>
+                );
+              })}
+            </CenterBtnBox>
+          </Aside>
+        </ContentBox>
+        <RightDoor>
+          <RightDoorHand />
+        </RightDoor>
+      </InformationContainer>
     </Wrapper>
   );
 };

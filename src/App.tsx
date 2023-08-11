@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
-import Intro from "./components/Letter";
-import Attachment from "./pages/Attachment";
+import Intro from "./components/LetterContent";
+import Attachment from "./pages/Guestbook";
 import Snap from "./pages/Snap";
 import GlobalStyles from "./style/GlobalStyles";
 import { ThemeProvider } from "styled-components";
@@ -10,7 +10,7 @@ import Main from "./pages/Main";
 import Nav from "./components/nav/Nav";
 import Test from "./pages/Test";
 import Information from "./pages/Information";
-import Letter from "./components/Letter";
+import Letter from "./pages/Letter";
 
 const App = React.memo(() => {
   return (
@@ -20,8 +20,6 @@ const App = React.memo(() => {
       <Nav />
       <Routes>
         <Route path={"/main"} element={<Main />} />
-        {/* <Route path={"/attachment"} element={<Attachment />} />
-        <Route path={"/snap"} element={<Snap />} /> */}
         <Route path={"/letter"} element={<Letter />} />
         <Route path={"/test"} element={<Test />} />
         <Route path={"/information"} element={<Information />} />

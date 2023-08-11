@@ -46,6 +46,7 @@ const CloseModal = styled(Icon)`
 `;
 
 const Title = styled(H2)``;
+const Order = styled(H2)``;
 
 const GaugeBox = styled.div`
   width: 70%;
@@ -82,13 +83,16 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
   const [scoreArr, setScoreArr] = useState<number[]>([]);
   const [selectedAnswerScore, setSelectedAnswerScore] = useState<number>();
-
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number | null>(null);
+  useEffect(() => {
+    console.log(selectedQuestionIndex);
+  }, [selectedQuestionIndex]);
   if (!isOpen) {
     return null;
   }
 
   const handleAnswerNumber = (questionId: number, selectedScore: number) => {
-    // setActive(questionId);
+    setActive(questionId + 1);
     setSelectedAnswerScore(selectedScore);
     setScoreArr((prevScoreArr) => {
       const updatedScoreArr = [...prevScoreArr];
@@ -107,10 +111,12 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
     const totalScore = scoreArr.reduce((acc, cur) => acc + cur, 0);
     return totalScore;
   };
+
   const handleCloseModal = () => {
     resetTest();
     closeModal();
   };
+
   return (
     <Container>
       <ModalBackdrop>
@@ -127,15 +133,23 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
                 </GaugeBox>
               </>
             )}
-
-            <TestContent active={active} setActive={setActive} scoreArr={scoreArr}>
-              {Question.map((items) => (
+            <Order>{active < 20 ? `${active + 1}/20` : null}</Order>
+            <TestContent
+              active={active}
+              setActive={setActive}
+              scoreArr={scoreArr}
+              selectedAnswerScore={selectedAnswerScore}
+              selectedQuestionIndex={selectedQuestionIndex}
+            >
+              {Question.map((items, index) => (
                 <Card
+                  key={index}
                   description={items.question}
                   answers={items.answers}
                   handleAnswerNumber={handleAnswerNumber}
                   active={active}
                   selectedAnswerScore={selectedAnswerScore}
+                  setSelectedQuestionIndex={setSelectedQuestionIndex}
                 />
               ))}
             </TestContent>

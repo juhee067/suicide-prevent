@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
+import { Question } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../styled/FlexDiv";
 import { Paragraph } from "../styled/styledSpanagraph";
 import AnswerButton from "./AnswerButton";
@@ -27,7 +28,6 @@ const SelectBox = styled.div`
   }
 `;
 interface Answer {
-  selected: boolean;
   id: number;
   score: number;
   content: string;
@@ -39,13 +39,20 @@ interface CardProps {
   handleAnswerNumber: (questionId: number, selectedScore: number) => void;
   active: number;
   selectedAnswerScore: number | undefined;
+  setSelectedQuestionIndex: Dispatch<SetStateAction<number | null>>;
 }
 
-const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswerScore }: CardProps) => {
-  useEffect(() => {
-    // console.log(answers, "sss");
-  });
-
+const Card = ({
+  description,
+  answers,
+  handleAnswerNumber,
+  active,
+  selectedAnswerScore,
+  setSelectedQuestionIndex,
+}: CardProps) => {
+  // useEffect(() => {
+  //   console.log(active);
+  // }, []);
   return (
     <CardBox>
       <DescBox>
@@ -58,13 +65,10 @@ const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswer
             id={answer.id}
             score={answer.score}
             content={answer.content}
-            selected={answer.selected}
             onClick={() => {
               handleAnswerNumber(active, answer.score);
-              console.log(answer.id, "answer.id");
-              console.log(active, "active");
+              setSelectedQuestionIndex(active);
             }}
-            // selected={true}
           />
         ))}
       </SelectBox>

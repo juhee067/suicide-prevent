@@ -2,13 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
-import { Description, H2, H3, Paragraph, Subtitle } from "../styled/styledSpanagraph";
+import { Btn, Description, H2, H3, Paragraph, Subtitle } from "../styled/styledSpanagraph";
 import { Question } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../styled/FlexDiv";
 import Card from "./Card";
 
 import TestContent from "./TestContent";
-import AnswerButton from "./AnswerButton";
 
 const Container = styled.div``;
 
@@ -21,6 +20,7 @@ const ModalBackdrop = styled(FlexColumnCenterDiv)`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 999;
 `;
 
 const ModalView = styled(FlexColumnCenterDiv)`
@@ -32,8 +32,8 @@ const ModalView = styled(FlexColumnCenterDiv)`
   background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
-const ContentBox = styled(FlexColumnCenterDiv)`
-  gap: 50px;
+const ContentBox = styled(FlexColumnCenterDiv)<{ active: number }>`
+  gap: ${({ active }) => (active === Question.length ? "0" : "30px")};
   width: 100%;
 `;
 
@@ -46,6 +46,7 @@ const CloseModal = styled(Icon)`
 `;
 
 const Title = styled(H2)``;
+const Order = styled(H2)``;
 
 const GaugeBox = styled.div`
   width: 70%;
@@ -63,6 +64,11 @@ const GaugeBar = styled.div<GaugeBarProps>`
 const ResultBox = styled(FlexColumnCenterDiv)`
   gap: 30px;
 `;
+const ResetButton = styled(Btn)`
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.color.mainGray};
+`;
 
 interface GaugeBarProps {
   active: number;
@@ -77,18 +83,16 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
   const [scoreArr, setScoreArr] = useState<number[]>([]);
   const [selectedAnswerScore, setSelectedAnswerScore] = useState<number>();
-
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number | null>(null);
   useEffect(() => {
-    console.log(active, "active");
-    console.log(scoreArr, "scoreArr");
-  }, [active, scoreArr]);
-
+    console.log(selectedQuestionIndex);
+  }, [selectedQuestionIndex]);
   if (!isOpen) {
     return null;
   }
 
   const handleAnswerNumber = (questionId: number, selectedScore: number) => {
-    // setActive(questionId);
+    setActive(questionId + 1);
     setSelectedAnswerScore(selectedScore);
     setScoreArr((prevScoreArr) => {
       const updatedScoreArr = [...prevScoreArr];
@@ -107,10 +111,12 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
     const totalScore = scoreArr.reduce((acc, cur) => acc + cur, 0);
     return totalScore;
   };
+
   const handleCloseModal = () => {
     resetTest();
     closeModal();
   };
+
   return (
     <Container>
       <ModalBackdrop>
@@ -118,7 +124,7 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
           <CloseModal onClick={handleCloseModal}>
             <AiOutlineCloseCircle />
           </CloseModal>
-          <ContentBox>
+          <ContentBox active={active}>
             {active === Question.length ? null : (
               <>
                 <Title>나의 우울증 지수는?</Title>
@@ -127,15 +133,23 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
                 </GaugeBox>
               </>
             )}
-
-            <TestContent active={active} setActive={setActive} scoreArr={scoreArr}>
-              {Question.map((items) => (
+            <Order>{active < 20 ? `${active + 1}/20` : null}</Order>
+            <TestContent
+              active={active}
+              setActive={setActive}
+              scoreArr={scoreArr}
+              selectedAnswerScore={selectedAnswerScore}
+              selectedQuestionIndex={selectedQuestionIndex}
+            >
+              {Question.map((items, index) => (
                 <Card
+                  key={index}
                   description={items.question}
                   answers={items.answers}
                   handleAnswerNumber={handleAnswerNumber}
                   active={active}
                   selectedAnswerScore={selectedAnswerScore}
+                  setSelectedQuestionIndex={setSelectedQuestionIndex}
                 />
               ))}
             </TestContent>
@@ -144,7 +158,7 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
                 <H2>당신의 테스트 결과 점수는</H2>
                 <H3>{calculateResult()}점</H3>
                 <Paragraph>하단의 설명을 확인하세요</Paragraph>
-                <AnswerButton content="다시 테스트하기" onClick={resetTest} selected id={21} />
+                <ResetButton onClick={resetTest}>다시 테스트하기</ResetButton>
               </ResultBox>
             )}
           </ContentBox>

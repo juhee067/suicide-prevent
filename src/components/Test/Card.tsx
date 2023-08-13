@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
+import { Question } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../styled/FlexDiv";
 import { Paragraph } from "../styled/styledSpanagraph";
 import AnswerButton from "./AnswerButton";
@@ -13,6 +14,7 @@ const DescBox = styled.div`
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
+const Button = styled.div``;
 
 const SelectBox = styled.div`
   width: 60%;
@@ -37,25 +39,36 @@ interface CardProps {
   handleAnswerNumber: (questionId: number, selectedScore: number) => void;
   active: number;
   selectedAnswerScore: number | undefined;
+  setSelectedQuestionIndex: Dispatch<SetStateAction<number | null>>;
 }
 
-const Card = ({ description, answers, handleAnswerNumber, active, selectedAnswerScore }: CardProps) => {
+const Card = ({
+  description,
+  answers,
+  handleAnswerNumber,
+  active,
+  selectedAnswerScore,
+  setSelectedQuestionIndex,
+}: CardProps) => {
   // useEffect(() => {
-  //   console.log(answers);
-  // });
+  //   console.log(active);
+  // }, []);
   return (
     <CardBox>
       <DescBox>
         <Paragraph>{description}</Paragraph>
       </DescBox>
       <SelectBox as="li">
-        {answers.map((answer) => (
+        {answers.map((answer, index) => (
           <AnswerButton
+            key={index}
             id={answer.id}
-            key={answer.content}
+            score={answer.score}
             content={answer.content}
-            onClick={() => handleAnswerNumber(active, answer.score)}
-            selected={selectedAnswerScore === answer.score && active + 1 === answer.id}
+            onClick={() => {
+              handleAnswerNumber(active, answer.score);
+              setSelectedQuestionIndex(active);
+            }}
           />
         ))}
       </SelectBox>

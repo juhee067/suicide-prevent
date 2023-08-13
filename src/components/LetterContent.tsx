@@ -1,10 +1,10 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { MutedText, Paragraph } from "../components/styled/styledSpanagraph";
-import { FlexColumnDiv } from "../components/styled/FlexDiv";
+import { MutedText, Paragraph } from "./styled/styledSpanagraph";
+import { FlexColumnDiv } from "./styled/FlexDiv";
 import { Link } from "react-router-dom";
 
-const Intro = () => {
+const LetterContent = () => {
   const Body = styled.div``;
 
   const moveUpDown = keyframes`
@@ -147,7 +147,7 @@ const Intro = () => {
     <LetterImage>
       <AnimatedMail>
         <BackFold />
-        <Link to="/attachment">
+        <Link to="/guestbookForm">
           <Letter>
             <ClickText>Click !</ClickText>
             <Paragraph>오늘이</Paragraph>
@@ -165,4 +165,4 @@ const Intro = () => {
   );
 };
 
-export default Intro;
+export default LetterContent;

@@ -5,7 +5,11 @@ import { FlexColumnCenterDiv } from "../components/styled/FlexDiv";
 import { Btn, H2, Paragraph } from "../components/styled/styledSpanagraph";
 import TestModal from "../components/Test/TestModal";
 
-const TestMainSection = styled.div``;
+const TestMainSection = styled.div`
+  position: relative;
+  height: calc(100vh - 52px);
+  border-bottom: 2px solid #000;
+`;
 
 const Container = styled(FlexColumnCenterDiv)`
   gap: 30px;
@@ -46,7 +50,64 @@ const TestBtn = styled(Btn)`
   width: 200px;
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   background-color: ${({ theme }) => theme.color.mainWhite};
+  color: #fff;
+  font-weight: 500;
+  background-color: #202020;
+  transition: background-color 0.3s ease-in-out;
   cursor: pointer;
+  border-radius: 100px;
+  &:hover {
+    background-color: #000000;
+  }
+`;
+
+const LeftDoor = styled.div`
+  position: absolute;
+  left: 0;
+  width: 15%;
+  height: calc(100vh - 52px);
+  background-color: #fff;
+  border: 2px solid #000;
+  border-top: 0;
+  z-index: 900;
+  transition: width 1s ease;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+`;
+const LeftDoorHand = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 50px;
+  background-color: #474747;
+  border: 1px solid #000;
+  border-radius: 10px;
+`;
+
+const RightDoor = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 15%;
+  height: calc(100vh - 52px);
+  background-color: #fff;
+  border: 2px solid #000;
+  border-right: none;
+  border-top: 0;
+  z-index: 900;
+  transition: width 1s ease;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+`;
+const RightDoorHand = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 50px;
+  background-color: #474747;
+  border-radius: 10px;
 `;
 
 const TestMain = () => {
@@ -62,6 +123,9 @@ const TestMain = () => {
 
   return (
     <TestMainSection>
+      <LeftDoor>
+        <LeftDoorHand />
+      </LeftDoor>
       <Container>
         {/* {isOpen ? <TestModal /> : null} */}
         <TestModal closeModal={closeModal} isOpen={isOpen} />
@@ -75,7 +139,10 @@ const TestMain = () => {
         </ImgBox>
         <TestBtn onClick={openModal}>진단하기</TestBtn>
       </Container>
-      <ScrollDown>Scroll down</ScrollDown>
+      <ScrollDown>Scroll Down</ScrollDown>
+      <RightDoor>
+        <RightDoorHand />
+      </RightDoor>
     </TestMainSection>
   );
 };

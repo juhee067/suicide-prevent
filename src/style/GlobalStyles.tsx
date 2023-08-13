@@ -41,7 +41,6 @@ box-sizing:border-box;
 }
 
 body {
-
   font-family: "Pretendard";
   font-weight: normal;
   margin: 0;
@@ -101,6 +100,7 @@ button {
   font-size: inherit;
   font-weight: inherit;
   margin: 0;
+  cursor: pointer;
 }
 
 select,

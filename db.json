@@ -8,27 +8,11 @@
   ],
   "comments": [
     {
-      "title": "1",
-      "password": "1",
-      "message": "1",
-      "id": 1
-    },
-    {
       "title": "2",
       "password": "2",
       "message": "2",
-      "id": 2
-    },
-    {
-      "message": "3",
-      "title": "2",
-      "id": 3
-    },
-    {
-      "title": "3",
-      "password": "3",
-      "message": "3",
-      "id": 4
+      "createdAt": "2023-08-13T13:02:48.685Z",
+      "id": 1
     }
   ],
   "profile": {

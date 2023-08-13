@@ -8,27 +8,25 @@
   ],
   "comments": [
     {
-      "title": "1",
+      "message": "111111",
+      "title": "111111",
       "password": "1",
-      "message": "1",
+      "createdAt": "방금 전",
       "id": 1
     },
     {
-      "title": "2",
+      "message": "21",
+      "title": "21",
       "password": "2",
-      "message": "2",
+      "createdAt": "방금 전",
       "id": 2
-    },
-    {
-      "message": "3",
-      "title": "2",
-      "id": 3
     },
     {
       "title": "3",
       "password": "3",
       "message": "3",
-      "id": 4
+      "createdAt": "방금 전",
+      "id": 3
     }
   ],
   "profile": {

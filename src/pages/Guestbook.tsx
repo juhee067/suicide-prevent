@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { FiDelete, FiEdit, FiSave, FiX } from "react-icons/fi";
 import styled from "styled-components";
 import { FlexColumnDiv, FlexRowDiv } from "../components/styled/FlexDiv";
 import { Paragraph } from "../components/styled/styledSpanagraph";
+import { displayCreatedAt } from "../module/postTime";
+
 import GuestbookForm from "../section/GuestbookForm";
 
 
@@ -115,11 +117,6 @@ font-weight: 300;
 color: #909090;
 `;
 
-type Message = {
-  id: number;
-  title: string;
-  message: string;
-};
 
 const UserActions = styled.div`
   display: flex;
@@ -153,13 +150,23 @@ const CancelButton = styled.div`
 `;
 
 
+type Message = {
+  id: number;
+  author: string;
+  title: string;
+  message: string;
+  password: string; // 추가
+  createdAt: string; // 추가
+};
 
 const Guestbook = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [editingMessageId, setEditingMessageId] = useState<number | null>(null);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedMessage, setEditedMessage] = useState("");
-  const [password, setPassword] = useState("");
+  const [editingPassword, setEditingPassword] = useState("");
+  const [editingCreatedAt, setEditingCreatedAt] = useState("");
+
 
   const fetchMessages = async () => {
     try {
@@ -177,7 +184,12 @@ const Guestbook = () => {
 
   const handleAddEntry = async (entry: any) => {
     try {
-      const response = await axios.post("http://localhost:3001/comments", entry);
+      const entryWithCreatedAt = {
+        ...entry,
+        createdAt: displayCreatedAt(new Date().toISOString()),
+      };
+
+      const response = await axios.post("http://localhost:3001/comments", entryWithCreatedAt);
       console.log("POST 요청 결과:", response.data);
 
       fetchMessages();
@@ -197,11 +209,15 @@ alert("응원의 메세지를 삭제하시겠습니까?")
     }
   };
  
-  const handleEditEntry = (id: number, message: string,title: string) => {
+  const handleEditEntry = (editedMessage: Message) => {
+    const { id, message, title, password, createdAt } = editedMessage;
     setEditingMessageId(id);
     setEditedMessage(message);
     setEditedTitle(title);
+    setEditingPassword(password);
+    setEditingCreatedAt(createdAt);
   };
+  
 
   const handleSaveEdit = async (id: number) => {
     try {
@@ -209,15 +225,21 @@ alert("응원의 메세지를 삭제하시겠습니까?")
       const response = await axios.get(`http://localhost:3001/comments/${id}`);
       const messageToEdit = response.data;
   
-      // Check if the provided password matches the title's password
-      if (password === messageToEdit.password) {
-        // Passwords match, update the message content
-        await axios.put(`http://localhost:3001/comments/${id}`, { message: editedMessage,title :editedTitle });
-        setEditingMessageId(null);
-        setEditedTitle("");
-        setEditedMessage("");
-        setPassword("");
-        fetchMessages();
+  // Check if the provided password matches the title's password
+  if (editingPassword === messageToEdit.password) {
+    // Passwords match, update the message content
+    await axios.put(`http://localhost:3001/comments/${id}`, {
+      message: editedMessage,
+      title: editedTitle,
+      password: editingPassword, // Include password in the PUT request
+      createdAt: editingCreatedAt, // Include createdAt in the PUT request
+    });
+    setEditingMessageId(null);
+    setEditedTitle("");
+    setEditedMessage("");
+  
+    setEditingCreatedAt("");
+    fetchMessages();
       } else {
         alert("비밀번호가 일치하지 않습니다.");
       }
@@ -230,7 +252,9 @@ alert("응원의 메세지를 삭제하시겠습니까?")
   const handleCancelEdit = () => {
     setEditingMessageId(null);
     setEditedMessage("");
-    setPassword("");
+    setEditingPassword(""); // Add this line
+  setEditingCreatedAt(""); // Add this line
+    
   };
   
   return (
@@ -263,7 +287,7 @@ alert("응원의 메세지를 삭제하시겠습니까?")
                     </CancelButton>
                   </SaveCancelButton>
                 ) : (
-                  <EditButton onClick={() => handleEditEntry(message.id, message.message,message.title)}>
+                  <EditButton onClick={() => handleEditEntry(message)}>
                     <FiEdit />
                   </EditButton>
                 )}
@@ -281,14 +305,14 @@ alert("응원의 메세지를 삭제하시겠습니까?")
                 <EditingPasswordInput
                   type="password"
                   placeholder="비밀번호를 입력하세요"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                
+                  onChange={(e) => setEditingPassword(e.target.value)}
                 />
               </EditingBox>
             ) : (
               <UserMessage>{message.message}</UserMessage>
             )}
-            <PostTime>10분전</PostTime>
+            <PostTime>{message.createdAt}</PostTime>
           </UserContent>
         </MessageItem>
       ))}

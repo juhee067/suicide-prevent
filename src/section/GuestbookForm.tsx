@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { FlexRowDiv } from "../components/styled/FlexDiv";
@@ -55,7 +55,7 @@ const Label = styled.label<{ focused: boolean }>`
   font-size: 11px;
   color: #aaa;
   position: absolute;
-  left: 10px;
+  left: 5px;
   top: ${({ focused }) => (focused ? "-30%" : "50%")};
   transform: translateY(-50%);
   transition: all 0.3s;

@@ -186,7 +186,7 @@ const Guestbook = () => {
     try {
       const entryWithCreatedAt = {
         ...entry,
-        createdAt: displayCreatedAt(new Date().toISOString()),
+        createdAt: new Date(),
       };
 
       const response = await axios.post("http://localhost:3001/comments", entryWithCreatedAt);
@@ -215,7 +215,7 @@ alert("응원의 메세지를 삭제하시겠습니까?")
     setEditedMessage(message);
     setEditedTitle(title);
     setEditingPassword(password);
-    setEditingCreatedAt(createdAt);
+    setEditingCreatedAt(displayCreatedAt(createdAt))
   };
   
 
@@ -237,7 +237,6 @@ alert("응원의 메세지를 삭제하시겠습니까?")
     setEditingMessageId(null);
     setEditedTitle("");
     setEditedMessage("");
-  
     setEditingCreatedAt("");
     fetchMessages();
       } else {
@@ -305,14 +304,13 @@ alert("응원의 메세지를 삭제하시겠습니까?")
                 <EditingPasswordInput
                   type="password"
                   placeholder="비밀번호를 입력하세요"
-                
                   onChange={(e) => setEditingPassword(e.target.value)}
                 />
               </EditingBox>
             ) : (
               <UserMessage>{message.message}</UserMessage>
             )}
-            <PostTime>{message.createdAt}</PostTime>
+            <PostTime>{displayCreatedAt(message.createdAt)}</PostTime>
           </UserContent>
         </MessageItem>
       ))}

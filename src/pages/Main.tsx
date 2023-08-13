@@ -70,6 +70,7 @@ const MainBg = styled.div`
   width: 1098px;
   position: absolute;
   bottom: 0;
+  border-bottom:2px solid #000;
 `;
 
 const LeftDoor = styled.div<DoorProps>`
@@ -80,7 +81,7 @@ const LeftDoor = styled.div<DoorProps>`
   background-color: #fff;
   border: 2px solid #000;
   border-top: 0;
-  z-index: 999;
+  z-index: 998;
   transition: width 1s ease;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `;
@@ -105,7 +106,7 @@ const RightDoor = styled.div<DoorProps>`
   background-color: #fff;
   border: 2px solid #000;
   border-top: 0;
-  z-index: 999;
+  z-index: 998;
   transition: width 1s ease;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `;

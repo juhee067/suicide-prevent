@@ -7,12 +7,15 @@ import { CgClose } from "react-icons/cg";
 
 const NavWrapper = styled(FlexRowDiv)`
   padding: 0 20px;
+  position: fixed;
+  top: 0;
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
   width: 100%;
   background-color: #fff;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
+  z-index:999
 `;
 
 const Menus = styled(FlexRowDiv)`

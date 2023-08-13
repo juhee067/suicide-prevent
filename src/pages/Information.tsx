@@ -8,6 +8,7 @@ import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 const Wrapper = styled.div`
   width: 100%;
+  margin-top:52px;
   background-color: #fff8d7;
 `;
 const InformationContainer = styled.div`

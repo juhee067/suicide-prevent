@@ -4,7 +4,7 @@ import LetterContent from "../components/LetterContent";
 import Guestbook from "./Guestbook";
 
 const LeftDoor = styled.div`
-  position: absolute;
+  position: fixed;
   top: 52px;
   left: 0;
   width: 15%;
@@ -29,7 +29,7 @@ const LeftDoorHand = styled.div`
 `;
 
 const RightDoor = styled.div`
-  position: absolute;
+    position: fixed;
   top: 52px;
   right: 0;
   width: 15%;

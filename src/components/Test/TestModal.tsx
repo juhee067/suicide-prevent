@@ -81,6 +81,8 @@ interface TestModalProps {
 
 const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
+  const [totalScore, setotalScore] = useState(0);
+  const [scoreResult, setScoreResult] = useState("");
   const [scoreArr, setScoreArr] = useState<number[]>([]);
   const [selectedAnswerScore, setSelectedAnswerScore] = useState<number>();
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number | null>(null);
@@ -115,6 +117,17 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const handleCloseModal = () => {
     resetTest();
     closeModal();
+  };
+  const ScoreStandard = () => {
+    const result = calculateResult();
+  
+    if (result >= 16) {
+      return "양호";
+    } else if (result >= 21 || result < 40) {
+      return "중증도 우울";
+    } else  {
+      return "높은 우울";
+    }
   };
 
   return (
@@ -156,7 +169,9 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
             {active === Question.length && (
               <ResultBox>
                 <H2>당신의 테스트 결과 점수는</H2>
-                <H3>{calculateResult()}점</H3>
+                <H2>{ScoreStandard()}({calculateResult()}점)</H2>
+            
+                
                 <Paragraph>하단의 설명을 확인하세요</Paragraph>
                 <ResetButton onClick={resetTest}>다시 테스트하기</ResetButton>
               </ResultBox>

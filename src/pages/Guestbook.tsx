@@ -142,6 +142,7 @@ font-weight: 700;
 
 const UserMessage = styled(Paragraph)`
 padding: 10px;
+line-height: 1.2;
 font-size: 2rem;
 font-weight: 300;
 
@@ -240,7 +241,10 @@ const Guestbook = () => {
     try {
       const response = await axios.get(`http://localhost:3001/comments/${selectedMessageId}`);
       const messageToDelete = response.data;
-
+      if (!editingPassword) {
+        alert("비밀번호를 입력해주세요");
+        return;
+      }
       if (editingPassword === messageToDelete.password) {
         const deleteResponse = await axios.delete(`http://localhost:3001/comments/${selectedMessageId}`);
         console.log('DELETE 요청 결과:', deleteResponse.data);
@@ -251,7 +255,7 @@ const Guestbook = () => {
 
       setIsDeleteModalOpen(false);
       setSelectedMessageId(null);
-      setEditingPassword('');
+     
     } catch (error) {
       console.error('DELETE 요청 에러:', error);
     }
@@ -272,7 +276,7 @@ const Guestbook = () => {
     setEditingMessageId(id);
     setEditedMessage(message);
     setEditedTitle(title);
-    setEditingPassword(password);
+    setEditingPassword('');
     setEditingCreatedAt(displayCreatedAt(createdAt))
   };
   
@@ -281,11 +285,17 @@ const Guestbook = () => {
     try {
       // Get the message to be edited
       const response = await axios.get(`http://localhost:3001/comments/${id}`);
-      const messageToEdit = response.data;
-  
-  // Check if the provided password matches the title's password
-  if (editingPassword === messageToEdit.password) {
-    // Passwords match, update the message content
+      const messageToEdit = response.data; 
+      if (!editingPassword) {
+        alert("비밀번호를 입력해주세요");
+        return;
+      }
+      if (editingPassword !== messageToEdit.password) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+      
+     
     await axios.put(`http://localhost:3001/comments/${id}`, {
       message: editedMessage,
       title: editedTitle,
@@ -295,11 +305,11 @@ const Guestbook = () => {
     setEditingMessageId(null);
     setEditedTitle("");
     setEditedMessage("");
-    setEditingCreatedAt("");
+    setEditingCreatedAt("");   
+     setEditingPassword('');
     fetchMessages();
-      } else {
-        alert("비밀번호가 일치하지 않습니다.");
-      }
+
+    
     } catch (error) {
       console.error("PUT 요청 에러:", error);
     }

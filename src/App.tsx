@@ -19,7 +19,7 @@ const App = React.memo(() => {
       {/* <MobileNav /> */}
       <Nav />
       <Routes>
-        <Route path={"/main"} element={<Main />} />
+        <Route path={"/"} element={<Main />} />
         <Route path={"/letter"} element={<Letter />} />
         <Route path={"/test"} element={<Test />} />
         <Route path={"/information"} element={<Information />} />

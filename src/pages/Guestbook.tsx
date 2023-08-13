@@ -75,7 +75,7 @@ const Guestbook = () => {
   const fetchMessages = async () => {
     try {
       const response = await axios.get("http://localhost:3001/comments");
-      setMessages(response.data);
+      setMessages(response.data.reverse());
       console.log(response.data)
     } catch (error) {
       console.error("GET 요청 에러:", error);

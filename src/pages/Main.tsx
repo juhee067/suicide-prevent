@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -105,6 +106,7 @@ const RightDoor = styled.div<DoorProps>`
   height: calc(100vh - 52px);
   background-color: #fff;
   border: 2px solid #000;
+  border-right: none;
   border-top: 0;
   z-index: 998;
   transition: width 1s ease;
@@ -129,7 +131,21 @@ interface OpacityProps {
 const Main = () => {
   const [width, setWidth] = useState("50%");
   const [opacity, setOpacity] = useState(1);
+  const [messagesCount, setMessagesCount] = useState('');
 
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/comments");
+      setMessagesCount(response.data.length);
+      console.log(response.data)
+    } catch (error) {
+      console.error("GET 요청 에러:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+  }, []);
   const updateWidth = () => {
     setWidth("15%");
   };
@@ -162,8 +178,8 @@ const Main = () => {
 
             <Text>
               <textPath href="#text-left">
-                H<tspan style={{ fontFamily: "DungGeunMo", fontSize: "12rem" }}>e</tspan>lp
-                <tspan style={{ fontFamily: "DungGeunMo", fontSize: "12rem" }}>!</tspan>
+                <tspan style={{ fontFamily: "DungGeunMo", fontSize: "12rem" }}>Help!</tspan>
+                
               </textPath>
             </Text>
           </SvgLeft>
@@ -174,14 +190,14 @@ const Main = () => {
             </Defs>
             <Text>
               <textPath href="#text-right">
-                <tspan style={{ fontFamily: "DungGeunMo", fontSize: "10rem" }}>Gate</tspan> Keep
-                <tspan style={{ fontFamily: "DungGeunMo", fontSize: "10rem" }}>er</tspan>
+                <tspan style={{ fontFamily: "DungGeunMo", fontSize: "10rem" }}>GateKeeper</tspan> 
+              
               </textPath>
             </Text>
           </SvgRight>
         </SvgBox>
 
-        <Letter to="/letter">READ ME</Letter>
+        <Letter to="/letter">{messagesCount}개의 응원의 메세지</Letter>
 
         <MainBg>
           <Img src={`${process.env.PUBLIC_URL}/images/mainBg.png`} />

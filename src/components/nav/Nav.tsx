@@ -15,6 +15,7 @@ const NavWrapper = styled(FlexRowDiv)`
   width: 100%;
   background-color: #fff;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
+  border-right: none;
   z-index:999
 `;
 

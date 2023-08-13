@@ -117,6 +117,7 @@ const RightDoor = styled.div`
   height: calc(100vh - 52px);
   background-color: #fff;
   border: 2px solid #000;
+  border-right: none;
   border-top: 0;
   z-index: 900;
   transition: width 1s ease;

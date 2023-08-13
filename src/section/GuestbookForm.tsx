@@ -17,6 +17,7 @@ const Title = styled.div`
   font-weight: 700;
   margin-bottom: 30px;
 `;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -96,7 +97,7 @@ const Button = styled.button`
 `;
 
 const GuestbookForm = ({ onAddEntry }: any) => {
-  const [author, setAuthor] = useState("");
+  const [title, seTtitle] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [nameFocused, setNameFocused] = useState(false);
@@ -108,15 +109,15 @@ const GuestbookForm = ({ onAddEntry }: any) => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (author && password && message) {
-      const entry = { author, password, message };
+    if (title && password && message) {
+      const entry = { title, password, message };
 
       try {
         // const response = await axios.post("http://localhost:3001/comments", entry);
         // console.log("POST 요청 결과:", response.data);
 
         onAddEntry(entry);
-        setAuthor("");
+        seTtitle("");
         setPassword("");
         setMessage("");
       } catch (error) {
@@ -126,7 +127,7 @@ const GuestbookForm = ({ onAddEntry }: any) => {
   };
 
   const handleNameBlur = () => {
-    if (!author) {
+    if (!title) {
       setNameFocused(false);
     }
   };
@@ -141,15 +142,15 @@ const GuestbookForm = ({ onAddEntry }: any) => {
       <Form onSubmit={handleSubmit}>
         <UserInfo>
           <Inner>
-            <Label htmlFor="author" focused={nameFocused}>
+            <Label htmlFor="title" focused={nameFocused}>
               제목
             </Label>
             <Input
               type="text"
-              id="author"
+              id="title"
               ref={getNameRef}
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
+              value={title}
+              onChange={(e) => seTtitle(e.target.value)}
               onFocus={() => setNameFocused(true)}
               onBlur={handleNameBlur}
             />
@@ -159,7 +160,7 @@ const GuestbookForm = ({ onAddEntry }: any) => {
               비밀번호
             </Label>
             <Input
-              type="text"
+              type="password"
               id="pass"
               ref={getPassRef}
               value={password}

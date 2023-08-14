@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Door from "../components/common/Door";
 import { Img } from "../components/common/Img";
 import { FlexColumnCenterDiv } from "../components/styled/FlexDiv";
 import { Btn, H2, Paragraph } from "../components/styled/styledSpanagraph";
@@ -124,9 +125,7 @@ const TestMain = () => {
 
   return (
     <TestMainSection>
-      <LeftDoor>
-        <LeftDoorHand />
-      </LeftDoor>
+      <Door width="15%" />
       <Container>
         {/* {isOpen ? <TestModal /> : null} */}
         <TestModal closeModal={closeModal} isOpen={isOpen} />
@@ -141,9 +140,6 @@ const TestMain = () => {
         <TestBtn onClick={openModal}>진단하기</TestBtn>
       </Container>
       <ScrollDown>Scroll Down</ScrollDown>
-      <RightDoor>
-        <RightDoorHand />
-      </RightDoor>
     </TestMainSection>
   );
 };

@@ -9,7 +9,8 @@ import DeleteModal from "../components/Letter/DeleteModal";
 
 const GuestbookContainer = styled.div`
   position: relative;
-  height: 100vh;
+  margin-top: 52px;
+  height: calc(100vh - 52px);
   border-radius: 5px;
 `;
 

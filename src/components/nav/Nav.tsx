@@ -52,21 +52,27 @@ const Nav = () => {
   const handleMenuClick = (index: number) => {
     setSelectedMenu(index);
   };
+
+  const menuItems = [
+    { to: "/", label: "Home" },
+    { to: "/test", label: "Test" },
+    { to: "/letter", label: "Letter" },
+    { to: "/information", label: "Info" },
+  ];
+
   return (
     <NavWrapper>
       <Menus>
-        <StyledLink to="/" isSelected={selectedMenu === 0} onClick={() => handleMenuClick(0)}>
-          Home
-        </StyledLink>
-        <StyledLink to="/test" isSelected={selectedMenu === 1} onClick={() => handleMenuClick(1)}>
-          Test
-        </StyledLink>
-        <StyledLink to="/letter" isSelected={selectedMenu === 2} onClick={() => handleMenuClick(2)}>
-          Letter
-        </StyledLink>
-        <StyledLink to="/information" isSelected={selectedMenu === 3} onClick={() => handleMenuClick(3)}>
-          Info
-        </StyledLink>
+        {menuItems.map((item, index) => (
+          <StyledLink
+            key={index}
+            to={item.to}
+            isSelected={selectedMenu === index}
+            onClick={() => handleMenuClick(index)}
+          >
+            {item.label}
+          </StyledLink>
+        ))}
       </Menus>
       <IconBox>
         <FaRegWindowMinimize style={{ marginRight: "4px" }} />
@@ -76,5 +82,4 @@ const Nav = () => {
     </NavWrapper>
   );
 };
-
 export default Nav;

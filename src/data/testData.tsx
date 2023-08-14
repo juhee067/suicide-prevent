@@ -1,4 +1,4 @@
-export const Question = [
+export const QuestionData = [
   {
     id: 1,
     question: "평소에는 아무렇지도 않던 일들이 괴롭고 귀찮게 느껴졌다.",

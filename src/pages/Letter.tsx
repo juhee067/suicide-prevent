@@ -1,7 +1,6 @@
 import React from "react";
 import Door from "../components/common/Door";
-
-import Guestbook from "./Guestbook";
+import Guestbook from "../components/Letter/Guestbook";
 
 const Letter = () => {
   return (

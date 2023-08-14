@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CenterAlign } from "../components/styled/CenterAlignment";
+import { CenterAlign } from "../styled/CenterAlignment";
 
-import GuestbookForm from "../section/GuestbookForm";
-import MessageList from "../components/Letter/MessageList";
-import DeleteModal from "../components/Letter/DeleteModal";
+import GuestbookForm from "../../section/GuestbookForm";
+import MessageList from "./MessageList";
+import DeleteModal from "./DeleteModal";
 
 const GuestbookContainer = styled.div`
   position: relative;

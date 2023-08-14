@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
-import { Btn, Description, H2, H3, Paragraph, Subtitle } from "../styled/styledSpanagraph";
-import { Question } from "../../data/testData";
+import { Btn, H2, Paragraph } from "../styled/styledSpanagraph";
+import { QuestionData } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../styled/FlexDiv";
 import Card from "./Card";
 
@@ -33,7 +33,7 @@ const ModalView = styled(FlexColumnCenterDiv)`
 `;
 
 const ContentBox = styled(FlexColumnCenterDiv)<{ active: number }>`
-  gap: ${({ active }) => (active === Question.length ? "0" : "30px")};
+  gap: ${({ active }) => (active === QuestionData.length ? "0" : "30px")};
   width: 100%;
 `;
 
@@ -81,14 +81,10 @@ interface TestModalProps {
 
 const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const [active, setActive] = useState(0);
-  const [totalScore, setotalScore] = useState(0);
-  const [scoreResult, setScoreResult] = useState("");
   const [scoreArr, setScoreArr] = useState<number[]>([]);
   const [selectedAnswerScore, setSelectedAnswerScore] = useState<number>();
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number | null>(null);
-  useEffect(() => {
-    console.log(selectedQuestionIndex);
-  }, [selectedQuestionIndex]);
+
   if (!isOpen) {
     return null;
   }
@@ -121,12 +117,12 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   const ScoreStandard = () => {
     const result = calculateResult();
 
-    if (result >= 16) {
-      return "양호";
-    } else if (result >= 21 || result < 40) {
+    if (result >= 40) {
+      return "높은 우울";
+    } else if (result >= 21) {
       return "중증도 우울";
     } else {
-      return "높은 우울";
+      return "양호";
     }
   };
 
@@ -138,7 +134,7 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
             <AiOutlineCloseCircle />
           </CloseModal>
           <ContentBox active={active}>
-            {active === Question.length ? null : (
+            {active === QuestionData.length ? null : (
               <>
                 <Title>나의 우울증 지수는?</Title>
                 <GaugeBox>
@@ -154,19 +150,18 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
               selectedAnswerScore={selectedAnswerScore}
               selectedQuestionIndex={selectedQuestionIndex}
             >
-              {Question.map((items, index) => (
+              {QuestionData.map((items, index) => (
                 <Card
                   key={index}
                   description={items.question}
                   answers={items.answers}
                   handleAnswerNumber={handleAnswerNumber}
                   active={active}
-                  selectedAnswerScore={selectedAnswerScore}
                   setSelectedQuestionIndex={setSelectedQuestionIndex}
                 />
               ))}
             </TestContent>
-            {active === Question.length && (
+            {active === QuestionData.length && (
               <ResultBox>
                 <H2>당신의 테스트 결과 점수는</H2>
                 <H2>

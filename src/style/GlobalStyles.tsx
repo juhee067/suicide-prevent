@@ -12,13 +12,38 @@ const GlobalStyles = createGlobalStyle`
   font-size: 10px;
   
 }
- /* 전역 스크롤바 스타일링 */
- ::-webkit-scrollbar {
-    width: 15px;
-    
-  }
 
-  ::-webkit-scrollbar-thumb {
+
+*,
+*:before,
+*:after {
+box-sizing:border-box;
+/* outline: 1px solid #f00; */
+}
+
+body {
+  position: relative;
+  font-family: "Pretendard";
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+    display: none;
+  }
+ /* 전역 스크롤바 스타일링 */
+ /* ::-webkit-scrollbar {
+ 
+    width: none
+    
+  } */
+
+  /* ::-webkit-scrollbar-thumb {
+  
     background-color: #6f6f6f;
     border:2px solid #353535;
 border-right: none;
@@ -29,26 +54,11 @@ border-right: none;
   }
 
   ::-webkit-scrollbar-track {
+
     background-color: #e1e1e1;
     border-left:2px solid #353535;
-  }
-
-*,
-*:before,
-*:after {
-box-sizing:border-box;
-/* outline: 1px solid #f00; */
-}
-
-body {
-  font-family: "Pretendard";
-  font-weight: normal;
-  margin: 0;
-  padding: 0;
-  line-height: 1;
-  letter-spacing: -0.025em;
-}
-
+  } */
+  
 ul,
 ol,
 li,

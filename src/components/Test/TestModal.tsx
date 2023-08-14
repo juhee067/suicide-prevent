@@ -20,7 +20,7 @@ const ModalBackdrop = styled(FlexColumnCenterDiv)`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999;
+  z-index: 998;
 `;
 
 const ModalView = styled(FlexColumnCenterDiv)`
@@ -120,12 +120,12 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
   };
   const ScoreStandard = () => {
     const result = calculateResult();
-  
+
     if (result >= 16) {
       return "양호";
     } else if (result >= 21 || result < 40) {
       return "중증도 우울";
-    } else  {
+    } else {
       return "높은 우울";
     }
   };
@@ -169,9 +169,10 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
             {active === Question.length && (
               <ResultBox>
                 <H2>당신의 테스트 결과 점수는</H2>
-                <H2>{ScoreStandard()}({calculateResult()}점)</H2>
-            
-                
+                <H2>
+                  {ScoreStandard()}({calculateResult()}점)
+                </H2>
+
                 <Paragraph>하단의 설명을 확인하세요</Paragraph>
                 <ResetButton onClick={resetTest}>다시 테스트하기</ResetButton>
               </ResultBox>

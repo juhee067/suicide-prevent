@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import LetterContent from "../components/LetterContent";
+
 import Guestbook from "./Guestbook";
 
 const LeftDoor = styled.div`
@@ -16,6 +16,7 @@ const LeftDoor = styled.div`
   transition: width 1s ease;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `;
+
 const LeftDoorHand = styled.div`
   position: absolute;
   top: 50%;
@@ -29,7 +30,7 @@ const LeftDoorHand = styled.div`
 `;
 
 const RightDoor = styled.div`
-    position: fixed;
+  position: fixed;
   top: 52px;
   right: 0;
   width: 15%;

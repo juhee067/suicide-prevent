@@ -16,16 +16,12 @@ const NavWrapper = styled(FlexRowDiv)`
   background-color: #fff;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-right: none;
-  z-index:999
+  z-index: 999;
 `;
 
 const Menus = styled(FlexRowDiv)`
   font-size: 1.8em;
   font-weight: 700;
-
-  /* &:active {
-      background-color: #000;
-      color: #fff; } */
 `;
 const StyledLink = styled(Link)<isSelectedProps>`
   padding: 15px 20px;
@@ -49,6 +45,7 @@ const IconBox = styled(FlexRowDiv)`
 interface isSelectedProps {
   isSelected: boolean;
 }
+
 const Nav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>(0);
 
@@ -58,7 +55,7 @@ const Nav = () => {
   return (
     <NavWrapper>
       <Menus>
-        <StyledLink to="/main" isSelected={selectedMenu === 0} onClick={() => handleMenuClick(0)}>
+        <StyledLink to="/" isSelected={selectedMenu === 0} onClick={() => handleMenuClick(0)}>
           Home
         </StyledLink>
         <StyledLink to="/test" isSelected={selectedMenu === 1} onClick={() => handleMenuClick(1)}>
@@ -72,7 +69,7 @@ const Nav = () => {
         </StyledLink>
       </Menus>
       <IconBox>
-        <FaRegWindowMinimize />
+        <FaRegWindowMinimize style={{ marginRight: "4px" }} />
         <FaRegWindowMaximize />
         <CgClose style={{ fontSize: "3rem" }} />
       </IconBox>

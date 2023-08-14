@@ -2,18 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
 import Map from "../components/Map";
-import { FlexColumnDiv, FlexRowCenterDiv, FlexRowDiv } from "../components/styled/FlexDiv";
-import { Btn, Caption, H2, H3, Paragraph } from "../components/styled/styledSpanagraph";
+import { FlexColumnDiv, FlexRowDiv } from "../components/styled/FlexDiv";
+import { Btn, Caption, H3, Paragraph } from "../components/styled/styledSpanagraph";
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
+
 const Wrapper = styled.div`
   width: 100%;
-  margin-top:52px;
   background-color: #fff8d7;
 `;
+
 const InformationContainer = styled.div`
   padding: 100px;
-  margin: 0 auto;
+  margin: 52px auto 0;
   width: 100%;
   max-width: 1000px;
   height: calc(100vh - 52px);
@@ -28,14 +29,14 @@ const TitleBox = styled(FlexRowDiv)`
 `;
 
 const ContentBox = styled(FlexRowDiv)`
-  padding: 40px 20px;
+  padding: 40px 40px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-top: none;
   background-color: #fff;
 `;
+
 const LeftBox = styled.div`
   display: flex;
-
   gap: 20px;
   align-items: center;
   text-align: center;
@@ -47,6 +48,7 @@ const Article = styled(FlexColumnDiv)`
 `;
 
 const SubTitleBox = styled.div``;
+
 const AiBox = styled.div``;
 
 const KeyRemark = styled(FlexColumnDiv)`
@@ -69,12 +71,12 @@ const DemandBox = styled.div`
 `;
 
 const CenterBtnBox = styled(FlexRowDiv)`
+  position: relative;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: space-between;
   width: 400px;
   gap: 10px;
-  position: relative;
 `;
 
 const CenterBtn = styled(Btn)`
@@ -86,7 +88,7 @@ const CenterBtn = styled(Btn)`
 
 const LeftDoor = styled.div`
   position: absolute;
-  top: 52px;
+  top: 0;
   left: 0;
   width: 15%;
   height: calc(100vh - 52px);
@@ -97,6 +99,7 @@ const LeftDoor = styled.div`
   transition: width 1s ease;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `;
+
 const LeftDoorHand = styled.div`
   position: absolute;
   top: 50%;
@@ -111,7 +114,7 @@ const LeftDoorHand = styled.div`
 
 const RightDoor = styled.div`
   position: absolute;
-  top: 52px;
+  top: 0;
   right: 0;
   width: 15%;
   height: calc(100vh - 52px);
@@ -123,6 +126,7 @@ const RightDoor = styled.div`
   transition: width 1s ease;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `;
+
 const RightDoorHand = styled.div`
   position: absolute;
   top: 50%;
@@ -148,13 +152,13 @@ const Information = () => {
     const telLink = `tel:${phoneNumber}`;
     window.location.href = telLink;
   };
+
   return (
     <Wrapper>
-      {" "}
+      <LeftDoor>
+        <LeftDoorHand />
+      </LeftDoor>
       <InformationContainer>
-        <LeftDoor>
-          <LeftDoorHand />
-        </LeftDoor>
         <TitleBox style={{ fontFamily: "DungGeunMo", fontSize: "4rem" }}>
           <LeftBox>
             <FiAlertOctagon />
@@ -200,10 +204,10 @@ const Information = () => {
             </CenterBtnBox>
           </Aside>
         </ContentBox>
-        <RightDoor>
-          <RightDoorHand />
-        </RightDoor>
       </InformationContainer>
+      <RightDoor>
+        <RightDoorHand />
+      </RightDoor>
     </Wrapper>
   );
 };

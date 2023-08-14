@@ -20,7 +20,7 @@ const BlackBox = styled.div<OpacityProps>`
 
 const MainContentBox = styled.div`
   position: relative;
-  margin: 0 auto;
+  margin: 52px auto 0;
   width: 1100px;
   height: calc(100vh - 52px);
 `;
@@ -71,7 +71,7 @@ const MainBg = styled.div`
   width: 1098px;
   position: absolute;
   bottom: 0;
-  border-bottom:2px solid #000;
+  border-bottom: 2px solid #000;
 `;
 
 const LeftDoor = styled.div<DoorProps>`
@@ -131,13 +131,13 @@ interface OpacityProps {
 const Main = () => {
   const [width, setWidth] = useState("50%");
   const [opacity, setOpacity] = useState(1);
-  const [messagesCount, setMessagesCount] = useState('');
+  const [messagesCount, setMessagesCount] = useState("");
 
   const fetchMessages = async () => {
     try {
       const response = await axios.get("http://localhost:3001/comments");
       setMessagesCount(response.data.length);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.error("GET 요청 에러:", error);
     }
@@ -179,7 +179,6 @@ const Main = () => {
             <Text>
               <textPath href="#text-left">
                 <tspan style={{ fontFamily: "DungGeunMo", fontSize: "12rem" }}>Help!</tspan>
-                
               </textPath>
             </Text>
           </SvgLeft>
@@ -190,8 +189,7 @@ const Main = () => {
             </Defs>
             <Text>
               <textPath href="#text-right">
-                <tspan style={{ fontFamily: "DungGeunMo", fontSize: "10rem" }}>GateKeeper</tspan> 
-              
+                <tspan style={{ fontFamily: "DungGeunMo", fontSize: "10rem" }}>GateKeeper</tspan>
               </textPath>
             </Text>
           </SvgRight>

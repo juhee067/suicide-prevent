@@ -7,6 +7,7 @@ import TestModal from "../components/Test/TestModal";
 
 const TestMainSection = styled.div`
   position: relative;
+  margin: 52px auto 0;
   height: calc(100vh - 52px);
   border-bottom: 2px solid #000;
 `;

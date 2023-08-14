@@ -1,11 +1,9 @@
-import React, { useCallback, useEffect } from "react";
-import Intro from "./components/LetterContent";
-import Attachment from "./pages/Guestbook";
-import Snap from "./pages/Snap";
+import React from "react";
+
 import GlobalStyles from "./style/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import theme from "./style/Theme";
-import { Routes, Route, useLocation, Location } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
 import Nav from "./components/nav/Nav";
 import Test from "./pages/Test";

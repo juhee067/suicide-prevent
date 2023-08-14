@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/suicide-prevent/static/js/main.b4eebc0d.js",
+    "main.js": "/suicide-prevent/static/js/main.8ca8fda4.js",
     "index.html": "/suicide-prevent/index.html",
-    "main.b4eebc0d.js.map": "/suicide-prevent/static/js/main.b4eebc0d.js.map"
+    "main.8ca8fda4.js.map": "/suicide-prevent/static/js/main.8ca8fda4.js.map"
   },
   "entrypoints": [
-    "static/js/main.b4eebc0d.js"
+    "static/js/main.8ca8fda4.js"
   ]
 }

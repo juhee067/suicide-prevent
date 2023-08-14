@@ -2,18 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
 import Map from "../components/Map";
-import { FlexColumnDiv, FlexRowCenterDiv, FlexRowDiv } from "../components/styled/FlexDiv";
+import { FlexColumnDiv, FlexRowDiv } from "../components/styled/FlexDiv";
 import { Btn, Caption, H2, H3, Paragraph } from "../components/styled/styledSpanagraph";
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
-const Wrapper = styled.div`
+import Door from "../components/common/Door";
+
+const InfoWrapper = styled.div`
   width: 100%;
-  margin-top:52px;
   background-color: #fff8d7;
 `;
+
 const InformationContainer = styled.div`
   padding: 100px;
-  margin: 0 auto;
+  margin: 52px auto 0;
   width: 100%;
   max-width: 1000px;
   height: calc(100vh - 52px);
@@ -28,14 +30,14 @@ const TitleBox = styled(FlexRowDiv)`
 `;
 
 const ContentBox = styled(FlexRowDiv)`
-  padding: 40px 20px;
+  padding: 40px 40px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-top: none;
   background-color: #fff;
 `;
-const LeftBox = styled.div`
-  display: flex;
 
+const TitleName = styled.div`
+  display: flex;
   gap: 20px;
   align-items: center;
   text-align: center;
@@ -47,6 +49,7 @@ const Article = styled(FlexColumnDiv)`
 `;
 
 const SubTitleBox = styled.div``;
+
 const AiBox = styled.div``;
 
 const KeyRemark = styled(FlexColumnDiv)`
@@ -69,12 +72,12 @@ const DemandBox = styled.div`
 `;
 
 const CenterBtnBox = styled(FlexRowDiv)`
+  position: relative;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: space-between;
   width: 400px;
   gap: 10px;
-  position: relative;
 `;
 
 const CenterBtn = styled(Btn)`
@@ -84,57 +87,7 @@ const CenterBtn = styled(Btn)`
   background-color: #ffd677;
 `;
 
-const LeftDoor = styled.div`
-  position: absolute;
-  top: 52px;
-  left: 0;
-  width: 15%;
-  height: calc(100vh - 52px);
-  background-color: #fff;
-  border: 2px solid #000;
-  border-top: 0;
-  z-index: 900;
-  transition: width 1s ease;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-`;
-const LeftDoorHand = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 30px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 50px;
-  background-color: #474747;
-  border: 1px solid #000;
-  border-radius: 10px;
-`;
-
-const RightDoor = styled.div`
-  position: absolute;
-  top: 52px;
-  right: 0;
-  width: 15%;
-  height: calc(100vh - 52px);
-  background-color: #fff;
-  border: 2px solid #000;
-  border-right: none;
-  border-top: 0;
-  z-index: 900;
-  transition: width 1s ease;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-`;
-const RightDoorHand = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 30px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 50px;
-  background-color: #474747;
-  border-radius: 10px;
-`;
-
-let center = [
+const centerData = [
   { id: 0, title: "자살예방상담전화", number: "1393" },
   { id: 1, title: "보건복지상담센터", number: "129" },
   { id: 2, title: "한국생명의전화", number: "15889191" },
@@ -144,23 +97,32 @@ let center = [
 ];
 
 const Information = () => {
-  const makePhoneCall = (phoneNumber: any) => {
+  const handlePhoneAction = (phoneNumber: string) => {
     const telLink = `tel:${phoneNumber}`;
-    window.location.href = telLink;
-  };
-  return (
-    <Wrapper>
-      {" "}
-      <InformationContainer>
-        <LeftDoor>
-          <LeftDoorHand />
-        </LeftDoor>
-        <TitleBox style={{ fontFamily: "DungGeunMo", fontSize: "4rem" }}>
-          <LeftBox>
-            <FiAlertOctagon />
-            <span> Hello! GateKeeper</span>
-          </LeftBox>
+    const isMobile = window.innerWidth <= 768;
 
+    if (isMobile) {
+      window.location.href = telLink; // 모바일에서는 전화걸기
+    } else {
+      const tempInput = document.createElement("input");
+      tempInput.value = phoneNumber;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      alert("전화번호가 복사되었습니다."); // 피시에서는 전화번호 복사
+    }
+  };
+
+  return (
+    <InfoWrapper>
+      <Door width="15%" />
+      <InformationContainer>
+        <TitleBox style={{ fontFamily: "DungGeunMo", fontSize: "4rem" }}>
+          <TitleName>
+            <FiAlertOctagon />
+            <H2> Hello! GateKeeper</H2>
+          </TitleName>
           <BsSuitHeartFill style={{ fontSize: "3rem", color: "#ff4332" }} />
         </TitleBox>
         <ContentBox>
@@ -176,11 +138,11 @@ const Information = () => {
               </Desc>
             </SubTitleBox>
             <AiBox>
-              <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="47%" />
+              <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="55%" />
             </AiBox>
             <DemandBox>
               <Caption>
-                <Paragraph>지도의 마커를 클릭하면,</Paragraph>{" "}
+                <Paragraph>지도의 마커를 클릭하면,</Paragraph>
                 <Paragraph>해당 지역의 센터 웹사이트로 이동합니다</Paragraph>
               </Caption>
             </DemandBox>
@@ -188,23 +150,16 @@ const Information = () => {
           <Aside>
             <Map />
             <CenterBtnBox>
-              {center.map((item) => {
+              {centerData.map((item) => {
                 return (
-                  <CenterBtn>
-                    <a href={`tel : ${item.number}`} onClick={() => makePhoneCall(item.number)}>
-                      {item.title}
-                    </a>
-                  </CenterBtn>
+                  <CenterBtn onClick={() => handlePhoneAction(item.number)}>{item.title}</CenterBtn>
                 );
               })}
             </CenterBtnBox>
           </Aside>
         </ContentBox>
-        <RightDoor>
-          <RightDoorHand />
-        </RightDoor>
       </InformationContainer>
-    </Wrapper>
+    </InfoWrapper>
   );
 };
 

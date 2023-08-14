@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import styled from "styled-components";
 
@@ -29,23 +29,22 @@ const RightIcon = styled(Icon)`
 `;
 
 interface TestContentProps {
-  children: any;
+  children: React.ReactNode;
   active: number;
   setActive: React.Dispatch<React.SetStateAction<number>>;
   scoreArr: (number | undefined)[];
   selectedAnswerScore: number | undefined;
-
   selectedQuestionIndex: number | null;
 }
-const TestContent = ({
+
+const TestContent: React.FC<TestContentProps> = ({
   children,
   active,
   setActive,
   scoreArr,
   selectedAnswerScore,
-
   selectedQuestionIndex,
-}: TestContentProps) => {
+}) => {
   const count = React.Children.count(children);
 
   const checkAnswer = () => {
@@ -59,11 +58,7 @@ const TestContent = ({
   return (
     <TestContentBox>
       {active > 0 && active < 20 && (
-        <LeftIcon
-          onClick={() => {
-            setActive((i) => i - 1);
-          }}
-        >
+        <LeftIcon onClick={() => setActive((i) => i - 1)}>
           <BsFillArrowLeftCircleFill />
         </LeftIcon>
       )}
@@ -85,10 +80,7 @@ const TestContent = ({
               checkAnswer();
               return;
             }
-
-            {
-              selectedQuestionIndex === active ? setActive((i) => i + 1) : alert("문항을 선택해주세요");
-            }
+            selectedQuestionIndex === active ? setActive((i) => i + 1) : alert("문항을 선택해주세요");
           }}
         >
           <BsFillArrowRightCircleFill />

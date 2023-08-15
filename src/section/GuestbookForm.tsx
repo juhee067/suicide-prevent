@@ -7,7 +7,7 @@ const FormContainer = styled.div`
   max-width: 600px;
   margin: 0 auto 20px;
   padding: 15px 20px;
-  border: 2px solid #000000;
+  border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 5px;
 `;
 
@@ -38,15 +38,15 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 50px;
   font-size: 1.3rem;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.color.mainGray};
   border-radius: 5px;
   resize: none;
   outline: none;
   &::placeholder {
-    color: #aaa;
+    color: ${({ theme }) => theme.color.mainGray};
   }
   &:focus {
-    border-color: #000000; /* 포커스된 상태일 때의 선 색상 변경 */
+    border-color: ${({ theme }) => theme.color.mainBlack}; /* 포커스된 상태일 때의 선 색상 변경 */
   }
 `;
 
@@ -55,8 +55,8 @@ const Button = styled.button`
   padding: 10px 15px;
   font-size: 1.3rem;
   margin: 0 auto;
-  background-color: #000000;
-  color: #fff;
+  background-color: ${({ theme }) => theme.color.mainBlack};
+  color: ${({ theme }) => theme.color.mainWhite};
   border: none;
   border-radius: 5px;
   cursor: pointer;

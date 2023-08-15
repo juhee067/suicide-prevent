@@ -10,7 +10,7 @@ const TestMainSection = styled.div`
   position: relative;
   margin: 52px auto 0;
   height: calc(100vh - 52px);
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 const Container = styled(FlexColumnCenterDiv)`
@@ -59,7 +59,7 @@ const TestBtn = styled(Btn)`
   cursor: pointer;
   border-radius: 100px;
   &:hover {
-    background-color: #000000;
+    background-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
 

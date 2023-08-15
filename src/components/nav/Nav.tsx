@@ -32,7 +32,7 @@ const StyledLink = styled(Link)<isSelectedProps>`
   text-decoration: none;
 
   &:hover {
-    background-color: #000000;
+    background-color: ${({ theme }) => theme.color.mainBlack};
     color: #fff;
   }
 `;

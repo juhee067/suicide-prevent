@@ -13,7 +13,7 @@ const BlackBox = styled.div<OpacityProps>`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #000;
+  background-color: ${({ theme }) => theme.color.mainBlack};
   z-index: 990;
   opacity: ${({ opacity }) => opacity};
   transition: opacity 1s ease;
@@ -55,7 +55,7 @@ const Letter = styled(Link)`
   top: 50%;
   left: 50%;
   transform: translate(-50%);
-  border: 1px solid #000;
+  border: 1px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 100px;
   font-size: 2rem;
   color: #fff;
@@ -65,14 +65,14 @@ const Letter = styled(Link)`
   cursor: pointer;
   z-index: 990;
   &:hover {
-    background-color: #000000;
+    background-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
 const MainBg = styled.div`
   width: 1098px;
   position: absolute;
   bottom: 0;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 interface OpacityProps {

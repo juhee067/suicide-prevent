@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import InputField from "../components/Letter/InputField";
-import { FlexRowDiv } from "../components/styled/FlexDiv";
+import { FlexRowDiv } from "../module/styled/FlexDiv";
 
 const FormContainer = styled.div`
   max-width: 600px;

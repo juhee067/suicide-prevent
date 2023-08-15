@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Message } from "../../module/MessageType";
 import { displayCreatedAt } from "../../module/postTime";
-import { FlexRowDiv } from "../styled/FlexDiv";
+import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import EditionForm from "./EditionForm";
 import View from "./View";
 

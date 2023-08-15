@@ -1,13 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexColumnDiv, FlexRowDiv } from "../components/styled/FlexDiv";
-import {
-  Description,
-  H2,
-  HighlightText,
-  Paragraph,
-  Subtitle,
-} from "../components/styled/styledSpanagraph";
+import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
+import { Description, H2, HighlightText, Paragraph, Subtitle } from "../module/styled/styledSpanagraph";
 
 const Wrapper = styled(FlexColumnDiv)`
   padding: 100px 0;

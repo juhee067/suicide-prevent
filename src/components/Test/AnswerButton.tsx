@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { Btn } from "../styled/styledSpanagraph";
+import { Btn } from "../../module/styled/styledSpanagraph";
 const AnswerBtn = styled(Btn)`
   border: 1px solid ${({ theme }) => theme.color.mainGray};
   border-radius: 5px;
   padding: 10px;
 
   &:hover {
-    background-color: #ffce0a;
+    background-color: ${({ theme }) => theme.color.SubGray};
+    color: ${({ theme }) => theme.color.mainWhite};
   }
 `;
 
@@ -17,7 +18,7 @@ interface AnswerButtonProps {
   id: number;
   score: number;
 }
-const AnswerButton = ({ content, onClick, id, score }: AnswerButtonProps) => {
+const AnswerButton = ({ content, onClick }: AnswerButtonProps) => {
   return <AnswerBtn onClick={onClick}>{content}</AnswerBtn>;
 };
 

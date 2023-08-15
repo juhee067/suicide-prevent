@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { CenterAlign } from "../styled/CenterAlignment";
-import { FlexColumnCenterDiv } from "../styled/FlexDiv";
-import { Paragraph } from "../styled/styledSpanagraph";
+import { CenterAlign } from "../../module/styled/CenterAlignment";
+import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
+import { Paragraph } from "../../module/styled/styledSpanagraph";
 
 const ModalBackdrop = styled(FlexColumnCenterDiv)`
   position: fixed;

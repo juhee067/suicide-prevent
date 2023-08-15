@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Door from "../components/common/Door";
 import { Img } from "../components/common/Img";
-import { FlexColumnCenterDiv } from "../components/styled/FlexDiv";
-import { Btn, H2, Paragraph } from "../components/styled/styledSpanagraph";
+import { FlexColumnCenterDiv } from "../module/styled/FlexDiv";
+import { Btn, H2, Paragraph } from "../module/styled/styledSpanagraph";
 import TestModal from "../components/Test/TestModal";
 
 const TestMainSection = styled.div`

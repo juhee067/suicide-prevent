@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { FlexColumnCenterDiv } from "../styled/FlexDiv";
-import { Paragraph } from "../styled/styledSpanagraph";
+import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
+import { Paragraph } from "../../module/styled/styledSpanagraph";
 import AnswerButton from "./AnswerButton";
 
 const CardBox = styled(FlexColumnCenterDiv)``;
@@ -25,6 +25,7 @@ const SelectBox = styled.div`
     flex: 1;
   }
 `;
+
 interface Answer {
   id: number;
   score: number;

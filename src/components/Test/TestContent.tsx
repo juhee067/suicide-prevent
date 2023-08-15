@@ -10,6 +10,7 @@ const TestContentBox = styled.div`
   position: relative;
   width: 100%;
 `;
+
 const CardContainer = styled.div``;
 
 const LeftIcon = styled(Icon)`
@@ -42,7 +43,6 @@ const TestContent: React.FC<TestContentProps> = ({
   active,
   setActive,
   scoreArr,
-  selectedAnswerScore,
   selectedQuestionIndex,
 }) => {
   const count = React.Children.count(children);

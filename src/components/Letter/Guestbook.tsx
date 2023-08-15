@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CenterAlign } from "../styled/CenterAlignment";
+import { CenterAlign } from "../../module/styled/CenterAlignment";
 
 import GuestbookForm from "../../section/GuestbookForm";
 import MessageList from "./MessageList";

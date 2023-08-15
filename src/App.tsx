@@ -11,16 +11,21 @@ import Information from "./pages/Information";
 import Letter from "./pages/Letter";
 
 const App = React.memo(() => {
+  const routes = [
+    { path: "/", element: <Main /> },
+    { path: "/letter", element: <Letter /> },
+    { path: "/test", element: <Test /> },
+    { path: "/information", element: <Information /> },
+  ];
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      {/* <MobileNav /> */}
       <Nav />
       <Routes>
-        <Route path={"/"} element={<Main />} />
-        <Route path={"/letter"} element={<Letter />} />
-        <Route path={"/test"} element={<Test />} />
-        <Route path={"/information"} element={<Information />} />
+        {routes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.element} />
+        ))}
       </Routes>
     </ThemeProvider>
   );

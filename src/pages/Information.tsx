@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
-import Map from "../components/Map";
 import { FlexColumnDiv, FlexRowDiv } from "../components/styled/FlexDiv";
 import { Btn, Caption, H2, H3, Paragraph } from "../components/styled/styledSpanagraph";
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 import Door from "../components/common/Door";
+import Map from "../components/info/Map";
 
 const InfoWrapper = styled.div`
   width: 100%;

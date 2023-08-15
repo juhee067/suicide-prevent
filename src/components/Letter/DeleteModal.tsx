@@ -1,19 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { CenterAlign } from "../styled/CenterAlignment";
-import { FlexColumnCenterDiv } from "../styled/FlexDiv";
-import { Paragraph } from "../styled/styledSpanagraph";
+import { CenterAlign } from "../../module/styled/CenterAlignment";
+import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
+import { Paragraph } from "../../module/styled/styledSpanagraph";
 
 const ModalBackdrop = styled(FlexColumnCenterDiv)`
-  // Modal이 떴을 때의 배경을 깔아주는 CSS를 구현
-  z-index: 1; //위치지정 요소
   position: fixed;
   background-color: rgba(0, 0, 0, 0.8);
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999;
+  z-index: 1;
 `;
 
 const Modal = styled(CenterAlign)`
@@ -23,7 +21,7 @@ const Modal = styled(CenterAlign)`
   text-align: center;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.color.mainWhite};
   z-index: 1000;
 `;
 
@@ -32,8 +30,8 @@ const DeleteButtonBox = styled.div`
     padding: 10px 30px;
     border-radius: 5px;
     border: none;
-    background-color: #000;
-    color: #fff;
+    color: ${({ theme }) => theme.color.mainWhite};
+    background-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
 
@@ -42,19 +40,22 @@ const CancelBtn = styled.button`
 `;
 
 const CheckBtn = styled.button``;
+
 const EditingPasswordInput = styled.input`
   padding: 5px;
   width: 80%;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.color.mainBlack};
   outline: none;
+
   &:hover {
-    border: 1px solid #000000;
+    border: 1px solid ${({ theme }) => theme.color.mainBlack};
   }
   &:focus {
-    border-color: #000000; /* 포커스된 상태일 때의 선 색상 변경 */
+    border-color: ${({ theme }) => theme.color.mainBlack}; /* 포커스된 상태일 때의 선 색상 변경 */
   }
 `;
+
 const ContentBox = styled(CenterAlign)`
   display: flex;
   flex-direction: column;

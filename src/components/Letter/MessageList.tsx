@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Message } from "../../module/MessageType";
 import { displayCreatedAt } from "../../module/postTime";
-import { FlexRowDiv } from "../styled/FlexDiv";
+import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import EditionForm from "./EditionForm";
 import View from "./View";
 
@@ -10,8 +11,8 @@ const MessageListBox = styled.div`
   padding: 20px;
   height: 430px;
   border-radius: 5px;
-  border: 2px solid #4a4a4a;
-  background-color: #fbfbfb;
+  border: 2px solid ${({ theme }) => theme.color.MessageList};
+  background-color: ${({ theme }) => theme.color.MessageListBg};
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -23,29 +24,29 @@ const MessageListBox = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #6f6f6f;
-    border: 2px solid #353535;
+    background-color: ${({ theme }) => theme.color.thumbBg};
+    border: 2px solid ${({ theme }) => theme.color.thumbBorder};
     border-right: none;
     border-top: none;
     border-bottom: none;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+    background-color: ${({ theme }) => theme.color.hover};
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #e1e1e1;
-    border-left: 2px solid #353535;
+    background-color: ${({ theme }) => theme.color.track};
+    border-left: 2px solid ${({ theme }) => theme.color.thumbBorder};
   }
 `;
 
 const MessageItem = styled(FlexRowDiv)`
   margin-bottom: 15px;
   justify-content: space-between;
-  border: 1px solid #4a4a4a;
+  border: 1px solid ${({ theme }) => theme.color.MessageList};
   border-radius: 5px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
 const UserContent = styled.div`
@@ -56,16 +57,8 @@ const PostTime = styled.div`
   padding: 0 0 10px 10px;
   font-size: 1rem;
   font-weight: 300;
-  color: #909090;
+  color: ${({ theme }) => theme.color.SubGray};
 `;
-type Message = {
-  id: number;
-  author: string;
-  title: string;
-  message: string;
-  password: string;
-  createdAt: string;
-};
 
 interface MessageListProps {
   messages: Message[];
@@ -89,7 +82,7 @@ const MessageList: React.FC<MessageListProps> = ({
   const [editingMessageId, setEditingMessageId] = useState<number | null>(null);
   const [editingCreatedAt, setEditingCreatedAt] = useState("");
 
-  const handleDeleteEntry = (id: any) => {
+  const handleDeleteEntry = (id: number) => {
     setSelectedMessageId(id);
     setIsDeleteModalOpen(true);
   };

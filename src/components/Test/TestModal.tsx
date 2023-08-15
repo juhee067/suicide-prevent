@@ -2,32 +2,25 @@ import React, { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
-import { Btn, H2, Paragraph } from "../styled/styledSpanagraph";
+import { Btn, H2, Paragraph } from "../../module/styled/styledSpanagraph";
 import { QuestionData } from "../../data/testData";
-import { FlexColumnCenterDiv } from "../styled/FlexDiv";
+import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
 import Card from "./Card";
 
 import TestContent from "./TestContent";
+import ModalBackdrop from "../common/Backdrop";
 
 const Container = styled.div``;
 
-const ModalBackdrop = styled(FlexColumnCenterDiv)`
-  // Modal이 떴을 때의 배경을 깔아주는 CSS를 구현
-  z-index: 1; //위치지정 요소
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.8);
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 998;
-`;
-
 const ModalView = styled(FlexColumnCenterDiv)`
-  position: relative;
   padding: 100px 40px;
-  border-radius: 20px;
   width: 60%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  border-radius: 20px;
   overflow: hidden;
   background-color: ${({ theme }) => theme.color.mainWhite};
 `;
@@ -46,6 +39,7 @@ const CloseModal = styled(Icon)`
 `;
 
 const Title = styled(H2)``;
+
 const Order = styled(H2)``;
 
 const GaugeBox = styled.div`
@@ -61,9 +55,11 @@ const GaugeBar = styled.div<GaugeBarProps>`
   height: 100%;
   background-color: ${({ theme }) => theme.color.mainBlack};
 `;
+
 const ResultBox = styled(FlexColumnCenterDiv)`
   gap: 30px;
 `;
+
 const ResetButton = styled(Btn)`
   padding: 10px;
   border-radius: 5px;
@@ -128,53 +124,52 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
 
   return (
     <Container>
-      <ModalBackdrop>
-        <ModalView onClick={(e) => e.stopPropagation()}>
-          <CloseModal onClick={handleCloseModal}>
-            <AiOutlineCloseCircle />
-          </CloseModal>
-          <ContentBox active={active}>
-            {active === QuestionData.length ? null : (
-              <>
-                <Title>나의 우울증 지수는?</Title>
-                <GaugeBox>
-                  <GaugeBar active={active} />
-                </GaugeBox>
-              </>
-            )}
-            <Order>{active < 20 ? `${active + 1}/20` : null}</Order>
-            <TestContent
-              active={active}
-              setActive={setActive}
-              scoreArr={scoreArr}
-              selectedAnswerScore={selectedAnswerScore}
-              selectedQuestionIndex={selectedQuestionIndex}
-            >
-              {QuestionData.map((items, index) => (
-                <Card
-                  key={index}
-                  description={items.question}
-                  answers={items.answers}
-                  handleAnswerNumber={handleAnswerNumber}
-                  active={active}
-                  setSelectedQuestionIndex={setSelectedQuestionIndex}
-                />
-              ))}
-            </TestContent>
-            {active === QuestionData.length && (
-              <ResultBox>
-                <H2>당신의 테스트 결과 점수는</H2>
-                <H2>
-                  {ScoreStandard()}({calculateResult()}점)
-                </H2>
+      <ModalView onClick={(e) => e.stopPropagation()}>
+        <CloseModal onClick={handleCloseModal}>
+          <AiOutlineCloseCircle />
+        </CloseModal>
+        <ContentBox active={active}>
+          {active === QuestionData.length ? null : (
+            <>
+              <Title>나의 우울증 지수는?</Title>
+              <GaugeBox>
+                <GaugeBar active={active} />
+              </GaugeBox>
+            </>
+          )}
+          <Order>{active < 20 ? `${active + 1}/20` : null}</Order>
+          <TestContent
+            active={active}
+            setActive={setActive}
+            scoreArr={scoreArr}
+            selectedAnswerScore={selectedAnswerScore}
+            selectedQuestionIndex={selectedQuestionIndex}
+          >
+            {QuestionData.map((items, index) => (
+              <Card
+                key={index}
+                description={items.question}
+                answers={items.answers}
+                handleAnswerNumber={handleAnswerNumber}
+                active={active}
+                setSelectedQuestionIndex={setSelectedQuestionIndex}
+              />
+            ))}
+          </TestContent>
+          {active === QuestionData.length && (
+            <ResultBox>
+              <H2>당신의 테스트 결과 점수는</H2>
+              <H2>
+                {ScoreStandard()}({calculateResult()}점)
+              </H2>
 
-                <Paragraph>하단의 설명을 확인하세요</Paragraph>
-                <ResetButton onClick={resetTest}>다시 테스트하기</ResetButton>
-              </ResultBox>
-            )}
-          </ContentBox>
-        </ModalView>
-      </ModalBackdrop>
+              <Paragraph>하단의 설명을 확인하세요</Paragraph>
+              <ResetButton onClick={resetTest}>다시 테스트하기</ResetButton>
+            </ResultBox>
+          )}
+        </ContentBox>
+      </ModalView>
+      <ModalBackdrop opacityValue="80%" />
     </Container>
   );
 };

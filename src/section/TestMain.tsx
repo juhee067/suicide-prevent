@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Door from "../components/common/Door";
 import { Img } from "../components/common/Img";
-import { FlexColumnCenterDiv } from "../components/styled/FlexDiv";
-import { Btn, H2, Paragraph } from "../components/styled/styledSpanagraph";
+import { FlexColumnCenterDiv } from "../module/styled/FlexDiv";
+import { Btn, H2, Paragraph } from "../module/styled/styledSpanagraph";
 import TestModal from "../components/Test/TestModal";
 
 const TestMainSection = styled.div`
   position: relative;
   margin: 52px auto 0;
   height: calc(100vh - 52px);
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 const Container = styled(FlexColumnCenterDiv)`
@@ -59,7 +59,7 @@ const TestBtn = styled(Btn)`
   cursor: pointer;
   border-radius: 100px;
   &:hover {
-    background-color: #000000;
+    background-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
 

@@ -19,18 +19,18 @@ const TestBox = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #6f6f6f;
-    border: 2px solid #353535;
+    background-color: ${({ theme }) => theme.color.thumbBg};
+    border: 2px solid ${({ theme }) => theme.color.thumbBorder};
     border-right: none;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+    background-color: ${({ theme }) => theme.color.hover};
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #e1e1e1;
-    border-left: 2px solid #353535;
+    background-color: ${({ theme }) => theme.color.track};
+    border-left: 2px solid ${({ theme }) => theme.color.thumbBorder};
   }
 `;
 

@@ -4,16 +4,17 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Door from "../components/common/Door";
 import { Img } from "../components/common/Img";
-import { FlexRowCenterDiv } from "../components/styled/FlexDiv";
+import { FlexRowCenterDiv } from "../module/styled/FlexDiv";
 
 const MainWrapper = styled.div`
   position: relative;
 `;
+
 const BlackBox = styled.div<OpacityProps>`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #000;
+  background-color: ${({ theme }) => theme.color.mainBlack};
   z-index: 990;
   opacity: ${({ opacity }) => opacity};
   transition: opacity 1s ease;
@@ -43,36 +44,40 @@ const SvgRight = styled.svg`
 `;
 
 const Defs = styled.defs``;
+
 const Path = styled.path``;
 
 const Text = styled.text`
   font-size: 8rem;
   letter-spacing: 0.02em;
 `;
+
 const Letter = styled(Link)`
   padding: 20px 50px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%);
-  border: 1px solid #000;
+  border: 1px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 100px;
   font-size: 2rem;
-  color: #fff;
   font-weight: 500;
-  background-color: #202020;
+  color: #fff;
+  background-color: ${({ theme }) => theme.color.mainBlack};
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
   z-index: 990;
+
   &:hover {
-    background-color: #000000;
+    background-color: ${({ theme }) => theme.color.hover};
   }
 `;
+
 const MainBg = styled.div`
   width: 1098px;
   position: absolute;
   bottom: 0;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 interface OpacityProps {

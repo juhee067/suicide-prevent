@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CenterAlign } from "../styled/CenterAlignment";
+import { CenterAlign } from "../../module/styled/CenterAlignment";
 
 import GuestbookForm from "../../section/GuestbookForm";
 import MessageList from "./MessageList";
 import DeleteModal from "./DeleteModal";
+import { Message } from "../../module/MessageType";
 
 const GuestbookContainer = styled.div`
   position: relative;
@@ -18,15 +19,6 @@ const GuestbookBox = styled(CenterAlign)`
   margin-top: 20px;
   max-width: 600px;
 `;
-
-type Message = {
-  id: number;
-  author: string;
-  title: string;
-  message: string;
-  password: string;
-  createdAt: string;
-};
 
 const Guestbook: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);

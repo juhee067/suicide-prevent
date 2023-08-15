@@ -1,4 +1,11 @@
 import React, { useEffect, useRef } from "react";
+import { google } from "google-maps";
+import styled from "styled-components";
+
+const MapContent = styled.div`
+  width: 100%;
+  height: 350px;
+`;
 
 declare global {
   interface Window {
@@ -71,9 +78,6 @@ const Map = () => {
       },
     ];
 
-    // 마커 이미지의 이미지 주소입니다
-    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
     for (var i = 0; i < positions.length; i++) {
       // 마커를 생성합니다
       var marker = new kakao.maps.Marker({
@@ -96,9 +100,9 @@ const Map = () => {
 
     // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
     function makeOverListener(
-      map: any,
-      marker: any,
-      infowindow: { open: (arg0: any, arg1: any) => void }
+      map: google.maps.Map,
+      marker: google.maps.Marker,
+      infowindow: google.maps.InfoWindow
     ) {
       return function () {
         infowindow.open(map, marker);
@@ -118,9 +122,7 @@ const Map = () => {
     }
   }, []);
 
-  return (
-    <div id="map" ref={mapContainer} style={{ width: "100%", height: "350px", display: "block" }}></div>
-  );
+  return <MapContent id="map" ref={mapContainer} />;
 };
 
 export default Map;

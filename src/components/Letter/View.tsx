@@ -1,26 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexRowDiv } from "../styled/FlexDiv";
-import { Paragraph } from "../styled/styledSpanagraph";
+import { FlexRowDiv } from "../../module/styled/FlexDiv";
+import { Paragraph } from "../../module/styled/styledSpanagraph";
 import { FiDelete, FiEdit } from "react-icons/fi";
+import { Message } from "../../module/MessageType";
 
 const ViewBox = styled.div``;
+
 const UserBox = styled(FlexRowDiv)`
   padding: 10px;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid ${({ theme }) => theme.color.mainGray};
 `;
 
 const UserTitle = styled.div`
   font-size: 1.2rem;
   font-weight: 700;
 `;
-const UserActions = styled.div`
-  display: flex;
-  align-items: center;
+
+const UserActions = styled(FlexRowDiv)`
   gap: 10px;
-  color: #b3b3b3;
+  color: ${({ theme }) => theme.color.mainGray};
   font-size: 1.8rem;
   cursor: pointer;
 `;
@@ -33,10 +34,11 @@ const UserMessage = styled(Paragraph)`
 `;
 
 interface ViewProps {
-  message: any;
-  handleEditEntry: (message: any) => void;
+  message: Message;
+  handleEditEntry: (message: Message) => void;
   handleDeleteEntry: (id: number) => void;
 }
+
 const View: React.FC<ViewProps> = ({ message, handleEditEntry, handleDeleteEntry }) => {
   return (
     <ViewBox>
@@ -47,7 +49,6 @@ const View: React.FC<ViewProps> = ({ message, handleEditEntry, handleDeleteEntry
           <FiDelete onClick={() => handleDeleteEntry(message.id)} />
         </UserActions>
       </UserBox>
-
       <UserMessage>{message.message}</UserMessage>
     </ViewBox>
   );

@@ -1,28 +1,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FlexRowDiv } from "../styled/FlexDiv";
+import { FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { FaRegWindowMinimize, FaRegWindowMaximize } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
 
-const NavWrapper = styled(FlexRowDiv)`
+const NavWrapper = styled(FlexRowCenterDiv)`
   padding: 0 20px;
   position: fixed;
   top: 0;
   justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
   width: 100%;
-  background-color: #fff;
+  z-index: 999;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-right: none;
-  z-index: 999;
+  background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
 const Menus = styled(FlexRowDiv)`
   font-size: 1.8em;
   font-weight: 700;
 `;
+
 const StyledLink = styled(Link)<isSelectedProps>`
   padding: 15px 20px;
   background-color: ${({ isSelected }) => (isSelected ? "#202020" : "transparent")};
@@ -32,8 +31,8 @@ const StyledLink = styled(Link)<isSelectedProps>`
   text-decoration: none;
 
   &:hover {
-    background-color: #000000;
-    color: #fff;
+    background-color: ${({ theme }) => theme.color.hover};
+    ${({ theme }) => theme.color.mainWhite};
   }
 `;
 
@@ -42,6 +41,7 @@ const IconBox = styled(FlexRowDiv)`
   align-items: center;
   font-size: 2.3rem;
 `;
+
 interface isSelectedProps {
   isSelected: boolean;
 }

@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexColumnDiv, FlexRowDiv } from "../styled/FlexDiv";
+import { FlexColumnDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { FiSave, FiX } from "react-icons/fi";
+import { Message } from "../../module/MessageType";
 
 const EditingBox = styled(FlexColumnDiv)`
   padding: 10px;
   margin: 0 auto;
 `;
+
 const UserEditingBox = styled(FlexRowDiv)`
   justify-content: space-between;
   margin-bottom: 10px;
@@ -16,12 +18,13 @@ const EditingTitle = styled.input`
   width: 50%;
   padding: 10px;
   outline: none;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.color.mainGray};
+
   &:hover {
-    border: 1px solid #000000;
+    border: 1px solid ${({ theme }) => theme.color.mainBlack};
   }
   &:focus {
-    border-color: #000000; /* 포커스된 상태일 때의 선 색상 변경 */
+    border-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
 
@@ -29,49 +32,49 @@ const EditingTextarea = styled.textarea`
   margin-bottom: 10px;
   padding: 10px;
   width: 100%;
-  border: 1px solid #cfcfcf;
+  border: 1px solid ${({ theme }) => theme.color.mainGray};
   resize: none;
   transition: all 0.3s;
   outline: none;
+
   &:hover {
-    border: 1px solid #000000;
+    border: 1px solid ${({ theme }) => theme.color.mainBlack};
   }
   &:active {
-    border: 1px solid #000000;
+    border: 1px solid ${({ theme }) => theme.color.mainBlack};
   }
 `;
 
 const EditingPasswordInput = styled.input`
   padding: 5px;
   width: 30%;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.color.mainGray};
   outline: none;
+
   &:hover {
-    border: 1px solid #000000;
+    border: 1px solid ${({ theme }) => theme.color.mainBlack};
   }
   &:focus {
-    border-color: #000000; /* 포커스된 상태일 때의 선 색상 변경 */
+    border-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
 
-const UserActions = styled.div`
-  display: flex;
-  align-items: center;
+const UserActions = styled(FlexRowDiv)`
   gap: 10px;
-  color: #b3b3b3;
-  font-size: 1.8rem;
+  color: ${({ theme }) => theme.color.mainGray};
+  font-size: 2rem;
   cursor: pointer;
 `;
 
 interface EditionProps {
-  editedTitle: any;
-  setEditedTitle: any;
-  handleSaveEdit: any;
-  handleCancelEdit: any;
-  editedMessage: any;
-  setEditedMessage: any;
-  setEditingPassword: any;
-  message: any;
+  editedTitle: string;
+  setEditedTitle: React.Dispatch<React.SetStateAction<string>>;
+  handleSaveEdit: (id: number) => void;
+  handleCancelEdit: () => void;
+  editedMessage: string;
+  setEditedMessage: React.Dispatch<React.SetStateAction<string>>;
+  setEditingPassword: React.Dispatch<React.SetStateAction<string>>;
+  message: Message;
 }
 
 const EditionForm: React.FC<EditionProps> = ({

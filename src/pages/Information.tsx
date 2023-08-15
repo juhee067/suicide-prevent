@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
-import Map from "../components/Map";
-import { FlexColumnDiv, FlexRowDiv } from "../components/styled/FlexDiv";
-import { Btn, Caption, H2, H3, Paragraph } from "../components/styled/styledSpanagraph";
+import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
+import { Btn, Caption, H2, H3, Paragraph } from "../module/styled/styledSpanagraph";
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 import Door from "../components/common/Door";
+import Map from "../components/info/Map";
 
 const InfoWrapper = styled.div`
   width: 100%;
-  background-color: #fff8d7;
+  background-color: ${({ theme }) => theme.color.infoBg};
 `;
 
 const InformationContainer = styled.div`
@@ -26,21 +26,19 @@ const TitleBox = styled(FlexRowDiv)`
   align-items: center;
   justify-content: space-between;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
 const ContentBox = styled(FlexRowDiv)`
   padding: 40px 40px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-top: none;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
-const TitleName = styled.div`
-  display: flex;
+const TitleName = styled(FlexRowDiv)`
   gap: 20px;
   align-items: center;
-  text-align: center;
   letter-spacing: 0.1em;
 `;
 
@@ -84,7 +82,7 @@ const CenterBtn = styled(Btn)`
   width: 48.7%;
   padding: 10px 20px;
   font-size: 1.2rem;
-  background-color: #ffd677;
+  background-color: ${({ theme }) => theme.color.info};
 `;
 
 const centerData = [

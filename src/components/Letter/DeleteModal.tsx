@@ -66,14 +66,14 @@ const ContentBox = styled(CenterAlign)`
 
 interface DeleteProps {
   setEditingPassword: React.Dispatch<React.SetStateAction<string>>;
-  handleCancelDelete: () => void;
-  handleConfirmDelete: () => void;
+  // handleCancelDelete: () => void;
+  // handleConfirmDelete: () => void;
 }
 
 const DeleteModal: React.FC<DeleteProps> = ({
   setEditingPassword,
-  handleCancelDelete,
-  handleConfirmDelete,
+  // handleCancelDelete,
+  // handleConfirmDelete,
 }) => {
   return (
     <ModalBackdrop>
@@ -86,8 +86,16 @@ const DeleteModal: React.FC<DeleteProps> = ({
             onChange={(e) => setEditingPassword(e.target.value)}
           />
           <DeleteButtonBox>
-            <CancelBtn onClick={handleCancelDelete}>취소</CancelBtn>
-            <CheckBtn onClick={handleConfirmDelete}>확인</CheckBtn>
+            <CancelBtn
+            // onClick={handleCancelDelete}
+            >
+              취소
+            </CancelBtn>
+            <CheckBtn
+            // onClick={handleConfirmDelete}
+            >
+              확인
+            </CheckBtn>
           </DeleteButtonBox>
         </ContentBox>
       </Modal>

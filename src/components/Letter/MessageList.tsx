@@ -6,6 +6,8 @@ import { displayCreatedAt } from "../../module/postTime";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import EditionForm from "./EditionForm";
 import View from "./View";
+import { DocumentData, updateDoc, doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 
 const MessageListBox = styled.div`
   padding: 20px;
@@ -61,12 +63,13 @@ const PostTime = styled.div`
 `;
 
 interface MessageListProps {
-  messages: Message[];
+  messages: DocumentData[];
   setSelectedMessageId: React.Dispatch<React.SetStateAction<number | null>>;
   setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setEditingPassword: React.Dispatch<React.SetStateAction<string>>;
   editingPassword: string;
-  fetchMessages: () => void;
+  uniqueId: string;
+  usersCollectionRef: any;
 }
 
 const MessageList: React.FC<MessageListProps> = ({
@@ -75,50 +78,53 @@ const MessageList: React.FC<MessageListProps> = ({
   setIsDeleteModalOpen,
   setEditingPassword,
   editingPassword,
-  fetchMessages,
+  uniqueId,
+  usersCollectionRef,
 }) => {
   const [editedTitle, setEditedTitle] = useState("");
   const [editedMessage, setEditedMessage] = useState("");
   const [editingMessageId, setEditingMessageId] = useState<number | null>(null);
   const [editingCreatedAt, setEditingCreatedAt] = useState("");
 
+  // 업데이트 - U
+
   const handleDeleteEntry = (id: number) => {
     setSelectedMessageId(id);
     setIsDeleteModalOpen(true);
   };
 
-  const handleSaveEdit = async (id: number) => {
+  const handleSaveEdit = async (id: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/comments/${id}`);
-      const messageToEdit = response.data;
+      // 선택한 아이디에 해당하는 문서 가져오기
+      const userDocRef = doc(db, "users", id);
+      const userDocSnapshot = await getDoc(userDocRef);
 
-      if (!editingPassword) {
-        alert("비밀번호를 입력해주세요");
-        return;
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        console.log(userData.password);
+        // 선택한 게시물의 패스워드와 입력한 패스워드 비교
+        if (userData && editingPassword !== userData.password) {
+          alert("비밀번호가 일치하지 않습니다.");
+          return;
+        }
+
+        // 나머지 업데이트 작업 수행
+        await updateDoc(userDocRef, {
+          title: editedTitle,
+          message: editedMessage,
+          createdAt: editingCreatedAt,
+        });
+
+        // setEditedTitle("");
+        // setEditedMessage("");
+        setEditingCreatedAt("");
+        setEditingPassword("");
+        alert("게시물이 수정되었습니다.");
+      } else {
+        alert("선택한 게시물을 찾을 수 없습니다.");
       }
-
-      if (editingPassword !== messageToEdit.password) {
-        alert("비밀번호가 일치하지 않습니다.");
-        return;
-      }
-
-      alert("게시물이 수정되었습니다");
-
-      await axios.put(`http://localhost:3001/comments/${id}`, {
-        message: editedMessage,
-        title: editedTitle,
-        password: editingPassword,
-        createdAt: editingCreatedAt,
-      });
-
-      setEditingMessageId(null);
-      setEditedTitle("");
-      setEditedMessage("");
-      setEditingCreatedAt("");
-      setEditingPassword("");
-      fetchMessages();
     } catch (error) {
-      console.error("PUT 요청 에러:", error);
+      console.error("Error updating document:", error);
     }
   };
 
@@ -158,7 +164,7 @@ const MessageList: React.FC<MessageListProps> = ({
     <MessageListBox>
       {messages.length
         ? messages.map((message: Message) => (
-            <MessageItem key={message.id}>
+            <MessageItem key={uniqueId}>
               <UserContent>
                 {renderMessageContent(message)}
                 <PostTime>{displayCreatedAt(message.createdAt)}</PostTime>

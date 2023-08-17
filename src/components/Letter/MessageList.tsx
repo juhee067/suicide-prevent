@@ -6,7 +6,7 @@ import { displayCreatedAt } from "../../module/postTime";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import EditionForm from "./EditionForm";
 import View from "./View";
-import { DocumentData, updateDoc, doc, getDoc } from "firebase/firestore";
+import { DocumentData, updateDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 const MessageListBox = styled.div`
@@ -83,24 +83,18 @@ const MessageList: React.FC<MessageListProps> = ({
 }) => {
   const [editedTitle, setEditedTitle] = useState("");
   const [editedMessage, setEditedMessage] = useState("");
-  const [editingMessageId, setEditingMessageId] = useState<number | null>(null);
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editingCreatedAt, setEditingCreatedAt] = useState("");
 
   // 업데이트 - U
-
-  const handleDeleteEntry = (id: number) => {
-    setSelectedMessageId(id);
-    setIsDeleteModalOpen(true);
-  };
-
   const handleSaveEdit = async (id: string) => {
     try {
       // 선택한 아이디에 해당하는 문서 가져오기
-      const userDocRef = doc(db, "users", id);
-      const userDocSnapshot = await getDoc(userDocRef);
 
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
+      const userDoc = doc(db, "users", id);
+      const data = await getDoc(userDoc);
+      if (data.exists()) {
+        const userData = data.data();
         console.log(userData.password);
         // 선택한 게시물의 패스워드와 입력한 패스워드 비교
         if (userData && editingPassword !== userData.password) {
@@ -109,7 +103,7 @@ const MessageList: React.FC<MessageListProps> = ({
         }
 
         // 나머지 업데이트 작업 수행
-        await updateDoc(userDocRef, {
+        await updateDoc(userDoc, {
           title: editedTitle,
           message: editedMessage,
           createdAt: editingCreatedAt,
@@ -126,6 +120,11 @@ const MessageList: React.FC<MessageListProps> = ({
     } catch (error) {
       console.error("Error updating document:", error);
     }
+  };
+
+  const handleDeleteEntry = (id: any) => {
+    setSelectedMessageId(id);
+    setIsDeleteModalOpen(true);
   };
 
   const handleCancelEdit = () => {
@@ -164,7 +163,7 @@ const MessageList: React.FC<MessageListProps> = ({
     <MessageListBox>
       {messages.length
         ? messages.map((message: Message) => (
-            <MessageItem key={uniqueId}>
+            <MessageItem>
               <UserContent>
                 {renderMessageContent(message)}
                 <PostTime>{displayCreatedAt(message.createdAt)}</PostTime>

@@ -36,7 +36,7 @@ const UserMessage = styled(Paragraph)`
 interface ViewProps {
   message: Message;
   handleEditEntry: (message: Message) => void;
-  handleDeleteEntry: (id: number) => void;
+  handleDeleteEntry: (id: string) => void;
 }
 
 const View: React.FC<ViewProps> = ({ message, handleEditEntry, handleDeleteEntry }) => {
@@ -46,7 +46,11 @@ const View: React.FC<ViewProps> = ({ message, handleEditEntry, handleDeleteEntry
         <UserTitle>{message.title}</UserTitle>
         <UserActions>
           <FiEdit onClick={() => handleEditEntry(message)} />
-          <FiDelete onClick={() => handleDeleteEntry(message.id)} />
+          <FiDelete
+            onClick={() => {
+              handleDeleteEntry(message.id);
+            }}
+          />
         </UserActions>
       </UserBox>
       <UserMessage>{message.message}</UserMessage>

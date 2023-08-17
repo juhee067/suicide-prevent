@@ -44,9 +44,9 @@ const Guestbook: React.FC = () => {
     const getUsers = async () => {
       // getDocs로 컬렉션안에 데이터 가져오기
       const data = await getDocs(usersCollectionRef);
+
       // users에 data안의 자료 추가. 객체에 id 덮어씌우는거
       setMessages(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      console.log(data);
     };
 
     getUsers();
@@ -73,51 +73,10 @@ const Guestbook: React.FC = () => {
     }
   };
 
-  // const handleAddEntry = async (entry: any) => {
-  //   try {
-  //     const entryWithCreatedAt = {
-  //       ...entry,
-  //       createdAt: new Date().toISOString(),
-  //     };
-  //     await axios.post("http://localhost:3001/comments", entryWithCreatedAt);
-
-  //     fetchMessages();
-  //   } catch (error) {
-  //     console.error("POST 요청 에러:", error);
-  //   }
-  // };
-
-  // const handleConfirmDelete = async () => {
-  //   if (!editingPassword) {
-  //     alert("비밀번호를 입력해주세요");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axios.get(`http://localhost:3001/comments/${selectedMessageId}`);
-  //     const messageToDelete = response.data;
-
-  //     if (editingPassword === messageToDelete.password) {
-  //       await axios.delete(`http://localhost:3001/comments/${selectedMessageId}`);
-  //       alert("게시물이 삭제되었습니다");
-  //       fetchMessages();
-  //     } else {
-  //       alert("비밀번호가 일치하지 않습니다.");
-  //       return;
-  //     }
-
-  //     setIsDeleteModalOpen(false);
-  //     setSelectedMessageId(null);
-  //     setEditingPassword("");
-  //   } catch (error) {
-  //     console.error("DELETE 요청 에러:", error);
-  //   }
-  // };
-
-  // const handleCancelDelete = () => {
-  //   setIsDeleteModalOpen(false);
-  //   setSelectedMessageId(null);
-  // };
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false);
+    // setSelectedMessageId(null);
+  };
 
   return (
     <GuestbookContainer>
@@ -147,8 +106,13 @@ const Guestbook: React.FC = () => {
         {/* 삭제 모달창  */}
         {isDeleteModalOpen && (
           <DeleteModal
+            selectedMessageId={selectedMessageId}
             setEditingPassword={setEditingPassword}
-            // handleCancelDelete={handleCancelDelete}
+            handleCancelDelete={handleCancelDelete}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
+            messages={messages}
+            editingPassword={editingPassword}
+            setMessages={setMessages}
             // handleConfirmDelete={handleConfirmDelete}
           />
         )}

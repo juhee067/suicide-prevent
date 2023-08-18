@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { FlexColumnDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { FiSave, FiX } from "react-icons/fi";
-import { Message } from "../../module/MessageType";
 import { DocumentData } from "firebase/firestore";
 
 const EditingBox = styled(FlexColumnDiv)`

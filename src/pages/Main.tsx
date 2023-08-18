@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -31,6 +30,7 @@ const MainContentBox = styled.div`
   height: calc(100vh - 52px);
   padding: 0 20px;
   box-sizing: border-box;
+  font-family: KyoboHandwriting2022khn;
 `;
 
 const MainContent = styled(FlexRowDiv)`
@@ -43,7 +43,6 @@ const MainContent = styled(FlexRowDiv)`
 
 const TitleBox = styled(FlexColumnDiv)`
   margin-right: 50px;
-  font-family: KyoboHandwriting2022khn;
   font-size: 8rem;
   font-weight: 900;
   gap: 50px;
@@ -53,7 +52,6 @@ const Comment = styled.div``;
 
 const LetterBox = styled.div`
   margin-top: 10px;
-  font-family: KyoboHandwriting2022khn;
   font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0.04rem;
@@ -78,7 +76,11 @@ const LetterPargraphPoint = styled.div`
 const Title = styled.div``;
 
 const LetterBtn = styled(Link)`
-  width: 43%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 20%;
   padding: 20px 25px;
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 100px;
@@ -146,7 +148,15 @@ const Main = () => {
   }, []);
 
   const updateWidth = () => {
-    setWidth("15%");
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth <= 1470) {
+      setWidth("15%");
+    } else if (windowWidth > 1470 && windowWidth <= 1920) {
+      setWidth("21%");
+    } else {
+      setWidth("26%");
+    }
   };
 
   const updateOpacity = () => {
@@ -175,7 +185,6 @@ const Main = () => {
               <Title>Hello!-Help!</Title>
               <Title>GateKeeper</Title>
             </Comment>
-            <LetterBtn to="/letter">{messagesCount}개의 응원메세지</LetterBtn>
           </TitleBox>
           <LetterBox>
             <LetterPargraph>오늘도 어김없이 하루가 밝아왔네요.</LetterPargraph>
@@ -193,6 +202,7 @@ const Main = () => {
             </PointBox>
           </LetterBox>
         </MainContent>
+        <LetterBtn to="/letter">{messagesCount}개의 응원메세지</LetterBtn>
         <MainBg>
           <Img src={`${process.env.PUBLIC_URL}/images/mainBg.png`} />
         </MainBg>

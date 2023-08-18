@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import InputField from "../components/Letter/InputField";
 import { FlexRowDiv } from "../module/styled/FlexDiv";
-import { collection, getDocs, DocumentData, addDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+
 const FormContainer = styled.div`
   max-width: 600px;
   margin: 0 auto 20px;
@@ -95,6 +94,8 @@ const GuestbookForm: React.FC<FormProps> = ({
       setNewTitle("");
       setNewPassword("");
       setNewMessage("");
+      setTitleFocused(false);
+      setPassFocused(false);
     }
   };
 

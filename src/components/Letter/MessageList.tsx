@@ -111,6 +111,7 @@ const MessageList: React.FC<MessageListProps> = ({
         setEditingCreatedAt("");
         setEditingPassword("");
         alert("게시물이 수정되었습니다.");
+        setEditingMessageId(null);
       } else {
         alert("선택한 게시물을 찾을 수 없습니다.");
       }
@@ -159,7 +160,7 @@ const MessageList: React.FC<MessageListProps> = ({
   return (
     <MessageListBox>
       {messages.length
-        ? messages.map((message: Message) => (
+        ? messages.reverse().map((message: Message) => (
             <MessageItem>
               <UserContent>
                 {renderMessageContent(message)}

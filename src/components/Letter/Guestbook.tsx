@@ -8,7 +8,7 @@ import DeleteModal from "./DeleteModal";
 // 파이어베이서 파일에서 import 해온 db
 
 // db에 접근해서 데이터를 꺼내게 도와줄 친구들
-import { collection, getDocs, DocumentData, addDoc, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, DocumentData, addDoc } from "firebase/firestore";
 
 const GuestbookContainer = styled.div`
   position: relative;
@@ -50,7 +50,7 @@ const Guestbook: React.FC = () => {
     };
 
     getUsers();
-  }, [newMessage]);
+  }, [messages]);
 
   const createUsers = async () => {
     try {

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FlexColumnDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { FiSave, FiX } from "react-icons/fi";
-import { Message } from "../../module/MessageType";
+import { DocumentData } from "firebase/firestore";
 
 const EditingBox = styled(FlexColumnDiv)`
   padding: 10px;
@@ -69,12 +69,12 @@ const UserActions = styled(FlexRowDiv)`
 interface EditionProps {
   editedTitle: string;
   setEditedTitle: React.Dispatch<React.SetStateAction<string>>;
-  handleSaveEdit: (id: number) => void;
+  handleSaveEdit: (id: string) => void;
   handleCancelEdit: () => void;
   editedMessage: string;
   setEditedMessage: React.Dispatch<React.SetStateAction<string>>;
   setEditingPassword: React.Dispatch<React.SetStateAction<string>>;
-  message: Message;
+  message: DocumentData;
 }
 
 const EditionForm: React.FC<EditionProps> = ({

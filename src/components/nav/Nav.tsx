@@ -11,10 +11,16 @@ const NavWrapper = styled(FlexRowCenterDiv)`
   top: 0;
   justify-content: space-between;
   width: 100%;
-  z-index: 999;
+  z-index: 1000;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-right: none;
   background-color: ${({ theme }) => theme.color.mainWhite};
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
 `;
 
 const Menus = styled(FlexRowDiv)`
@@ -32,7 +38,11 @@ const StyledLink = styled(Link)<isSelectedProps>`
 
   &:hover {
     background-color: ${({ theme }) => theme.color.hover};
-    ${({ theme }) => theme.color.mainWhite};
+    color: ${({ theme }) => theme.color.mainWhite};
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 10px 15px;
   }
 `;
 
@@ -40,6 +50,10 @@ const IconBox = styled(FlexRowDiv)`
   gap: 15px;
   align-items: center;
   font-size: 2.3rem;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 interface isSelectedProps {

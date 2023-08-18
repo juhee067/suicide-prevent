@@ -62,37 +62,51 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const GuestbookForm = ({ onAddEntry }: any) => {
-  const [title, setTitle] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [nameFocused, setNameFocused] = useState(false);
+interface FormProps {
+  createUsers: any;
+  newTitle: any;
+  newPassword: any;
+  newMessage: any;
+  setNewTitle: any;
+  setNewPassword: any;
+  setNewMessage: any;
+}
+const GuestbookForm: React.FC<FormProps> = ({
+  createUsers,
+  newTitle,
+  newPassword,
+  newMessage,
+  setNewTitle,
+  setNewPassword,
+  setNewMessage,
+}) => {
+  const [titleFocused, setTitleFocused] = useState(false);
   const [passFocused, setPassFocused] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (title && password && message) {
-      const entry = { title, password, message };
 
-      try {
-        onAddEntry(entry);
-        setTitle("");
-        setPassword("");
-        setMessage("");
-      } catch (error) {
-        console.error("POST 요청 에러:", error);
-      }
+    if (newTitle && newPassword && newMessage) {
+      // createUsers 함수를 호출하여 데이터베이스에 저장
+      createUsers();
+
+      // 입력 필드 초기화
+      setNewTitle("");
+      setNewPassword("");
+      setNewMessage("");
+      setTitleFocused(false);
+      setPassFocused(false);
     }
   };
 
   const handleNameBlur = () => {
-    if (!title) {
-      setNameFocused(false);
+    if (!newTitle) {
+      setTitleFocused(false);
     }
   };
 
   const handlePasswordBlur = () => {
-    if (!password) {
+    if (!newPassword) {
       setPassFocused(false);
     }
   };
@@ -105,31 +119,29 @@ const GuestbookForm = ({ onAddEntry }: any) => {
           <InputField
             label="제목"
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onFocus={() => setNameFocused(true)}
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            onFocus={() => setTitleFocused(true)}
             onBlur={handleNameBlur}
-            focused={nameFocused}
+            focused={titleFocused}
           />
           <InputField
             label="비밀번호"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
             onFocus={() => setPassFocused(true)}
             onBlur={handlePasswordBlur}
             focused={passFocused}
           />
         </UserInfo>
-
         <ContentBox>
           <TextArea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
             placeholder="응원메세지"
           />
         </ContentBox>
-
         <Button type="submit">작성하기</Button>
       </Form>
     </FormContainer>

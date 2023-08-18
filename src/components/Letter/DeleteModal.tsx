@@ -1,17 +1,9 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { CenterAlign } from "../../module/styled/CenterAlignment";
 import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
 import { Paragraph } from "../../module/styled/styledSpanagraph";
-import {
-  DocumentData,
-  updateDoc,
-  doc,
-  getDoc,
-  deleteDoc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { DocumentData, doc, deleteDoc, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 const ModalBackdrop = styled(FlexColumnCenterDiv)`
@@ -82,7 +74,6 @@ interface DeleteProps {
   messages: DocumentData;
   setMessages: React.Dispatch<React.SetStateAction<DocumentData[]>>;
   editingPassword: string;
-  // handleConfirmDelete: () => void;
 }
 
 const DeleteModal: React.FC<DeleteProps> = ({
@@ -93,38 +84,7 @@ const DeleteModal: React.FC<DeleteProps> = ({
   setIsDeleteModalOpen,
   setMessages,
   messages,
-  // handleConfirmDelete,
 }) => {
-  // useEffect(() => {
-  //   const usersCollectionRef = collection(db, "users");
-  //   // 비동기로 데이터 받을준비
-  //   const getUsers = async () => {
-  //     const querySnapshot = await getDocs(usersCollectionRef);
-  //     const userDataArray = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-  //     setMessages(userDataArray);
-  //   };
-
-  //   getUsers();
-  // }, []);
-
-  // const deleteUser = async (id: string) => {
-  //   const userDoc = doc(db, "users", id);
-  //   const data = await getDoc(userDoc);
-
-  //   if (data.exists()) {
-  //     const userData = data.data();
-
-  //     if (userData && editingPassword !== userData.password) {
-  //       alert("비밀번호가 일치하지 않습니다.");
-  //       return;
-  //     }
-
-  //     await deleteDoc(userDoc);
-  //     setIsDeleteModalOpen(true);
-  //   }
-  // };
-  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
-
   const handleConfirmDelete = () => {
     const selectedMessage = messages.find((msg: { id: string | null }) => msg.id === selectedMessageId);
 

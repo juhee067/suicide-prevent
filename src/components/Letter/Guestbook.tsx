@@ -50,7 +50,7 @@ const Guestbook: React.FC = () => {
     };
 
     getUsers();
-  }, []);
+  }, [newMessage]);
 
   const createUsers = async () => {
     try {

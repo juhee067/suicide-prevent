@@ -5,12 +5,15 @@ import styled from "styled-components";
 import Door from "../components/common/Door";
 import { Img } from "../components/common/Img";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 const MainWrapper = styled.div`
   position: relative;
 `;
 
 const BlackBox = styled.div<OpacityProps>`
+  display: ${({ opacity }) => (opacity === 0 ? "none" : "block")};
   position: absolute;
   width: 100%;
   height: 100%;
@@ -75,7 +78,7 @@ const LetterPargraphPoint = styled.div`
 const Title = styled.div``;
 
 const LetterBtn = styled(Link)`
-  width: 40%;
+  width: 43%;
   padding: 20px 25px;
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 100px;
@@ -112,6 +115,7 @@ const MainBg = styled.div`
   transform: translateX(-50%);
   bottom: 0;
   border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
+  z-index: 900;
 `;
 
 interface OpacityProps {
@@ -121,20 +125,24 @@ interface OpacityProps {
 const Main = () => {
   const [width, setWidth] = useState("50%");
   const [opacity, setOpacity] = useState(1);
-  const [messagesCount, setMessagesCount] = useState("");
-
-  const fetchMessages = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/comments");
-      setMessagesCount(response.data.length);
-      console.log(response.data);
-    } catch (error) {
-      console.error("GET 요청 에러:", error);
-    }
-  };
+  const [messagesCount, setMessagesCount] = useState(0);
 
   useEffect(() => {
-    fetchMessages();
+    const usersCollectionRef = collection(db, "users");
+
+    const fetchMessagesCount = async () => {
+      try {
+        // 메시지 데이터를 가져오는 로직
+        const data = await getDocs(usersCollectionRef);
+
+        // 메시지 갯수 업데이트
+        setMessagesCount(data.docs.length);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    fetchMessagesCount();
   }, []);
 
   const updateWidth = () => {

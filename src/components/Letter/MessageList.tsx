@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Message } from "../../module/MessageType";
@@ -6,7 +5,7 @@ import { displayCreatedAt } from "../../module/postTime";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import EditionForm from "./EditionForm";
 import View from "./View";
-import { DocumentData, updateDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
+import { DocumentData, updateDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 const MessageListBox = styled.div`
@@ -109,8 +108,6 @@ const MessageList: React.FC<MessageListProps> = ({
           createdAt: editingCreatedAt,
         });
 
-        // setEditedTitle("");
-        // setEditedMessage("");
         setEditingCreatedAt("");
         setEditingPassword("");
         alert("게시물이 수정되었습니다.");

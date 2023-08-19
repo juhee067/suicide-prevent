@@ -9,6 +9,7 @@ import DeleteModal from "./DeleteModal";
 
 // db에 접근해서 데이터를 꺼내게 도와줄 친구들
 import { collection, getDocs, DocumentData, addDoc } from "firebase/firestore";
+import { Img } from "../common/Img";
 
 const GuestbookContainer = styled.div`
   position: relative;
@@ -20,6 +21,21 @@ const GuestbookContainer = styled.div`
 const GuestbookBox = styled(CenterAlign)`
   margin-top: 20px;
   max-width: 600px;
+  z-index: 999;
+`;
+
+const WomanImg = styled.img`
+  position: absolute;
+  bottom: 10%;
+  left: 27%;
+  width: 15%;
+`;
+
+const ManImg = styled.img`
+  position: absolute;
+  bottom: 10%;
+  right: 29%;
+  width: 15%;
 `;
 
 const Guestbook: React.FC = () => {
@@ -117,6 +133,8 @@ const Guestbook: React.FC = () => {
           />
         )}
       </GuestbookBox>
+      <WomanImg src={`${process.env.PUBLIC_URL}/images/letterAiwoman.png`} />
+      <ManImg src={`${process.env.PUBLIC_URL}/images/letterAiman.png`} />
     </GuestbookContainer>
   );
 };

@@ -190,7 +190,7 @@ const Main = () => {
             <LetterPargraph>오늘도 어김없이 하루가 밝아왔네요.</LetterPargraph>
             <LetterPargraph>세상은 해가 뜨기 전 새벽이 가장 어두운 시간이죠.</LetterPargraph>
             <LetterPargraph>아쉽게도 현실은 당신의 기대를 저버린 채 있지만,</LetterPargraph>
-            <LetterPargraph>아직 당신이 닿지 못한 무수한 희망과 기쁨이 존재할 거예요</LetterPargraph>
+            <LetterPargraph>아직 당신이 닿지 못한 무수한 희망과 기쁨이 존재할 거예요.</LetterPargraph>
 
             <PointBox>
               <LetterPargraphPoint>

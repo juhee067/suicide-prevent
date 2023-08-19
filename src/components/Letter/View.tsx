@@ -29,7 +29,7 @@ const UserActions = styled(FlexRowDiv)`
 const UserMessage = styled(Paragraph)`
   padding: 10px;
   line-height: 1.2;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 300;
 `;
 

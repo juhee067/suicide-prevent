@@ -9,6 +9,7 @@ const FormContainer = styled.div`
   padding: 15px 20px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
 const Title = styled.div`

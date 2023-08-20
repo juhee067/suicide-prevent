@@ -96,9 +96,12 @@ const testResultData: Data[] = [
     des: "심한 수준의 우울감이 시사됩니다. 전문가의 치료적 개입과 평가가 요구됩니다.",
   },
 ];
-const TestResult = () => {
+interface PositionProps {
+  moveScrollPosition: React.MutableRefObject<HTMLDivElement | null>;
+}
+const TestResult = ({ moveScrollPosition }: PositionProps) => {
   return (
-    <Wrapper>
+    <Wrapper ref={moveScrollPosition}>
       <QuestWrapper>
         <QuestBox>
           <H2>많이 힘들었을 당신은 지금,</H2>

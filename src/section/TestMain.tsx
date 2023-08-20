@@ -5,6 +5,7 @@ import { Img } from "../components/common/Img";
 import { FlexColumnCenterDiv } from "../module/styled/FlexDiv";
 import { Btn, H2, Paragraph } from "../module/styled/styledSpanagraph";
 import TestModal from "../components/Test/TestModal";
+import ScrollIndicator from "../components/common/ScrollIndicator";
 
 const TestMainSection = styled.div`
   position: relative;
@@ -32,7 +33,7 @@ const Content = styled(Paragraph)`
   background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
-const ScrollDown = styled.div`
+const ScrollDownBox = styled.div`
   position: absolute;
   bottom: 5%;
   left: 5%;
@@ -52,9 +53,9 @@ const TestBtn = styled(Btn)`
   width: 200px;
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   background-color: ${({ theme }) => theme.color.mainWhite};
-  color: #fff;
+  color: ${({ theme }) => theme.color.mainWhite};
   font-weight: 500;
-  background-color: #202020;
+  background-color: ${({ theme }) => theme.color.mainBlack};
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
   border-radius: 100px;
@@ -63,7 +64,10 @@ const TestBtn = styled(Btn)`
   }
 `;
 
-const TestMain = () => {
+interface TestMainProps {
+  onMoveToFunctionCard: () => void;
+}
+const TestMain = ({ onMoveToFunctionCard }: TestMainProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -87,9 +91,9 @@ const TestMain = () => {
         <ImgBox>
           <Img src={`${process.env.PUBLIC_URL}/images/testAi.png`} width="90%" height="90%" />
         </ImgBox>
-        <TestBtn onClick={openModal}>진단하기</TestBtn>
+        <TestBtn onClick={openModal}>진단하기</TestBtn>{" "}
+        <ScrollIndicator onClick={() => onMoveToFunctionCard()}>하단 설명보기</ScrollIndicator>
       </Container>
-      <ScrollDown>Scroll Down</ScrollDown>
     </TestMainSection>
   );
 };

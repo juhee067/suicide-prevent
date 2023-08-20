@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import TestMain from "../section/TestMain";
@@ -35,10 +35,27 @@ const TestBox = styled.div`
 `;
 
 const Test = () => {
+  const moveScrollPosition = useRef<HTMLDivElement | null>(null);
+  const scrollToEvent = (top: number, behavior: ScrollBehavior) => {
+    window.scrollTo({
+      top,
+      behavior,
+    });
+  };
+
+  const onMoveToFunctionCard = () => {
+    if (moveScrollPosition.current) {
+      scrollToEvent(moveScrollPosition.current.offsetTop - 100, "smooth");
+    }
+  };
+  useEffect(() => {
+    scrollToEvent(0, "auto");
+  }, []);
+
   return (
     <TestBox>
-      <TestMain />
-      <TestResult />
+      <TestMain onMoveToFunctionCard={onMoveToFunctionCard} />
+      <TestResult moveScrollPosition={moveScrollPosition} />
     </TestBox>
   );
 };

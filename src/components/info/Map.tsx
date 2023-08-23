@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { google } from "google-maps";
+import React, { useEffect, useRef, useState } from "react";
+import "firebase/compat/firestore";
 import styled from "styled-components";
+import firebase from "firebase/compat/app";
 
 const MapContent = styled.div`
   width: 100%;
@@ -12,115 +13,108 @@ declare global {
     kakao: any; // 또는 kakao.maps의 타입 정의를 추가하여 더 구체적으로 지정할 수 있습니다.
   }
 }
-const { kakao } = window;
-const Map = () => {
-  const mapContainer = useRef(null);
 
+const Map = () => {
+  let [centerPositions, setCenterPositions] = useState<any[]>([]);
+  const mapContainer = useRef(null);
   useEffect(() => {
-    const position = new kakao.maps.LatLng(35.85133, 127.734086);
-    let options = {
-      center: position,
-      level: 13,
+    // Kakao 지도 API 로드 후 초기화
+    const script = document.createElement("script");
+    script.src =
+      "//dapi.kakao.com/v2/maps/sdk.js?appkey=f327ba502586d8dbf7f5e72ff2ea7792&libraries=services";
+    script.onload = () => {
+      // API 스크립트 로드 완료 후 실행할 내용
+      const { kakao } = window;
+      const options = {
+        center: new kakao.maps.LatLng(37.5665, 126.978),
+        level: 13,
+      };
+      const map = new kakao.maps.Map(mapContainer.current, options);
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDDho3nLDhmLb9GhFu0XndeOfw5mwV9TOI",
+        authDomain: "helpgatekeeper.firebaseapp.com",
+        projectId: "helpgatekeeper",
+        storageBucket: "helpgatekeeper.appspot.com",
+        messagingSenderId: "6877543437",
+        appId: "1:6877543437:web:0e3218cd5409b614706944",
+        measurementId: "G-YXXEZCCGH5",
+      };
+
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+
+      // Firestore 인스턴스 생성
+      const firestore = firebase.firestore();
+      const positions: firebase.firestore.DocumentData[] = [];
+
+      // 데이터 읽기
+      firestore
+        .collection("map")
+        .get()
+        .then((querySnapshot) => {
+          const positions: { latlng: any; url: any; title: any }[] = []; // 데이터를 저장할 배열
+
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            // data 객체에 문서의 데이터와 ID를 함께 저장
+            positions.push({
+              latlng: data.latlng,
+              url: data.url,
+              title: data.title,
+            });
+          });
+
+          // positions 배열에는 각 문서의 데이터와 ID가 포함되어 있습니다.
+
+          // 이제 positions 배열을 활용하여 마커 생성 및 추가, 인포윈도우 생성 등의 작업을 수행할 수 있습니다.
+          setCenterPositions(positions);
+        });
+      // 마커 생성 및 이벤트 처리
+      for (var i = 0; i < centerPositions.length; i++) {
+        const position = centerPositions[i].latlng;
+        const title = centerPositions[i].title;
+        const url = centerPositions[i].url;
+
+        // 마커를 생성합니다
+        const marker = new kakao.maps.Marker({
+          map: map,
+          position: new kakao.maps.LatLng(position.latitude, position.longitude),
+        });
+
+        // 인포윈도우를 생성합니다
+        const infowindow = new kakao.maps.InfoWindow({
+          content: `<div style="
+          padding:10px;
+          font-size:1.3rem
+          ">${title}</div>`,
+        });
+
+        // 마커에 마우스 오버 이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, "mouseover", function () {
+          infowindow.open(map, marker);
+        });
+
+        // 마커에 마우스 아웃 이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, "mouseout", function () {
+          infowindow.close();
+        });
+
+        // 마커를 클릭하면 해당 URL로 이동합니다
+        kakao.maps.event.addListener(marker, "click", makeClickListener(url));
+      }
     };
 
-    const map = new kakao.maps.Map(mapContainer.current, options);
-
-    var positions = [
-      {
-        title: "<div>대한민국 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(37.543955, 127.077746),
-        url: "http://xn--vh3b36f6qf0ub.com/",
-      },
-      {
-        title: "<div>서울특별시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(37.565792, 126.977943),
-        url: "http://www.suicide.or.kr/",
-      },
-      {
-        title: "<div>부산광역시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(35.097004, 129.034504),
-        url: "http://suicide.busaninmaum.com/",
-      },
-      {
-        title: "<div>인천광역시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(37.476916, 126.641211),
-        url: "https://imhc.or.kr/",
-      },
-      {
-        title: "<div>대구광역시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(35.867715, 128.599998),
-        url: "https://mental.dgmhc.o",
-      },
-      {
-        title: "<div>광주광역시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(35.156487, 126.851301),
-        url: "http://www.gmhc.kr/?sid=193",
-      },
-      {
-        title: "<div>대전광역시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(36.357547, 127.394288),
-        url: "https://www.djpmhc.or.kr/index.php",
-      },
-      {
-        title: "<div>울산광역시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(35.546055, 129.258557),
-        url: "http://www.usmind.or.kr/#none",
-      },
-      {
-        title: "<div>세종특별자치시 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(36.492148, 127.265677),
-        url: "http://www.sjcmhc.com/",
-      },
-      {
-        title: "<div>경기도 자살예방센터</div>",
-        latlng: new kakao.maps.LatLng(37.242444, 127.223553),
-        url: "https://www.mentalhealth.or.kr/",
-      },
-    ];
-
-    for (var i = 0; i < positions.length; i++) {
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: positions[i].latlng, // 마커의 위치
-      });
-
-      // 마커에 표시할 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-        content: positions[i].title, // 인포윈도우에 표시할 내용
-      });
-
-      // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-      // 이벤트 리스너로는 클로저를 만들어 등록합니다
-      // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-      kakao.maps.event.addListener(marker, "mouseover", makeOverListener(map, marker, infowindow));
-      kakao.maps.event.addListener(marker, "mouseout", makeOutListener(infowindow));
-      kakao.maps.event.addListener(marker, "click", makeClickListener(positions[i].url));
-    }
-
-    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-    function makeOverListener(
-      map: google.maps.Map,
-      marker: google.maps.Marker,
-      infowindow: google.maps.InfoWindow
-    ) {
-      return function () {
-        infowindow.open(map, marker);
-      };
-    }
-    // 마커 클릭 이벤트 핸들러
-    function makeClickListener(url: string) {
-      return function () {
-        window.location.href = url; // 해당 마커의 URL로 이동
-      };
-    }
-    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-    function makeOutListener(infowindow: { close: () => void }) {
-      return function () {
-        infowindow.close();
-      };
-    }
+    document.head.appendChild(script);
   }, []);
+
+  function makeClickListener(url: string) {
+    return function () {
+      window.open(url);
+    };
+  }
 
   return <MapContent id="map" ref={mapContainer} />;
 };

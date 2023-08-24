@@ -7,9 +7,7 @@ import MessageList from "./MessageList";
 import DeleteModal from "./DeleteModal";
 // 파이어베이서 파일에서 import 해온 db
 
-// db에 접근해서 데이터를 꺼내게 도와줄 친구들
 import { collection, getDocs, DocumentData, addDoc } from "firebase/firestore";
-import { Img } from "../common/Img";
 
 const GuestbookContainer = styled.div`
   position: relative;
@@ -21,21 +19,21 @@ const GuestbookContainer = styled.div`
 const GuestbookBox = styled(CenterAlign)`
   margin-top: 20px;
   max-width: 600px;
-  z-index: 999;
+  z-index: 990;
 `;
 
 const WomanImg = styled.img`
+  width: 50%;
   position: absolute;
-  bottom: 10%;
-  left: 27%;
-  width: 15%;
+  bottom: 0;
+  left: -200px;
 `;
 
 const ManImg = styled.img`
+  width: 50%;
   position: absolute;
-  bottom: 10%;
-  right: 29%;
-  width: 15%;
+  bottom: 0;
+  right: -195px;
 `;
 
 const Guestbook: React.FC = () => {
@@ -96,8 +94,22 @@ const Guestbook: React.FC = () => {
 
   return (
     <GuestbookContainer>
+      {isDeleteModalOpen && (
+        <DeleteModal
+          selectedMessageId={selectedMessageId}
+          setEditingPassword={setEditingPassword}
+          handleCancelDelete={handleCancelDelete}
+          setIsDeleteModalOpen={setIsDeleteModalOpen}
+          messages={messages}
+          editingPassword={editingPassword}
+          setMessages={setMessages}
+          // handleConfirmDelete={handleConfirmDelete}
+        />
+      )}
       <GuestbookBox>
+        <WomanImg src={`${process.env.PUBLIC_URL}/images/letterAiwoman.png`} />
         {/* 방명록 작성 폼 */}
+
         <GuestbookForm
           // onAddEntry={handleAddEntry}
           createUsers={createUsers}
@@ -120,21 +132,8 @@ const Guestbook: React.FC = () => {
           // fetchMessages={fetchMessages}
         />
         {/* 삭제 모달창  */}
-        {isDeleteModalOpen && (
-          <DeleteModal
-            selectedMessageId={selectedMessageId}
-            setEditingPassword={setEditingPassword}
-            handleCancelDelete={handleCancelDelete}
-            setIsDeleteModalOpen={setIsDeleteModalOpen}
-            messages={messages}
-            editingPassword={editingPassword}
-            setMessages={setMessages}
-            // handleConfirmDelete={handleConfirmDelete}
-          />
-        )}
+        <ManImg src={`${process.env.PUBLIC_URL}/images/letterAiman.png`} />
       </GuestbookBox>
-      <WomanImg src={`${process.env.PUBLIC_URL}/images/letterAiwoman.png`} />
-      <ManImg src={`${process.env.PUBLIC_URL}/images/letterAiman.png`} />
     </GuestbookContainer>
   );
 };

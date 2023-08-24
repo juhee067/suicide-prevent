@@ -4,7 +4,6 @@ import InputField from "../components/Letter/InputField";
 import { FlexRowDiv } from "../module/styled/FlexDiv";
 
 const FormContainer = styled.div`
-  max-width: 600px;
   margin: 0 auto 20px;
   padding: 15px 20px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};

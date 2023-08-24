@@ -14,6 +14,10 @@ const InfoWrapper = styled.div`
 `;
 
 const InformationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 100px;
   margin: 52px auto 0;
   width: 100%;
@@ -22,6 +26,7 @@ const InformationContainer = styled.div`
 `;
 
 const TitleBox = styled(FlexRowDiv)`
+  width: 100%;
   padding: 15px;
   align-items: center;
   justify-content: space-between;

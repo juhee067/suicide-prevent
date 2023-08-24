@@ -155,7 +155,9 @@ const Information = () => {
             <CenterBtnBox>
               {centerData.map((item) => {
                 return (
-                  <CenterBtn onClick={() => handlePhoneAction(item.number)}>{item.title}</CenterBtn>
+                  <CenterBtn key={item.id} onClick={() => handlePhoneAction(item.number)}>
+                    {item.title}
+                  </CenterBtn>
                 );
               })}
             </CenterBtnBox>

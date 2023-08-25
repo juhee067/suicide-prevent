@@ -162,7 +162,7 @@ const MessageList: React.FC<MessageListProps> = ({
     <MessageListBox>
       {messages.length
         ? messages.reverse().map((message: Message) => (
-            <MessageItem>
+            <MessageItem key={message.id}>
               <UserContent>
                 {renderMessageContent(message)}
                 <PostTime>{displayCreatedAt(message.createdAt)}</PostTime>

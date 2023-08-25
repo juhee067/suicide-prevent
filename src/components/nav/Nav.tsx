@@ -36,9 +36,8 @@ const MovePage = styled(Link)`
   text-decoration: none;
 
   &.active {
-    //선택된 Tabmenu 에만 적용되는 CSS를 구현
-    background-color: #202020;
-    color: #fff;
+    background-color: ${({ theme }) => theme.color.mainBlack};
+    color: ${({ theme }) => theme.color.mainWhite};
   }
 
   &:hover {

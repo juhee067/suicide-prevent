@@ -24,7 +24,7 @@ const Input = styled.input`
   }
 `;
 
-const Label = styled.label<{ focused: boolean }>`
+const Label = styled.label<{ focused?: string }>`
   position: absolute;
   left: 10px;
   top: ${({ focused }) => (focused ? "-30%" : "50%")};
@@ -54,7 +54,7 @@ const InputField: React.FC<InputFieldProps> = ({
   focused,
 }) => (
   <Inner>
-    <Label htmlFor={type} focused={focused}>
+    <Label htmlFor={type} focused={value.toString()}>
       {label}
     </Label>
     <Input type={type} id={type} value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur} />

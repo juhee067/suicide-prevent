@@ -7,9 +7,6 @@ import { Paragraph } from "../../module/styled/styledSpanagraph";
 import Icon from "./Icon";
 
 const IndicatorBox = styled(FlexColumnDiv)`
-  position: absolute;
-  bottom: 40px;
-  width: 100px;
   text-align: center;
   cursor: pointer;
 `;

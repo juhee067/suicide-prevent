@@ -161,7 +161,7 @@ const MessageList: React.FC<MessageListProps> = ({
   return (
     <MessageListBox>
       {messages.length
-        ? messages.reverse().map((message: Message) => (
+        ? messages.map((message: Message) => (
             <MessageItem key={message.id}>
               <UserContent>
                 {renderMessageContent(message)}

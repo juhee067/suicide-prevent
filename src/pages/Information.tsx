@@ -141,7 +141,7 @@ const Information = () => {
               </Desc>
             </SubTitleBox>
             <AiBox>
-              <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="55%" />
+              <Img src={`${process.env.PUBLIC_URL}/images/infoMapAi.png`} width="55%" />
             </AiBox>
             <DemandBox>
               <Caption>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
@@ -10,7 +10,15 @@ import Card from "./Card";
 import TestContent from "./TestContent";
 import ModalBackdrop from "../common/Backdrop";
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1000;
+`;
 
 const ModalView = styled(FlexColumnCenterDiv)`
   padding: 100px 40px;
@@ -162,7 +170,6 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
               <H2>
                 {ScoreStandard()}({calculateResult()}점)
               </H2>
-
               <Paragraph>하단의 설명을 확인하세요</Paragraph>
               <ResetButton onClick={resetTest}>다시 테스트하기</ResetButton>
             </ResultBox>

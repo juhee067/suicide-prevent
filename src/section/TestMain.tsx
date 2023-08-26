@@ -33,12 +33,6 @@ const Content = styled(Paragraph)`
   background-color: ${({ theme }) => theme.color.mainWhite};
 `;
 
-const ScrollDownBox = styled.div`
-  position: absolute;
-  bottom: 5%;
-  left: 5%;
-`;
-
 const ImgBox = styled.div`
   display: flex;
   justify-content: center;
@@ -47,9 +41,11 @@ const ImgBox = styled.div`
   width: 369px;
   height: 404px;
 `;
+const IndicatorBox = styled.div``;
 
 const TestBtn = styled(Btn)`
   padding: 15px 50px;
+  margin-bottom: 20px;
   width: 200px;
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   background-color: ${({ theme }) => theme.color.mainWhite};
@@ -91,8 +87,10 @@ const TestMain = ({ onMoveToFunctionCard }: TestMainProps) => {
         <ImgBox>
           <Img src={`${process.env.PUBLIC_URL}/images/testAi.png`} width="90%" height="90%" />
         </ImgBox>
-        <TestBtn onClick={openModal}>진단하기</TestBtn>{" "}
-        <ScrollIndicator onClick={() => onMoveToFunctionCard()}>하단 설명보기</ScrollIndicator>
+        <IndicatorBox>
+          <TestBtn onClick={openModal}>진단하기</TestBtn>{" "}
+          <ScrollIndicator onClick={() => onMoveToFunctionCard()}>하단 설명보기</ScrollIndicator>
+        </IndicatorBox>
       </Container>
     </TestMainSection>
   );

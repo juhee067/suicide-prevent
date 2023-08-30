@@ -8,6 +8,12 @@ export const H1 = styled.span`
 export const H2 = styled.span`
   font-size: 3.2rem;
   font-weight: 600;
+  @media screen and (max-width: 480px) {
+    font-size: 2rem;
+  }
+  @media screen and (max-width: 375px) {
+    font-size: 1.7rem;
+  }
 `;
 
 export const H3 = styled.span`
@@ -42,6 +48,9 @@ export const Btn = styled.button`
 export const Paragraph = styled.p`
   font-size: 1.6rem;
   font-weight: 400;
+  @media screen and (max-width: 375px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const Description = styled.p`

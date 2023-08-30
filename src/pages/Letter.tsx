@@ -5,7 +5,6 @@ import Guestbook from "../components/Letter/Guestbook";
 const Letter = () => {
   return (
     <>
-      <Door width="15%" />
       <Guestbook />
     </>
   );

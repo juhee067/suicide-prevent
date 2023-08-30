@@ -31,11 +31,27 @@ const ModalView = styled(FlexColumnCenterDiv)`
   border-radius: 20px;
   overflow: hidden;
   background-color: ${({ theme }) => theme.color.mainWhite};
+  @media screen and (max-width: 1024px) {
+    width: 80%;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 60px 10px;
+  }
+
+  @media screen and (max-width: 375px) {
+    padding: 50px 10px;
+    width: 80%;
+    height: 50%;
+  }
 `;
 
 const ContentBox = styled(FlexColumnCenterDiv)<{ active: number }>`
   gap: ${({ active }) => (active === QuestionData.length ? "0" : "30px")};
   width: 100%;
+
+  @media screen and (max-width: 375px) {
+    gap: ${({ active }) => (active === QuestionData.length ? "0" : "10px")};
+  }
 `;
 
 const CloseModal = styled(Icon)`
@@ -46,9 +62,25 @@ const CloseModal = styled(Icon)`
   cursor: pointer;
 `;
 
-const Title = styled(H2)``;
+const Title = styled(H2)`
+  @media screen and (max-width: 768px) {
+    font-size: 2.2rem;
+  }
+  @media screen and (max-width: 375px) {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+`;
 
-const Order = styled(H2)``;
+const Order = styled(H2)`
+  @media screen and (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+  @media screen and (max-width: 375px) {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+`;
 
 const GaugeBox = styled.div`
   width: 70%;
@@ -66,6 +98,9 @@ const GaugeBar = styled.div<GaugeBarProps>`
 
 const ResultBox = styled(FlexColumnCenterDiv)`
   gap: 30px;
+  @media screen and (max-width: 375px) {
+    gap: 20px;
+  }
 `;
 
 const ResetButton = styled(Btn)`

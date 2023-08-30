@@ -12,11 +12,13 @@ const IndicatorBox = styled(FlexColumnDiv)`
 `;
 
 const Description = styled(Paragraph)`
-  margin-bottom: 5px;
+  @media screen and (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const MotionBox = styled.div`
-  height: 30px;
+  height: 20px;
 `;
 
 const scrollAnimation = keyframes`

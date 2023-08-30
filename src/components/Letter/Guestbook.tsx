@@ -11,29 +11,50 @@ import { collection, getDocs, DocumentData, addDoc } from "firebase/firestore";
 
 const GuestbookContainer = styled.div`
   position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 52px auto 0;
   margin-top: 52px;
   height: calc(100vh - 52px);
   border-radius: 5px;
 `;
 
 const GuestbookBox = styled(CenterAlign)`
+  width: 50%;
   margin-top: 20px;
-  max-width: 600px;
-  z-index: 990;
+  background-color: #ff0;
+  @media screen and (max-width: 480px) {
+    width: 70%;
+  }
 `;
 
 const WomanImg = styled.img`
-  width: 50%;
+  width: 100%;
+  max-width: 220px;
   position: absolute;
-  bottom: 0;
-  left: -200px;
+  bottom: 10%;
+  left: -45%;
+  @media screen and (max-width: 900px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const ManImg = styled.img`
-  width: 50%;
+  width: 100%;
+  max-width: 220px;
   position: absolute;
-  bottom: 0;
-  right: -195px;
+  bottom: 10%;
+  right: -45%;
+
+  @media screen and (max-width: 900px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const Guestbook: React.FC = () => {

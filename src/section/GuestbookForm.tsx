@@ -9,6 +9,9 @@ const FormContainer = styled.div`
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.mainWhite};
+  @media screen and (max-width: 480px) {
+    padding: 15px 12px;
+  }
 `;
 
 const Title = styled.div`
@@ -16,6 +19,10 @@ const Title = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 30px;
+  @media screen and (max-width: 480px) {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
 `;
 
 const Form = styled.form`
@@ -48,10 +55,15 @@ const TextArea = styled.textarea`
   &:focus {
     border-color: ${({ theme }) => theme.color.mainBlack}; /* 포커스된 상태일 때의 선 색상 변경 */
   }
+  @media screen and (max-width: 480px) {
+    padding: 5px;
+    height: 40px;
+    font-size: 1rem;
+  }
 `;
 
 const Button = styled.button`
-  width: 20%;
+  width: 100px;
   padding: 10px 15px;
   font-size: 1.3rem;
   margin: 0 auto;
@@ -60,6 +72,15 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    font-size: 1.1rem;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 5px 10px;
+    width: 60px;
+    font-size: 1rem;
+  }
 `;
 
 interface FormProps {

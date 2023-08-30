@@ -10,6 +10,15 @@ const AnswerBtn = styled(Btn)`
     background-color: ${({ theme }) => theme.color.SubGray};
     color: ${({ theme }) => theme.color.mainWhite};
   }
+  @media screen and (max-width: 375px) {
+    padding: 5px;
+    font-size: 1.2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.3rem;
+    padding: 7px;
+  }
 `;
 
 interface AnswerButtonProps {

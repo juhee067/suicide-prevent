@@ -6,30 +6,55 @@ import { Description, H2, HighlightText, Paragraph, Subtitle } from "../module/s
 const Wrapper = styled(FlexColumnDiv)`
   padding: 100px 0;
   justify-content: space-between;
-  height: 100vh;
   letter-spacing: 0.0125em;
+
+  @media screen and (max-width: 480px) {
+    padding: 0;
+  }
 `;
 
 const QuestWrapper = styled.div`
-  margin: 0 auto;
+  margin: 0 auto 100px;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
+
+  @media screen and (max-width: 1024px) {
+    text-align: center;
+  }
+
+  @media screen and (max-width: 480px) {
+    margin: 50px auto 50px;
+  }
 `;
 
 const QuestBox = styled(FlexRowDiv)`
+  padding: 20px;
   justify-content: space-between;
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+  }
 `;
 
 const ContentBox = styled(FlexColumnDiv)`
   gap: 15px;
-
-  > :first-child {
-    margin-bottom: 20px;
+  @media screen and (max-width: 1024px) {
+    margin-top: 20px;
+  }
+  @media screen and (max-width: 480px) {
+    gap: 10px;
+    > * {
+      font-size: 1.2rem;
+      line-height: 1.3;
+    }
   }
 `;
 
 const Content = styled(Paragraph)`
-  font-size: 1.8rem;
+  font-size: 2rem;
+  @media screen and (max-width: 480px) {
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
 `;
 
 const ResultWrapper = styled.div`
@@ -39,10 +64,13 @@ const ResultWrapper = styled.div`
 `;
 
 const ResultBox = styled(FlexRowDiv)`
+  width: 100%;
+  max-width: 1200px;
   flex-wrap: wrap;
   margin: 0 auto;
-  width: 100%;
-  max-width: 1000px;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const ResultContent = styled(FlexColumnDiv)`
@@ -51,20 +79,37 @@ const ResultContent = styled(FlexColumnDiv)`
   height: 400px;
   justify-content: space-between;
   border-left: 2px solid ${({ theme }) => theme.color.mainBlack};
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 300px;
+    border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
+    border-left: 0;
+  }
+  @media screen and (max-width: 375px) {
+    height: 200px;
+    padding: 20px;
+  }
 `;
 
 const Result = styled.div``;
 
 const Score = styled(H2)`
-  font-weight: 900;
+  font-weight: 700;
+  @media screen and (max-width: 375px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const Title = styled(HighlightText)`
   font-weight: 400;
   margin-top: 20px;
+  @media screen and (max-width: 375px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const Des = styled(Description)`
+  font-size: 1.5rem;
   line-height: 1.3;
   word-break: keep-all;
 `;
@@ -75,6 +120,7 @@ type Data = {
   title: string;
   des: string;
 };
+
 const testResultData: Data[] = [
   {
     id: 0,
@@ -96,15 +142,17 @@ const testResultData: Data[] = [
     des: "심한 수준의 우울감이 시사됩니다. 전문가의 치료적 개입과 평가가 요구됩니다.",
   },
 ];
+
 interface PositionProps {
   moveScrollPosition: React.MutableRefObject<HTMLDivElement | null>;
 }
+
 const TestResult = ({ moveScrollPosition }: PositionProps) => {
   return (
     <Wrapper ref={moveScrollPosition}>
       <QuestWrapper>
         <QuestBox>
-          <H2>많이 힘들었을 당신은 지금,</H2>
+          <H2>많이 힘들었을 당신은</H2>
           <ContentBox>
             <Subtitle>우울증 자가진단 테스트 후에 복잡한 생각이 든다면 지금,</Subtitle>
             <Content>오늘만큼은 내가 좋아하는 일 혹은 내 마음의 에너지를 채울 수 있는 일들로 </Content>

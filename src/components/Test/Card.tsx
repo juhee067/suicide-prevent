@@ -12,6 +12,13 @@ const DescBox = styled.div`
   width: 70%;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
+  line-height: 1.5;
+  @media screen and (max-width: 768px) {
+    padding: 30px;
+  }
+  @media screen and (max-width: 375px) {
+    padding: 20px;
+  }
 `;
 
 const SelectBox = styled.div`
@@ -23,6 +30,14 @@ const SelectBox = styled.div`
 
   > * {
     flex: 1;
+  }
+  @media screen and (max-width: 480px) {
+    width: 70%;
+    gap: 10px;
+  }
+  @media screen and (max-width: 375px) {
+    width: 70%;
+    gap: 10px;
   }
 `;
 

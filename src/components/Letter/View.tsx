@@ -17,6 +17,9 @@ const UserBox = styled(FlexRowDiv)`
 const UserTitle = styled.div`
   font-size: 1.2rem;
   font-weight: 700;
+  @media screen and (max-width: 480px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const UserActions = styled(FlexRowDiv)`
@@ -31,6 +34,9 @@ const UserMessage = styled(Paragraph)`
   line-height: 1.2;
   font-size: 1.5rem;
   font-weight: 300;
+  @media screen and (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
 
 interface ViewProps {

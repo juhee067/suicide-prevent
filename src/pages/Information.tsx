@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
-import { Btn, Caption, H2, H3, Paragraph } from "../module/styled/styledSpanagraph";
+import { Btn, Caption, H2, H3, Paragraph } from "../module/styled/styledFont";
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 import Map from "../components/info/Map";

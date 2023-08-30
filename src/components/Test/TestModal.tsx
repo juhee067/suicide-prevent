@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
-import { Btn, H2, Paragraph } from "../../module/styled/styledSpanagraph";
+import { Btn, H2, Paragraph } from "../../module/styled/styledFont";
 import { QuestionData } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
 import Card from "./Card";

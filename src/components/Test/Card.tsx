@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
-import { Paragraph } from "../../module/styled/styledSpanagraph";
+import { Paragraph } from "../../module/styled/styledFont";
 import AnswerButton from "./AnswerButton";
 
 const CardBox = styled(FlexColumnCenterDiv)``;

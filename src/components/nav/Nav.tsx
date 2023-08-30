@@ -21,6 +21,9 @@ const NavWrapper = styled(FlexRowCenterDiv)`
     align-items: center;
     padding: 10px;
   }
+  @media screen and (max-width: 375px) {
+    padding: 0;
+  }
 `;
 
 const Menus = styled(FlexRowDiv)`
@@ -30,7 +33,6 @@ const Menus = styled(FlexRowDiv)`
 
 const MovePage = styled(Link)`
   padding: 15px 20px;
-
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   cursor: pointer;
   text-decoration: none;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Btn } from "../../module/styled/styledSpanagraph";
+import { Btn } from "../../module/styled/styledFont";
 const AnswerBtn = styled(Btn)`
   border: 1px solid ${({ theme }) => theme.color.mainGray};
   border-radius: 5px;

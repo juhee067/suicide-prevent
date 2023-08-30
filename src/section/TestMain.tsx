@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Door from "../components/common/Door";
 import { Img } from "../components/common/Img";
 import { FlexColumnCenterDiv } from "../module/styled/FlexDiv";
-import { Btn, H2, Paragraph } from "../module/styled/styledSpanagraph";
+import { Btn, H2, Paragraph, Title } from "../module/styled/styledFont";
 import TestModal from "../components/Test/TestModal";
 import ScrollIndicator from "../components/common/ScrollIndicator";
 
@@ -15,51 +15,46 @@ const TestMainWrapper = styled.div`
 `;
 
 const TestMainSection = styled.div`
-  padding: 0 20px;
   width: 100%;
   max-width: 1200px;
   position: relative;
-  margin: 52px 0 0;
+  padding: 152px 20px 100px;
+  @media screen and (max-width: 1440px) {
+    padding: 100px 20px 50px;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 120px 20px 30px;
+  }
+  @media screen and (max-width: 375px) {
+    padding: 20px;
+  }
+  @media screen and (max-width: 320px) {
+    padding: 0;
+  }
 `;
 
 const Container = styled(FlexColumnCenterDiv)`
-  margin: 0 auto;
-  height: calc(100vh - 52px);
+  font-family: KyoboHandwriting2022khn;
   gap: 30px;
   @media screen and (max-width: 480px) {
     height: 600px;
   }
 `;
 
-const TestTitle = styled(H2)`
-  padding: 5px 0;
-  background-color: ${({ theme }) => theme.color.mainWhite};
-  @media screen and (max-width: 480px) {
-    font-size: 1.7rem;
-  }
-`;
+const TestTitle = styled(Title)``;
 
 const ContentBox = styled.div`
   letter-spacing: 0.05em;
   line-height: 1.5;
 `;
 
-const Content = styled(Paragraph)`
-  background-color: ${({ theme }) => theme.color.mainWhite};
-  @media screen and (max-width: 480px) {
-    font-size: 1.3rem;
-  }
-`;
+const Content = styled(Paragraph)``;
 
 const ImgBox = styled.div`
   width: 305px;
   height: 305px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  @media screen and (max-width: 480px) {
-    margin: 10px auto;
+  @media screen and (max-width: 768px) {
     width: 205px;
     height: 205px;
   }
@@ -67,32 +62,16 @@ const ImgBox = styled.div`
 const IndicatorBox = styled.div``;
 
 const TestBtn = styled(Btn)`
-  padding: 15px 50px;
   margin-bottom: 50px;
-  width: 200px;
-  border: 1px solid ${({ theme }) => theme.color.mainBlack};
-  background-color: ${({ theme }) => theme.color.mainWhite};
-  color: ${({ theme }) => theme.color.mainWhite};
-  font-weight: 500;
-  background-color: ${({ theme }) => theme.color.mainBlack};
-  transition: background-color 0.3s ease-in-out;
-  cursor: pointer;
-  border-radius: 100px;
-  &:hover {
-    background-color: ${({ theme }) => theme.color.mainBlack};
-  }
-
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     margin-bottom: 30px;
-    padding: 12px 20px;
-    width: 120px;
-    font-size: 1.2rem;
   }
 `;
 
 interface TestMainProps {
   onMoveToFunctionCard: () => void;
 }
+
 const TestMain = ({ onMoveToFunctionCard }: TestMainProps) => {
   const [isOpen, setIsOpen] = useState(false);
 

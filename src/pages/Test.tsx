@@ -40,7 +40,7 @@ const Wrapper = styled.div`
 `;
 
 const TestBox = styled.div`
-  padding: 30px 0;
+  padding: 20px 0;
   margin: 0 auto;
   height: 100vh;
 `;

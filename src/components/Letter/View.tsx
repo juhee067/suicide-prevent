@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Paragraph } from "../../module/styled/styledSpanagraph";
+import { Paragraph } from "../../module/styled/styledFont";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { Message } from "../../module/MessageType";
 

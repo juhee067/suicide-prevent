@@ -6,13 +6,14 @@ import { Img } from "../components/common/Img";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { Btn, H2, Paragraph } from "../module/styled/styledFont";
 
 const MainWrapper = styled.div`
-  margin: 0 auto;
   position: relative;
+  align-items: center;
   width: 100%;
-  height: 100vh;
   max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const BlackBox = styled.div<OpacityProps>`
@@ -27,20 +28,24 @@ const BlackBox = styled.div<OpacityProps>`
 `;
 
 const MainContentBox = styled.div`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 52px 30px 0;
-  box-sizing: border-box;
+  padding: 152px 20px 100px;
   font-family: KyoboHandwriting2022khn;
-  @media screen and (max-width: 1024px) {
-    padding: 70px 30px 0;
+
+  @media screen and (max-width: 1440px) {
+    padding: 110px 20px 10px;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 120px 20px 30px;
+  }
+  @media screen and (max-width: 320px) {
+    padding: 100px 20px 30px;
   }
 `;
 
 const MainContent = styled(FlexRowDiv)`
   justify-content: space-between;
-  @media screen and (max-width: 1000px) {
+
+  @media screen and (max-width: 768px) {
     gap: 30px;
     text-align: center;
     align-items: center;
@@ -49,35 +54,35 @@ const MainContent = styled(FlexRowDiv)`
 `;
 
 const TitleBox = styled(FlexColumnDiv)`
-  font-size: 8rem;
+  margin-right: 50px;
   font-weight: 900;
-  @media screen and (max-width: 1000px) {
-    font-size: 7rem;
+
+  @media screen and (max-width: 768px) {
+    margin-right: 0;
   }
-  @media screen and (max-width: 540px) {
+`;
+
+const Comment = styled.div`
+  font-size: 8rem;
+
+  @media screen and (max-width: 1024px) {
+    font-size: 6.5rem;
+  }
+
+  @media screen and (max-width: 768px) {
     font-size: 4rem;
   }
 `;
 
-const Comment = styled.div``;
-
 const LetterBox = styled.div`
   margin-top: 10px;
-  font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0.04rem;
   line-height: 1.2;
-  @media screen and (max-width: 1000px) {
-    font-size: 1.8rem;
-  }
-  @media screen and (max-width: 540px) {
-    font-size: 1.5rem;
-  }
 `;
 
-const LetterPargraph = styled.div`
+const LetterPargraph = styled(Paragraph)`
   margin-bottom: 8px;
-  color: ${({ theme }) => theme.color.mainBlack};
 `;
 
 const PointBox = styled.div`
@@ -85,45 +90,25 @@ const PointBox = styled.div`
   font-weight: 700;
 `;
 
-const LetterPargraphPoint = styled.div`
+const LetterPargraphPoint = styled(Paragraph)`
   margin-bottom: 8px;
-  color: ${({ theme }) => theme.color.mainBlack};
 `;
 
 const Title = styled.div``;
 
-const LetterBtn = styled(Link)`
+const LetterBtn = styled(Btn)`
   display: block;
-  margin: 70px auto 100px;
-  padding: 20px 25px;
-  width: 250px;
-  border: 1px solid ${({ theme }) => theme.color.mainBlack};
-  border-radius: 100px;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 500;
-  color: ${({ theme }) => theme.color.mainWhite};
-  background-color: ${({ theme }) => theme.color.mainBlack};
+  margin: 65px auto 25px;
   transition: background-color 0.3s ease-in-out;
-  cursor: pointer;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.color.hover};
-  }
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1200px) {
     margin: 70px auto 30px;
-    font-size: 1.8rem;
   }
   @media screen and (max-width: 768px) {
     margin: 40px auto 30px;
-    width: 200px;
-    font-size: 1.5rem;
   }
   @media screen and (max-width: 540px) {
     margin: 20px auto 30px;
-    padding: 10px 15px;
-    width: 140px;
-    font-size: 1.3rem;
   }
 `;
 
@@ -205,7 +190,9 @@ const Main = () => {
             </PointBox>
           </LetterBox>
         </MainContent>
-        <LetterBtn to="/letter">{messagesCount}개의 응원메세지</LetterBtn>
+        <LetterBtn>
+          <Link to="/letter">{messagesCount}개의 응원메세지</Link>
+        </LetterBtn>
         <MainBg>
           <Img src={`${process.env.PUBLIC_URL}/images/mainBg.png`} />
         </MainBg>

@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 
 import { BsChevronDown } from "react-icons/bs";
 import { FlexColumnDiv } from "../../module/styled/FlexDiv";
-import { Paragraph } from "../../module/styled/styledSpanagraph";
+import { Paragraph } from "../../module/styled/styledFont";
 import Icon from "./Icon";
 
 const IndicatorBox = styled(FlexColumnDiv)`

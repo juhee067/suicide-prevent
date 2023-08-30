@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { CenterAlign } from "../../module/styled/CenterAlignment";
 import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
-import { Paragraph } from "../../module/styled/styledSpanagraph";
+import { Paragraph } from "../../module/styled/styledFont";
 import { DocumentData, doc, deleteDoc, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 

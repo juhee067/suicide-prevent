@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
-import { Description, H2, HighlightText, Paragraph, Subtitle } from "../module/styled/styledSpanagraph";
+import { Description, H2, HighlightText, Paragraph, Subtitle, Title } from "../module/styled/styledFont";
 
 const Wrapper = styled(FlexColumnDiv)`
   padding: 100px 0;
@@ -27,20 +27,19 @@ const QuestWrapper = styled.div`
   }
 `;
 
-const QuestBox = styled(FlexRowDiv)`
+const QuestBox = styled(FlexColumnDiv)`
   padding: 20px;
-  justify-content: space-between;
-  @media screen and (max-width: 1024px) {
-    flex-direction: column;
-  }
+  align-items: center;
+  text-align: center;
+  font-family: KyoboHandwriting2022khn;
 `;
 
 const ContentBox = styled(FlexColumnDiv)`
+  margin-top: 50px;
   gap: 15px;
-  @media screen and (max-width: 1024px) {
-    margin-top: 20px;
-  }
+
   @media screen and (max-width: 480px) {
+    margin-top: 30px;
     gap: 10px;
     > * {
       font-size: 1.2rem;
@@ -81,26 +80,25 @@ const ResultContent = styled(FlexColumnDiv)`
   border-left: 2px solid ${({ theme }) => theme.color.mainBlack};
   @media screen and (max-width: 768px) {
     width: 100%;
-    height: 300px;
+    height: 200px;
     border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
     border-left: 0;
   }
   @media screen and (max-width: 375px) {
-    height: 200px;
     padding: 20px;
   }
 `;
 
 const Result = styled.div``;
 
-const Score = styled(H2)`
+const Score = styled(Title)`
   font-weight: 700;
   @media screen and (max-width: 375px) {
     font-size: 1.5rem;
   }
 `;
 
-const Title = styled(HighlightText)`
+const ScoreTitle = styled(HighlightText)`
   font-weight: 400;
   margin-top: 20px;
   @media screen and (max-width: 375px) {
@@ -152,7 +150,7 @@ const TestResult = ({ moveScrollPosition }: PositionProps) => {
     <Wrapper ref={moveScrollPosition}>
       <QuestWrapper>
         <QuestBox>
-          <H2>많이 힘들었을 당신은</H2>
+          <Title>많이 힘들었을 당신은,</Title>
           <ContentBox>
             <Subtitle>우울증 자가진단 테스트 후에 복잡한 생각이 든다면 지금,</Subtitle>
             <Content>오늘만큼은 내가 좋아하는 일 혹은 내 마음의 에너지를 채울 수 있는 일들로 </Content>
@@ -167,7 +165,7 @@ const TestResult = ({ moveScrollPosition }: PositionProps) => {
               <ResultContent key={index}>
                 <Result>
                   <Score>{data.score}</Score>
-                  <Title>{data.title}</Title>
+                  <ScoreTitle>{data.title}</ScoreTitle>
                 </Result>
                 <Des>{data.des}</Des>
               </ResultContent>

@@ -24,12 +24,15 @@ export const H3 = styled.span`
 
 export const Title = styled.span`
   font-size: 5rem;
+
   @media screen and (max-width: 1024px) {
     font-size: 4rem;
   }
+
   @media screen and (max-width: 768px) {
     font-size: 3rem;
   }
+
   @media screen and (max-width: 320px) {
     font-size: 2.5rem;
   }
@@ -121,4 +124,10 @@ export const HighlightText = styled.p<{ showUnderline?: boolean }>`
 export const MutedText = styled.p`
   font-size: 1.4rem;
   font-weight: 300;
+  @media screen and (max-width: 768px) {
+    font-size: 1.3rem;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 0.6rem;
+  }
 `;

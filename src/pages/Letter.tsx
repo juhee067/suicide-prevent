@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import Door from "../components/common/Door";
 import Guestbook from "../components/Letter/Guestbook";
 

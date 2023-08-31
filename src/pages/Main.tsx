@@ -99,7 +99,6 @@ const Title = styled.div``;
 const LetterBtn = styled(Btn)`
   display: block;
   margin: 65px auto 25px;
-  transition: background-color 0.3s ease-in-out;
 
   @media screen and (max-width: 1200px) {
     margin: 70px auto 30px;

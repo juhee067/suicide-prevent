@@ -92,6 +92,7 @@ const ResultContent = styled(FlexColumnDiv)`
 const Result = styled.div``;
 
 const Score = styled(Title)`
+  font-family: KyoboHandwriting2022khn;
   font-weight: 700;
   @media screen and (max-width: 375px) {
     font-size: 1.5rem;

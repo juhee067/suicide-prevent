@@ -4,7 +4,7 @@ import InputField from "../components/Letter/InputField";
 import { FlexRowDiv } from "../module/styled/FlexDiv";
 
 const FormContainer = styled.div`
-  margin: 0 auto 20px;
+  /* margin: 0 auto 20px; */
   padding: 15px 20px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 5px;
@@ -18,7 +18,7 @@ const Title = styled.div`
   text-align: center;
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   @media screen and (max-width: 480px) {
     font-size: 1.2rem;
     margin-bottom: 15px;
@@ -28,6 +28,7 @@ const Title = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  height: calc(100% - 35px);
 `;
 
 const UserInfo = styled(FlexRowDiv)`
@@ -38,17 +39,19 @@ const UserInfo = styled(FlexRowDiv)`
 const ContentBox = styled.div`
   position: relative;
   margin-bottom: 10px;
+  height: 100%;
 `;
 
 const TextArea = styled.textarea`
   padding: 10px;
   width: 100%;
-  height: 50px;
+  height: 100%;
   font-size: 1.3rem;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
   border-radius: 5px;
   resize: none;
   outline: none;
+
   &::placeholder {
     color: ${({ theme }) => theme.color.mainGray};
   }

@@ -10,7 +10,7 @@ import { db } from "../../firebaseConfig";
 
 const MessageListBox = styled.div`
   padding: 20px;
-  height: 430px;
+  height: 600px;
   border-radius: 5px;
   border: 2px solid ${({ theme }) => theme.color.MessageList};
   background-color: ${({ theme }) => theme.color.MessageListBg};

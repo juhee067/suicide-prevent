@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import SignIn from "../components/Auth/SignIn";
 import SignUp from "../components/Auth/SignUp";
 import { CenterAlign } from "../module/styled/CenterAlignment";
 
@@ -14,6 +13,7 @@ const AuthBox = styled(CenterAlign)`
   padding: 60px;
   max-width: 400px;
   text-align: center;
+  border-radius: 5px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 

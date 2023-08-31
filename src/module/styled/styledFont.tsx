@@ -24,7 +24,7 @@ export const H3 = styled.span`
 `;
 
 export const Title = styled.span`
-  font-size: 5rem;
+  font-size: 4.5rem;
   font-family: KyoboHandwriting2022khn;
   @media screen and (max-width: 1024px) {
     font-size: 4rem;
@@ -116,7 +116,7 @@ export const ErrorText = styled.p`
   color: ${({ theme }) => theme.color.mainGray};
 `;
 export const HighlightText = styled.span<{ showUnderline?: boolean }>`
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 600;
   text-decoration: ${(props) => (props.showUnderline ? "underline" : "none")};
   cursor: pointer;

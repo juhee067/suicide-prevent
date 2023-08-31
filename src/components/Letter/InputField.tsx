@@ -22,6 +22,7 @@ const Input = styled.input`
   &:hover {
     border: 1px solid ${({ theme }) => theme.color.mainBlack};
   }
+
   @media screen and (max-width: 480px) {
     height: 25px;
   }

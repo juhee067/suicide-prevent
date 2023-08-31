@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
 
 const Form = styled.form``;
@@ -9,24 +8,29 @@ const Form = styled.form``;
 const Input = styled.input`
   width: 100%;
   max-width: 400px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   padding: 15px 10px;
   border: none;
-  border: 1px solid ${({ theme }) => theme.color.mainBlack};
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.color.mainGray};
+  outline: none;
+  &::placeholder {
+    color: ${({ theme }) => theme.color.mainGray};
+  }
+  &:focus {
+    border-color: ${({ theme }) => theme.color.mainBlack}; /* 포커스된 상태일 때의 선 색상 변경 */
+  }
 `;
 
 const Idbox = styled.div`
   margin-top: 40px;
 `;
 
-const Passwordbox = styled.div`
-  margin-bottom: 20px;
-`;
+const Passwordbox = styled.div``;
 
-const ProcessBox = styled(FlexRowDiv)`
+const ProcessBox = styled.div`
   max-width: 400px;
   width: 100%;
-  justify-content: space-between;
   margin-bottom: 30px;
   font-size: 1.3rem;
 `;
@@ -34,6 +38,7 @@ const ProcessBox = styled(FlexRowDiv)`
 const CheckboxLabel = styled.label`
   display: flex;
   gap: 5px;
+  justify-content: center;
   align-items: center;
   cursor: pointer;
 `;
@@ -43,6 +48,7 @@ const CheckboxInput = styled.input``;
 const AutoLoginText = styled.div``;
 
 const Register = styled.div`
+  font-size: 1.2rem;
   cursor: pointer;
 `;
 
@@ -51,12 +57,15 @@ const SignUpBox = styled(HighlightText)`
   text-underline-offset: 4px;
 `;
 
-const LoginBtn = styled(Btn)``;
+const SignInBtn = styled(Btn)`
+  margin-bottom: 20px;
+`;
 
 const SignIn = ({ onLogin, onChange }: any) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+
   const handleCheckboxChange = () => {
     const newChecked = !isChecked;
     setIsChecked(newChecked);
@@ -70,6 +79,7 @@ const SignIn = ({ onLogin, onChange }: any) => {
       onLogin(username);
     }
   };
+
   return (
     <Form onSubmit={handleSubmit}>
       <Idbox>
@@ -77,7 +87,9 @@ const SignIn = ({ onLogin, onChange }: any) => {
           type="text"
           id="username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+            setUsername(e.target.value)
+          }
           placeholder="아이디"
         />
       </Idbox>
@@ -86,7 +98,9 @@ const SignIn = ({ onLogin, onChange }: any) => {
           type="password"
           id="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+            setPassword(e.target.value)
+          }
           placeholder="비밀번호"
         />
       </Passwordbox>
@@ -95,14 +109,14 @@ const SignIn = ({ onLogin, onChange }: any) => {
           <CheckboxInput type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
           <AutoLoginText>자동 로그인</AutoLoginText>
         </CheckboxLabel>
-        <Register>
-          <Link to="/auth">
-            회원이 아니신가요?
-            <SignUpBox showUnderline>회원가입</SignUpBox>
-          </Link>
-        </Register>
       </ProcessBox>
-      <LoginBtn type="submit">로그인</LoginBtn>
+      <SignInBtn type="submit">로그인</SignInBtn>
+      <Register>
+        <Link to="/auth">
+          회원이 아니신가요?
+          <SignUpBox showUnderline>회원가입</SignUpBox>
+        </Link>
+      </Register>
     </Form>
   );
 };

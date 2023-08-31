@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
 import {
+  Caption,
   Description,
   HighlightText,
   LinkForm,
@@ -105,10 +106,10 @@ const Score = styled(Title)`
   font-weight: 700;
 `;
 
-const ScoreTitle = styled(HighlightText)`
+const ScoreTitle = styled(Caption)`
+  display: flex;
   font-weight: 400;
   margin: 20px 0 30px;
-
   @media screen and (max-width: 375px) {
     font-size: 1.2rem;
   }
@@ -118,7 +119,7 @@ const Recommend = styled(LinkForm)`
   display: flex;
   align-items: center;
   width: 180px;
-  padding: 10px 15px;
+  padding: 12px 15px 10px;
   margin-bottom: 100px;
   background-color: ${({ theme }) => theme.color.mainBlack};
   color: ${({ theme }) => theme.color.mainWhite};

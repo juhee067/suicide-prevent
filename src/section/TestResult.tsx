@@ -1,7 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
-import { Description, H2, HighlightText, Paragraph, Subtitle, Title } from "../module/styled/styledFont";
+import {
+  Description,
+  HighlightText,
+  LinkForm,
+  Paragraph,
+  Subtitle,
+  Title,
+} from "../module/styled/styledFont";
+import { MdArrowRight } from "react-icons/md";
 
 const Wrapper = styled(FlexColumnDiv)`
   padding: 100px 0;
@@ -67,6 +76,7 @@ const ResultBox = styled(FlexRowDiv)`
   max-width: 1200px;
   flex-wrap: wrap;
   margin: 0 auto;
+
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
@@ -75,15 +85,15 @@ const ResultBox = styled(FlexRowDiv)`
 const ResultContent = styled(FlexColumnDiv)`
   padding: 20px;
   width: 30%;
-  height: 400px;
   justify-content: space-between;
   border-left: 2px solid ${({ theme }) => theme.color.mainBlack};
+
   @media screen and (max-width: 768px) {
     width: 100%;
-    height: 200px;
     border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
     border-left: 0;
   }
+
   @media screen and (max-width: 375px) {
     padding: 20px;
   }
@@ -92,19 +102,26 @@ const ResultContent = styled(FlexColumnDiv)`
 const Result = styled.div``;
 
 const Score = styled(Title)`
-  font-family: KyoboHandwriting2022khn;
   font-weight: 700;
-  @media screen and (max-width: 375px) {
-    font-size: 1.5rem;
-  }
 `;
 
 const ScoreTitle = styled(HighlightText)`
   font-weight: 400;
-  margin-top: 20px;
+  margin: 20px 0 30px;
+
   @media screen and (max-width: 375px) {
     font-size: 1.2rem;
   }
+`;
+
+const Recommend = styled(LinkForm)`
+  display: flex;
+  align-items: center;
+  width: 180px;
+  padding: 10px 15px;
+  margin-bottom: 100px;
+  background-color: ${({ theme }) => theme.color.mainBlack};
+  color: ${({ theme }) => theme.color.mainWhite};
 `;
 
 const Des = styled(Description)`
@@ -117,7 +134,9 @@ type Data = {
   id: number;
   score: string;
   title: string;
+  btn: string;
   des: string;
+  link: string;
 };
 
 const testResultData: Data[] = [
@@ -125,20 +144,26 @@ const testResultData: Data[] = [
     id: 0,
     score: "16점 이하",
     title: "없음",
+    btn: "",
     des: "유의한 수준의 우울감이 시사되지 않습니다.",
+    link: "",
   },
   {
     id: 1,
     score: "21 - 40점",
     title: "중증도 우울",
+    btn: "너에게 하고 싶은 말",
     des: "중간정도 수준의 우울감이 시사됩니다. 이러한 수준의 우울감은 흔히 신체적, 심리적 대처자원을 저하시키며 개인의 일상생활을 어렵게 만들기도 합니다. 전문가와 상담을 통하여 보다 상세한 평가와 도움을 받아보시기 바랍니다.",
+    link: "/letter",
   },
 
   {
     id: 2,
     score: "40 - 60점",
     title: "높은 우울",
+    btn: "센터 찾기",
     des: "심한 수준의 우울감이 시사됩니다. 전문가의 치료적 개입과 평가가 요구됩니다.",
+    link: "/information",
   },
 ];
 
@@ -167,6 +192,14 @@ const TestResult = ({ moveScrollPosition }: PositionProps) => {
                 <Result>
                   <Score>{data.score}</Score>
                   <ScoreTitle>{data.title}</ScoreTitle>
+                  {data.btn !== "" && (
+                    <Link to={data.link}>
+                      <Recommend>
+                        {data.btn}
+                        <MdArrowRight />
+                      </Recommend>
+                    </Link>
+                  )}
                 </Result>
                 <Des>{data.des}</Des>
               </ResultContent>

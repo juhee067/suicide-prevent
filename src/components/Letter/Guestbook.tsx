@@ -13,14 +13,13 @@ import { Title } from "../../module/styled/styledFont";
 const GuestbookContainer = styled(FlexColumnDiv)`
   position: relative;
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
   padding: 170px 100px;
   gap: 80px;
 
   @media screen and (max-width: 1680px) {
-    gap: 50px;
     padding: 150px 0;
+    gap: 50px;
   }
   @media screen and (max-width: 768px) {
     padding: 70px 0;
@@ -28,29 +27,29 @@ const GuestbookContainer = styled(FlexColumnDiv)`
   }
   @media screen and (max-width: 375px) {
     padding: 70px 0 0;
-    gap: 30px;
   }
   @media screen and (max-width: 320px) {
     padding: 70px 0 20px;
-    gap: 30px;
   }
 `;
 
 const LetterTitle = styled(Title)`
   text-align: center;
-  font-family: KyoboHandwriting2022khn;
 `;
 
 const GuestbookBox = styled.div`
   display: flex;
   margin: 0 auto;
   align-items: center;
+
   @media screen and (max-width: 768px) {
-    width: 80%;
+    width: 70%;
   }
+
   @media screen and (max-width: 480px) {
     width: 70%;
   }
+
   @media screen and (max-width: 375px) {
     width: 90%;
   }
@@ -59,6 +58,7 @@ const GuestbookBox = styled.div`
 const PostBox = styled(FlexRowDiv)`
   padding: 0 20px;
   gap: 20px;
+
   @media screen and (max-width: 1200px) {
     flex-direction: column;
   }

@@ -14,6 +14,7 @@ const NavWrapper = styled(FlexRowCenterDiv)`
   z-index: 1000;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-right: none;
+  border-left: 0;
   background-color: ${({ theme }) => theme.color.mainWhite};
 
   @media screen and (max-width: 768px) {
@@ -62,6 +63,8 @@ const IconBox = styled(FlexRowDiv)`
   }
 `;
 
+const Login = styled.div``;
+
 const Nav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
   const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
@@ -105,6 +108,10 @@ const Nav = () => {
         ))}
       </Menus>
       <IconBox>
+        <Login>
+          <Link to="/auth">Login</Link>
+        </Login>
+
         <FaRegWindowMinimize style={{ marginRight: "4px" }} />
         <FaRegWindowMaximize />
         <CgClose style={{ fontSize: "3rem" }} />

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import InputField from "../components/Letter/InputField";
 import { FlexRowDiv } from "../module/styled/FlexDiv";
+import { Btn } from "../module/styled/styledFont";
 
 const FormContainer = styled.div`
   /* margin: 0 auto 20px; */
@@ -65,7 +66,7 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Button = styled.button`
+const Button = styled(Btn)`
   width: 100px;
   padding: 10px 15px;
   font-size: 1.3rem;

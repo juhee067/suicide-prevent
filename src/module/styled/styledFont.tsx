@@ -6,12 +6,13 @@ export const H1 = styled.span`
 `;
 
 export const H2 = styled.span`
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-weight: 600;
 
   @media screen and (max-width: 1024px) {
     font-size: 1.75rem;
   }
+
   @media screen and (max-width: 768px) {
     font-size: 1.125rem;
   }
@@ -24,7 +25,7 @@ export const H3 = styled.span`
 
 export const Title = styled.span`
   font-size: 5rem;
-
+  font-family: KyoboHandwriting2022khn;
   @media screen and (max-width: 1024px) {
     font-size: 4rem;
   }
@@ -49,18 +50,18 @@ export const Caption = styled.span`
   line-height: 1.2;
 `;
 
-export const Link = styled.span`
+export const LinkForm = styled.span`
   font-size: 1.6rem;
   font-weight: 300;
 `;
 
 export const Btn = styled.button`
-  padding: 20px 50px;
+  padding: 14px 50px;
   font-size: 1.6rem;
   font-weight: 500;
   letter-spacing: 0.02rem;
   border: none;
-  border-radius: 30px;
+  border-radius: 5px;
   text-align: center;
   cursor: pointer;
   color: ${({ theme }) => theme.color.mainWhite};
@@ -114,7 +115,7 @@ export const ErrorText = styled.p`
   font-weight: 400;
   color: ${({ theme }) => theme.color.mainGray};
 `;
-export const HighlightText = styled.p<{ showUnderline?: boolean }>`
+export const HighlightText = styled.span<{ showUnderline?: boolean }>`
   font-size: 1.6rem;
   font-weight: 600;
   text-decoration: ${(props) => (props.showUnderline ? "underline" : "none")};

@@ -9,6 +9,9 @@ import Nav from "./components/nav/Nav";
 import Test from "./pages/Test";
 import Information from "./pages/Information";
 import Letter from "./pages/Letter";
+import Auth from "./pages/Auth";
+import SignUp from "./components/Auth/SignUp";
+import SignIn from "./components/Auth/SignIn";
 
 const App = React.memo(() => {
   const routes = [
@@ -16,6 +19,9 @@ const App = React.memo(() => {
     { path: "/letter", element: <Letter /> },
     { path: "/test", element: <Test /> },
     { path: "/information", element: <Information /> },
+    { path: "/auth", element: <Auth /> },
+    // { path: "/auth/signUp", element: <SignUp /> },
+    // { path: "/auth/signIn", element: <SignIn /> },
   ];
 
   return (

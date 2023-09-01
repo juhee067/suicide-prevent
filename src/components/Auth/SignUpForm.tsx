@@ -1,14 +1,14 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Btn, HighlightText, Paragraph } from "../../module/styled/styledFont";
 
 // 이메일 정규식 : 영문자와 숫자만
 const regexID = /^[a-zA-Z0-9]{3,16}$/;
 // 비밀번호 형식
-const regexPass = /^[a-zA-Z가-힣!@#$%^&*()_+|<>?:{}]*.{3,16}$/;
+const regexPass = /^[a-zA-Z가-힣!@#$%^&*()_+|<>?:{}]*.{5,16}$/;
 //  닉네임 형식
 const regexNickname = /^[가-힣a-zA-Z0-9]{2,10}$/;
 
@@ -73,7 +73,7 @@ const initialIdNotice = {
   message: "",
 };
 
-const SignUp = ({ onLogin, onChange }: any) => {
+const SignUpForm = ({ onLogin, onChange }: any) => {
   const [nickName, setNickName] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -81,6 +81,8 @@ const SignUp = ({ onLogin, onChange }: any) => {
   const [idNotice, setIdNotice] = useState(initialIdNotice);
   const [passNotice, setPassNotice] = useState(initialIdNotice);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   // nickname input 유효성 검사
   const onBlurNicknameHandler = async () => {
@@ -143,7 +145,7 @@ const SignUp = ({ onLogin, onChange }: any) => {
     const isValidPassword = regexPass.test(password);
     if (!isValidPassword) {
       setPassNotice({
-        message: "한글을 제외한 4 ~ 16자의 문자로 입력해야 합니다.",
+        message: "한글을 제외한 6 ~ 16자의 문자로 입력해야 합니다.",
         alert: false,
       });
       return;
@@ -166,15 +168,16 @@ const SignUp = ({ onLogin, onChange }: any) => {
     e.preventDefault();
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, userId, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, `${userId}@myapp.com`, password);
       const user = userCredential.user;
 
       // 사용자 정보를 Firestore에 저장
       await setDoc(doc(db, "nickName", user.uid), {
-        email: user.email,
+        email: `${userId}@myapp.com`,
         nickname: nickName,
       });
-
+      alert("회원가입이 완료되었습니다.");
+      navigate("/auth/signIn");
       console.log("회원가입 성공:", user);
       setError("");
       // 회원가입 성공 시에 원하는 동작을 추가해주세요.
@@ -232,13 +235,13 @@ const SignUp = ({ onLogin, onChange }: any) => {
       </Passwordbox>
       <SignUpBtn type="submit">회원가입</SignUpBtn>
       <Register>
-        <Link to="/auth">
+        <Link to="/auth/signIn">
           이미 회원이신가요?
-          <SigninBox showUnderline>로그인</SigninBox>
+          <SigninBox showunderline>로그인</SigninBox>
         </Link>
       </Register>
     </Form>
   );
 };
 
-export default SignUp;
+export default SignUpForm;

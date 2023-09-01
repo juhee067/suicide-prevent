@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { loginEmail, signupEmail } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
 
 const Form = styled.form``;
@@ -61,34 +62,40 @@ const SignInBtn = styled(Btn)`
   margin-bottom: 20px;
 `;
 
-const SignIn = ({ onLogin, onChange }: any) => {
-  const [username, setUsername] = useState("");
+const SignInForm = ({ onLogin, onChange }: any) => {
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleCheckboxChange = () => {
     const newChecked = !isChecked;
     setIsChecked(newChecked);
-    onChange(newChecked); // 부모 컴포넌트에 체크박스 상태 전달
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // 로그인 처리 로직을 여기에 추가
-    if (username && password) {
-      onLogin(username);
+    try {
+      const result = await loginEmail(`${userId}@myapp.com`, password);
+      const user = result.user;
+      console.log(user);
+      alert("로그인되었습니다.");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleLogin}>
       <Idbox>
         <Input
           type="text"
           id="username"
-          value={username}
+          value={userId}
           onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
-            setUsername(e.target.value)
+            setUserId(e.target.value)
           }
           placeholder="아이디"
         />
@@ -112,13 +119,13 @@ const SignIn = ({ onLogin, onChange }: any) => {
       </ProcessBox>
       <SignInBtn type="submit">로그인</SignInBtn>
       <Register>
-        <Link to="/auth">
+        <Link to="/auth/signUp">
           회원이 아니신가요?
-          <SignUpBox showUnderline>회원가입</SignUpBox>
+          <SignUpBox showunderline>회원가입</SignUpBox>
         </Link>
       </Register>
     </Form>
   );
 };
 
-export default SignIn;
+export default SignInForm;

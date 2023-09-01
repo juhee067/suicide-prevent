@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SignUp from "../components/Auth/SignUp";
+import SignInForm from "../components/Auth/SignInForm";
 import { CenterAlign } from "../module/styled/CenterAlignment";
 
 import { Title } from "../module/styled/styledFont";
@@ -22,16 +22,15 @@ const AuthTitle = styled(Title)`
   font-weight: 900;
 `;
 
-const Auth = () => {
+const SignIn = () => {
   return (
     <AuthWrapper>
       <AuthBox>
         <AuthTitle> Hello!-Help! GateKeeper </AuthTitle>
-        {/* <SignIn /> */}
-        <SignUp />
+        <SignInForm />
       </AuthBox>
     </AuthWrapper>
   );
 };
 
-export default Auth;
+export default SignIn;

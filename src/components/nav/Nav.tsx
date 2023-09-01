@@ -109,7 +109,7 @@ const Nav = () => {
       </Menus>
       <IconBox>
         <Login>
-          <Link to="/auth">Login</Link>
+          <Link to="/auth/signIn">Login</Link>
         </Login>
 
         <FaRegWindowMinimize style={{ marginRight: "4px" }} />

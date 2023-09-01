@@ -115,10 +115,10 @@ export const ErrorText = styled.p`
   font-weight: 400;
   color: ${({ theme }) => theme.color.mainGray};
 `;
-export const HighlightText = styled.span<{ showUnderline?: boolean }>`
+export const HighlightText = styled.span<{ showunderline?: boolean }>`
   font-size: 1.3rem;
   font-weight: 600;
-  text-decoration: ${(props) => (props.showUnderline ? "underline" : "none")};
+  text-decoration: ${(props) => (props.showunderline ? "underline" : "none")};
   cursor: pointer;
 `;
 

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
-import { Paragraph } from "../../module/styled/styledSpanagraph";
+import { Paragraph } from "../../module/styled/styledFont";
 import AnswerButton from "./AnswerButton";
 
 const CardBox = styled(FlexColumnCenterDiv)``;
@@ -12,6 +12,13 @@ const DescBox = styled.div`
   width: 70%;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
+  line-height: 1.5;
+  @media screen and (max-width: 768px) {
+    padding: 30px;
+  }
+  @media screen and (max-width: 375px) {
+    padding: 20px;
+  }
 `;
 
 const SelectBox = styled.div`
@@ -23,6 +30,14 @@ const SelectBox = styled.div`
 
   > * {
     flex: 1;
+  }
+  @media screen and (max-width: 480px) {
+    width: 70%;
+    gap: 10px;
+  }
+  @media screen and (max-width: 375px) {
+    width: 70%;
+    gap: 10px;
   }
 `;
 

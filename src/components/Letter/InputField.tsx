@@ -15,23 +15,30 @@ const Input = styled.input`
   background-color: ${({ theme }) => theme.color.mainWhite};
   border: 1px solid ${({ theme }) => theme.color.mainGray};
   color: ${({ theme }) => theme.color.mainBlack};
-  font-size: 16px;
+  font-size: 1rem;
   transition: all 0.3s;
   outline: none;
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.color.mainBlack};
   }
+
+  @media screen and (max-width: 480px) {
+    height: 25px;
+  }
 `;
 
-const Label = styled.label<{ focused: boolean }>`
+const Label = styled.label<{ focused?: string }>`
   position: absolute;
   left: 10px;
   top: ${({ focused }) => (focused ? "-30%" : "50%")};
   transform: translateY(-50%);
   transition: all 0.3s;
-  font-size: 11px;
+  font-size: 1.2rem;
   color: ${({ theme }) => theme.color.mainGray};
+  @media screen and (max-width: 480px) {
+    font-size: 0.5rem;
+  }
 `;
 
 interface InputFieldProps {
@@ -54,7 +61,7 @@ const InputField: React.FC<InputFieldProps> = ({
   focused,
 }) => (
   <Inner>
-    <Label htmlFor={type} focused={focused}>
+    <Label htmlFor={type} focused={value.toString()}>
       {label}
     </Label>
     <Input type={type} id={type} value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur} />

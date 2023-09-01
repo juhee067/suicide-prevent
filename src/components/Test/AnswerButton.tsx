@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Btn } from "../../module/styled/styledSpanagraph";
+import { Btn } from "../../module/styled/styledFont";
 const AnswerBtn = styled(Btn)`
   border: 1px solid ${({ theme }) => theme.color.mainGray};
   border-radius: 5px;
@@ -9,6 +9,15 @@ const AnswerBtn = styled(Btn)`
   &:hover {
     background-color: ${({ theme }) => theme.color.SubGray};
     color: ${({ theme }) => theme.color.mainWhite};
+  }
+  @media screen and (max-width: 375px) {
+    padding: 5px;
+    font-size: 1.2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.3rem;
+    padding: 7px;
   }
 `;
 

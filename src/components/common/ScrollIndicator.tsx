@@ -3,23 +3,22 @@ import styled, { keyframes } from "styled-components";
 
 import { BsChevronDown } from "react-icons/bs";
 import { FlexColumnDiv } from "../../module/styled/FlexDiv";
-import { Paragraph } from "../../module/styled/styledSpanagraph";
+import { Paragraph } from "../../module/styled/styledFont";
 import Icon from "./Icon";
 
 const IndicatorBox = styled(FlexColumnDiv)`
-  position: absolute;
-  bottom: 40px;
-  width: 100px;
   text-align: center;
   cursor: pointer;
 `;
 
 const Description = styled(Paragraph)`
-  margin-bottom: 5px;
+  @media screen and (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const MotionBox = styled.div`
-  height: 30px;
+  height: 20px;
 `;
 
 const scrollAnimation = keyframes`

@@ -15,18 +15,24 @@ const CardContainer = styled.div``;
 
 const LeftIcon = styled(Icon)`
   position: absolute;
-  top: 20%;
-  left: 0;
+  top: 15%;
+  left: 10px;
   font-size: 3rem;
   cursor: pointer;
+  @media screen and (max-width: 375px) {
+    font-size: 2rem;
+  }
 `;
 
 const RightIcon = styled(Icon)`
   position: absolute;
-  top: 20%;
-  right: 0;
+  top: 15%;
+  right: 10px;
   font-size: 3rem;
   cursor: pointer;
+  @media screen and (max-width: 375px) {
+    font-size: 2rem;
+  }
 `;
 
 interface TestContentProps {

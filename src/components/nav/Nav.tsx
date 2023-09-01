@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { FaRegWindowMinimize, FaRegWindowMaximize } from "react-icons/fa";
@@ -14,12 +14,16 @@ const NavWrapper = styled(FlexRowCenterDiv)`
   z-index: 1000;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-right: none;
+  border-left: 0;
   background-color: ${({ theme }) => theme.color.mainWhite};
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     padding: 10px;
+  }
+  @media screen and (max-width: 375px) {
+    padding: 0;
   }
 `;
 
@@ -28,13 +32,16 @@ const Menus = styled(FlexRowDiv)`
   font-weight: 700;
 `;
 
-const StyledLink = styled(Link)<isSelectedProps>`
+const MovePage = styled(Link)`
   padding: 15px 20px;
-  background-color: ${({ isSelected }) => (isSelected ? "#202020" : "transparent")};
-  color: ${({ isSelected }) => (isSelected ? "#fff" : "#202020")};
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   cursor: pointer;
   text-decoration: none;
+
+  &.active {
+    background-color: ${({ theme }) => theme.color.mainBlack};
+    color: ${({ theme }) => theme.color.mainWhite};
+  }
 
   &:hover {
     background-color: ${({ theme }) => theme.color.hover};
@@ -56,12 +63,22 @@ const IconBox = styled(FlexRowDiv)`
   }
 `;
 
-interface isSelectedProps {
-  isSelected: boolean;
-}
+const Login = styled.div``;
 
 const Nav = () => {
-  const [selectedMenu, setSelectedMenu] = useState<number>(0);
+  const [selectedMenu, setSelectedMenu] = useState<number>();
+  const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
+
+  useEffect(() => {
+    // 현재 URL 경로에 따라 selectedMenu 초기화
+    const pathname = location.pathname;
+    const matchingIndex = menuItems.findIndex((item) => item.to === pathname);
+    if (matchingIndex !== -1) {
+      setSelectedMenu(matchingIndex);
+    }
+  }, [location]);
+
+  // ... (나머지 코드)
 
   const handleMenuClick = (index: number) => {
     setSelectedMenu(index);
@@ -77,18 +94,24 @@ const Nav = () => {
   return (
     <NavWrapper>
       <Menus>
-        {menuItems.map((item, index) => (
-          <StyledLink
+        {menuItems.map((el, index) => (
+          <MovePage
             key={index}
-            to={item.to}
-            isSelected={selectedMenu === index}
-            onClick={() => handleMenuClick(index)}
+            to={el.to}
+            className={selectedMenu === index ? "menu active" : "menu"}
+            onClick={() => {
+              handleMenuClick(index);
+            }}
           >
-            {item.label}
-          </StyledLink>
+            {el.label}
+          </MovePage>
         ))}
       </Menus>
       <IconBox>
+        <Login>
+          <Link to="/auth/signIn">Login</Link>
+        </Login>
+
         <FaRegWindowMinimize style={{ marginRight: "4px" }} />
         <FaRegWindowMaximize />
         <CgClose style={{ fontSize: "3rem" }} />

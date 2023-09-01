@@ -9,6 +9,8 @@ import Nav from "./components/nav/Nav";
 import Test from "./pages/Test";
 import Information from "./pages/Information";
 import Letter from "./pages/Letter";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 
 const App = React.memo(() => {
   const routes = [
@@ -16,6 +18,8 @@ const App = React.memo(() => {
     { path: "/letter", element: <Letter /> },
     { path: "/test", element: <Test /> },
     { path: "/information", element: <Information /> },
+    { path: "/auth/signUp", element: <SignUp /> },
+    { path: "/auth/signIn", element: <SignIn /> },
   ];
 
   return (

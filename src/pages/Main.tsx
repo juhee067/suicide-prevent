@@ -6,9 +6,14 @@ import { Img } from "../components/common/Img";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { Btn, H2, Paragraph } from "../module/styled/styledFont";
 
 const MainWrapper = styled.div`
   position: relative;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const BlackBox = styled.div<OpacityProps>`
@@ -23,44 +28,61 @@ const BlackBox = styled.div<OpacityProps>`
 `;
 
 const MainContentBox = styled.div`
-  position: relative;
-  margin: 52px auto 0;
-  width: 100%;
-  max-width: 1400px;
-  height: calc(100vh - 52px);
-  padding: 0 20px;
-  box-sizing: border-box;
+  padding: 152px 20px 100px;
   font-family: KyoboHandwriting2022khn;
+
+  @media screen and (max-width: 1440px) {
+    padding: 110px 20px 10px;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 120px 20px 30px;
+  }
+  @media screen and (max-width: 320px) {
+    padding: 100px 20px 30px;
+  }
 `;
 
 const MainContent = styled(FlexRowDiv)`
-  padding: 80px;
-  position: absolute;
-  top: 30%;
-  left: 13%;
-  transform: translateY(-50%);
+  justify-content: space-between;
+
+  @media screen and (max-width: 768px) {
+    gap: 30px;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+  }
 `;
 
 const TitleBox = styled(FlexColumnDiv)`
   margin-right: 50px;
-  font-size: 8rem;
   font-weight: 900;
-  gap: 50px;
+
+  @media screen and (max-width: 768px) {
+    margin-right: 0;
+  }
 `;
 
-const Comment = styled.div``;
+const Comment = styled.div`
+  font-size: 8rem;
+
+  @media screen and (max-width: 1024px) {
+    font-size: 6.5rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 4rem;
+  }
+`;
 
 const LetterBox = styled.div`
   margin-top: 10px;
-  font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0.04rem;
   line-height: 1.2;
 `;
 
-const LetterPargraph = styled.div`
+const LetterPargraph = styled(Paragraph)`
   margin-bottom: 8px;
-  color: ${({ theme }) => theme.color.mainBlack};
 `;
 
 const PointBox = styled.div`
@@ -68,56 +90,29 @@ const PointBox = styled.div`
   font-weight: 700;
 `;
 
-const LetterPargraphPoint = styled.div`
+const LetterPargraphPoint = styled(Paragraph)`
   margin-bottom: 8px;
-  color: ${({ theme }) => theme.color.mainBlack};
 `;
 
 const Title = styled.div``;
 
-const LetterBtn = styled(Link)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%);
-  width: 20%;
-  padding: 20px 25px;
-  border: 1px solid ${({ theme }) => theme.color.mainBlack};
-  border-radius: 100px;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 500;
-  color: ${({ theme }) => theme.color.mainWhite};
-  background-color: ${({ theme }) => theme.color.mainBlack};
-  transition: background-color 0.3s ease-in-out;
-  cursor: pointer;
-  z-index: 990;
+const LetterBtn = styled(Btn)`
+  display: block;
+  margin: 65px auto 25px;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.color.hover};
+  @media screen and (max-width: 1200px) {
+    margin: 70px auto 30px;
   }
-
   @media screen and (max-width: 768px) {
-    width: 35%;
-    font-size: 1.6rem;
+    margin: 40px auto 30px;
   }
   @media screen and (max-width: 540px) {
-    width: 45%;
-  }
-  @media screen and (max-width: 375px) {
-    width: 50%;
-    font-size: 1.5rem;
+    margin: 20px auto 30px;
   }
 `;
 
 const MainBg = styled.div`
-  width: 80%;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 0;
-  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
-  z-index: 900;
+  width: 100%;
 `;
 
 interface OpacityProps {
@@ -148,15 +143,7 @@ const Main = () => {
   }, []);
 
   const updateWidth = () => {
-    const windowWidth = window.innerWidth;
-
-    if (windowWidth <= 1470) {
-      setWidth("15%");
-    } else if (windowWidth > 1470 && windowWidth <= 1920) {
-      setWidth("21%");
-    } else {
-      setWidth("26%");
-    }
+    setWidth("300px");
   };
 
   const updateOpacity = () => {
@@ -177,7 +164,7 @@ const Main = () => {
   return (
     <MainWrapper>
       <BlackBox opacity={opacity} />
-      <Door width={width} />
+      {/* <Door side="left" width={width} /> */}
       <MainContentBox>
         <MainContent>
           <TitleBox>
@@ -202,11 +189,14 @@ const Main = () => {
             </PointBox>
           </LetterBox>
         </MainContent>
-        <LetterBtn to="/letter">{messagesCount}개의 응원메세지</LetterBtn>
+        <LetterBtn>
+          <Link to="/letter">{messagesCount}개의 응원메세지</Link>
+        </LetterBtn>
         <MainBg>
           <Img src={`${process.env.PUBLIC_URL}/images/mainBg.png`} />
         </MainBg>
       </MainContentBox>
+      {/* <Door side="right" width={width} /> */}
     </MainWrapper>
   );
 };

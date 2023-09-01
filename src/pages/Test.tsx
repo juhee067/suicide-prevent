@@ -4,12 +4,10 @@ import styled from "styled-components";
 import TestMain from "../section/TestMain";
 import TestResult from "../section/TestResult";
 
-const TestBox = styled.div`
-  height: 100vh;
+const Wrapper = styled.div`
   overflow: auto; /* 스크롤이 있는 경우만 스크롤바를 표시 */
   scrollbar-width: none; /* 기본 스크롤바 숨기기 */
   -ms-overflow-style: none; /* IE에서도 스크롤바 숨기기 */
-
   /* 스크롤바 스타일링 */
   &::-webkit-scrollbar {
     width: 15px;
@@ -32,6 +30,19 @@ const TestBox = styled.div`
     background-color: ${({ theme }) => theme.color.track};
     border-left: 2px solid ${({ theme }) => theme.color.thumbBorder};
   }
+  @media screen and (max-width: 375px) {
+    font-size: 1.2rem;
+    font-weight: 300;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+  }
+`;
+
+const TestBox = styled.div`
+  padding: 20px 0;
+  margin: 0 auto;
+  height: 100vh;
 `;
 
 const Test = () => {
@@ -53,10 +64,12 @@ const Test = () => {
   }, []);
 
   return (
-    <TestBox>
-      <TestMain onMoveToFunctionCard={onMoveToFunctionCard} />
-      <TestResult moveScrollPosition={moveScrollPosition} />
-    </TestBox>
+    <Wrapper>
+      <TestBox>
+        <TestMain onMoveToFunctionCard={onMoveToFunctionCard} />
+        <TestResult moveScrollPosition={moveScrollPosition} />
+      </TestBox>
+    </Wrapper>
   );
 };
 

@@ -10,8 +10,7 @@ import { db } from "../../firebaseConfig";
 
 const MessageListBox = styled.div`
   padding: 20px;
-  width: 430px;
-  height: 430px;
+  height: 600px;
   border-radius: 5px;
   border: 2px solid ${({ theme }) => theme.color.MessageList};
   background-color: ${({ theme }) => theme.color.MessageListBg};
@@ -40,6 +39,15 @@ const MessageListBox = styled.div`
   &::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.color.track};
     border-left: 2px solid ${({ theme }) => theme.color.thumbBorder};
+  }
+  @media screen and (max-width: 768px) {
+    height: 300px;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 12px;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
   }
 `;
 
@@ -161,8 +169,8 @@ const MessageList: React.FC<MessageListProps> = ({
   return (
     <MessageListBox>
       {messages.length
-        ? messages.reverse().map((message: Message) => (
-            <MessageItem>
+        ? messages.map((message: Message) => (
+            <MessageItem key={message.id}>
               <UserContent>
                 {renderMessageContent(message)}
                 <PostTime>{displayCreatedAt(message.createdAt)}</PostTime>

@@ -2,27 +2,39 @@ import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
-import { Btn, Caption, H2, H3, Paragraph } from "../module/styled/styledSpanagraph";
+import { Btn, H2, H3, MutedText, Paragraph, Title } from "../module/styled/styledFont";
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
-import Door from "../components/common/Door";
 import Map from "../components/info/Map";
 
 const InfoWrapper = styled.div`
   width: 100%;
+  margin: 52px auto 0;
   background-color: ${({ theme }) => theme.color.infoBg};
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 const InformationContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 100px;
-  margin: 52px auto 0;
+  padding: 170px 100px;
+  margin: 0 auto;
   width: 100%;
   max-width: 1000px;
-  height: calc(100vh - 52px);
+
+  @media screen and (max-width: 768px) {
+    width: 80%;
+    padding: 130px 0 70px;
+  }
+  @media screen and (max-width: 480px) {
+    width: 70%;
+    padding: 100px 0 30px;
+  }
+  @media screen and (max-width: 375px) {
+    width: 80%;
+    padding: 70px 0 0;
+  }
+  @media screen and (max-width: 320px) {
+    padding: 70px 0 20px;
+  }
 `;
 
 const TitleBox = styled(FlexRowDiv)`
@@ -32,62 +44,132 @@ const TitleBox = styled(FlexRowDiv)`
   justify-content: space-between;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   background-color: ${({ theme }) => theme.color.mainWhite};
+  font-size: 4rem;
+  font-family: KyoboHandwriting2022khn;
+
+  @media screen and (max-width: 560px) {
+    padding: 10px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 2rem;
+  }
 `;
 
 const ContentBox = styled(FlexRowDiv)`
-  padding: 40px 40px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 40px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-top: none;
   background-color: ${({ theme }) => theme.color.mainWhite};
+
+  @media screen and (max-width: 768px) {
+    padding: 40px 20px;
+    gap: 20px;
+  }
 `;
 
 const TitleName = styled(FlexRowDiv)`
   gap: 20px;
   align-items: center;
   letter-spacing: 0.1em;
+
+  @media screen and (max-width: 480px) {
+    gap: 10px;
+  }
 `;
 
 const Article = styled(FlexColumnDiv)`
+  width: 35%;
   justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
 `;
 
-const SubTitleBox = styled.div``;
+const SubTitleBox = styled.div`
+  font-family: KyoboHandwriting2022khn;
+`;
 
-const AiBox = styled.div``;
+const AiBox = styled.div`
+  margin: 50px 0;
+
+  @media screen and (max-width: 768px) {
+    width: 50%;
+    margin: 25px auto;
+  }
+  @media screen and (max-width: 480px) {
+    width: 80%;
+  }
+`;
 
 const KeyRemark = styled(FlexColumnDiv)`
   margin-bottom: 30px;
   gap: 5px;
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  > * {
+    @media screen and (max-width: 768px) {
+      font-size: 1.7rem;
+    }
+    @media screen and (max-width: 480px) {
+      font-size: 1.5rem;
+    }
+  }
 `;
 
 const Desc = styled(FlexColumnDiv)`
-  margin-bottom: 50px;
   gap: 5px;
+  > * {
+    @media screen and (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+    @media screen and (max-width: 480px) {
+      font-size: 1.2rem;
+    }
+  }
 `;
 
 const Aside = styled(FlexColumnDiv)`
-  gap: 10px;
+  width: 60%;
+  gap: 5px;
+  @media screen and (max-width: 768px) {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const DemandBox = styled.div`
-  margin-top: 50px;
   color: ${({ theme }) => theme.color.mainGray};
+`;
+
+const CaptionBox = styled.div`
+  line-height: 1.3;
 `;
 
 const CenterBtnBox = styled(FlexRowDiv)`
   position: relative;
+  width: 100%;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: space-between;
-  width: 400px;
-  gap: 10px;
+  justify-content: center;
+  gap: 5px;
 `;
 
 const CenterBtn = styled(Btn)`
-  width: 48.7%;
-  padding: 10px 20px;
+  width: 48.9%;
+  padding: 10px;
   font-size: 1.2rem;
   background-color: ${({ theme }) => theme.color.info};
+  @media screen and (max-width: 330px) {
+    width: 31%;
+    font-size: 1rem;
+  }
 `;
 
 const centerData = [
@@ -119,12 +201,12 @@ const Information = () => {
 
   return (
     <InfoWrapper>
-      <Door width="15%" />
+      {/* <Door side="left" width="300px" /> */}
       <InformationContainer>
-        <TitleBox style={{ fontFamily: "DungGeunMo", fontSize: "4rem" }}>
+        <TitleBox>
           <TitleName>
             <FiAlertOctagon />
-            <H2> Hello! GateKeeper</H2>
+            <Title> Hello! GateKeeper</Title>
           </TitleName>
           <BsSuitHeartFill style={{ fontSize: "3rem", color: "#ff4332" }} />
         </TitleBox>
@@ -141,13 +223,13 @@ const Information = () => {
               </Desc>
             </SubTitleBox>
             <AiBox>
-              <Img src={`${process.env.PUBLIC_URL}/images/InfoMapAi.png`} width="55%" />
+              <Img src={`${process.env.PUBLIC_URL}/images/infoMapAi.png`} width="55%" />
             </AiBox>
             <DemandBox>
-              <Caption>
-                <Paragraph>지도의 마커를 클릭하면,</Paragraph>
-                <Paragraph>해당 지역의 센터 웹사이트로 이동합니다</Paragraph>
-              </Caption>
+              <CaptionBox>
+                <MutedText>지도의 마커를 클릭하면,</MutedText>
+                <MutedText>해당 지역의 센터 웹사이트로 이동합니다</MutedText>
+              </CaptionBox>
             </DemandBox>
           </Article>
           <Aside>
@@ -155,13 +237,16 @@ const Information = () => {
             <CenterBtnBox>
               {centerData.map((item) => {
                 return (
-                  <CenterBtn onClick={() => handlePhoneAction(item.number)}>{item.title}</CenterBtn>
+                  <CenterBtn key={item.id} onClick={() => handlePhoneAction(item.number)}>
+                    {item.title}
+                  </CenterBtn>
                 );
               })}
             </CenterBtnBox>
           </Aside>
         </ContentBox>
       </InformationContainer>
+      {/* <Door side="right" width="300px" /> */}
     </InfoWrapper>
   );
 };

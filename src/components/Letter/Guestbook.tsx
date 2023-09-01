@@ -1,6 +1,5 @@
 import React, { useEffect, useId, useState } from "react";
 import styled from "styled-components";
-import { CenterAlign } from "../../module/styled/CenterAlignment";
 import { db } from "../../firebaseConfig";
 import GuestbookForm from "../../section/GuestbookForm";
 import MessageList from "./MessageList";
@@ -8,32 +7,87 @@ import DeleteModal from "./DeleteModal";
 // 파이어베이서 파일에서 import 해온 db
 
 import { collection, getDocs, DocumentData, addDoc } from "firebase/firestore";
+import { FlexColumnDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
+import { Title } from "../../module/styled/styledFont";
 
-const GuestbookContainer = styled.div`
+const GuestbookContainer = styled(FlexColumnDiv)`
   position: relative;
-  margin-top: 52px;
-  height: calc(100vh - 52px);
-  border-radius: 5px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 170px 100px;
+  gap: 80px;
+
+  @media screen and (max-width: 1680px) {
+    padding: 150px 0;
+    gap: 50px;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 70px 0;
+    gap: 30px;
+  }
+  @media screen and (max-width: 375px) {
+    padding: 70px 0 0;
+  }
+  @media screen and (max-width: 320px) {
+    padding: 70px 0 20px;
+  }
 `;
 
-const GuestbookBox = styled(CenterAlign)`
-  margin-top: 20px;
-  max-width: 600px;
-  z-index: 990;
+const LetterTitle = styled(Title)`
+  text-align: center;
+`;
+
+const GuestbookBox = styled.div`
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+
+  @media screen and (max-width: 768px) {
+    width: 70%;
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 70%;
+  }
+
+  @media screen and (max-width: 375px) {
+    width: 90%;
+  }
+`;
+
+const PostBox = styled(FlexRowDiv)`
+  padding: 0 20px;
+  gap: 20px;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
 `;
 
 const WomanImg = styled.img`
-  width: 50%;
-  position: absolute;
-  bottom: 0;
-  left: -200px;
+  width: 100%;
+  height: 50%;
+  max-width: 220px;
+
+  @media screen and (max-width: 1200px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ManImg = styled.img`
-  width: 50%;
-  position: absolute;
-  bottom: 0;
-  right: -195px;
+  width: 100%;
+  height: 50%;
+  max-width: 220px;
+
+  @media screen and (max-width: 1200px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Guestbook: React.FC = () => {
@@ -94,6 +148,7 @@ const Guestbook: React.FC = () => {
 
   return (
     <GuestbookContainer>
+      <LetterTitle>우리가 너에게 전하고픈 말,</LetterTitle>
       {isDeleteModalOpen && (
         <DeleteModal
           selectedMessageId={selectedMessageId}
@@ -109,29 +164,29 @@ const Guestbook: React.FC = () => {
       <GuestbookBox>
         <WomanImg src={`${process.env.PUBLIC_URL}/images/letterAiwoman.png`} />
         {/* 방명록 작성 폼 */}
-
-        <GuestbookForm
-          // onAddEntry={handleAddEntry}
-          createUsers={createUsers}
-          newTitle={newTitle}
-          newPassword={newPassword}
-          newMessage={newMessage}
-          setNewTitle={setNewTitle}
-          setNewPassword={setNewPassword}
-          setNewMessage={setNewMessage}
-        />
-        {/* 방명록 리스트 */}
-        <MessageList
-          messages={messages}
-          setSelectedMessageId={setSelectedMessageId}
-          setIsDeleteModalOpen={setIsDeleteModalOpen}
-          setEditingPassword={setEditingPassword}
-          editingPassword={editingPassword}
-          uniqueId={uniqueId}
-          usersCollectionRef={usersCollectionRef}
-          // fetchMessages={fetchMessages}
-        />
-        {/* 삭제 모달창  */}
+        <PostBox>
+          <GuestbookForm
+            // onAddEntry={handleAddEntry}
+            createUsers={createUsers}
+            newTitle={newTitle}
+            newPassword={newPassword}
+            newMessage={newMessage}
+            setNewTitle={setNewTitle}
+            setNewPassword={setNewPassword}
+            setNewMessage={setNewMessage}
+          />
+          {/* 방명록 리스트 */}
+          <MessageList
+            messages={messages}
+            setSelectedMessageId={setSelectedMessageId}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
+            setEditingPassword={setEditingPassword}
+            editingPassword={editingPassword}
+            uniqueId={uniqueId}
+            usersCollectionRef={usersCollectionRef}
+            // fetchMessages={fetchMessages}
+          />
+        </PostBox>
         <ManImg src={`${process.env.PUBLIC_URL}/images/letterAiman.png`} />
       </GuestbookBox>
     </GuestbookContainer>

@@ -2,25 +2,34 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import InputField from "../components/Letter/InputField";
 import { FlexRowDiv } from "../module/styled/FlexDiv";
+import { Btn } from "../module/styled/styledFont";
 
 const FormContainer = styled.div`
-  margin: 0 auto 20px;
+  /* margin: 0 auto 20px; */
   padding: 15px 20px;
   border: 2px solid ${({ theme }) => theme.color.mainBlack};
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.mainWhite};
+  @media screen and (max-width: 480px) {
+    padding: 15px 12px;
+  }
 `;
 
 const Title = styled.div`
   text-align: center;
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  @media screen and (max-width: 480px) {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  height: calc(100% - 35px);
 `;
 
 const UserInfo = styled(FlexRowDiv)`
@@ -31,27 +40,34 @@ const UserInfo = styled(FlexRowDiv)`
 const ContentBox = styled.div`
   position: relative;
   margin-bottom: 10px;
+  height: 100%;
 `;
 
 const TextArea = styled.textarea`
   padding: 10px;
   width: 100%;
-  height: 50px;
+  height: 100%;
   font-size: 1.3rem;
   border: 1px solid ${({ theme }) => theme.color.mainGray};
   border-radius: 5px;
   resize: none;
   outline: none;
+
   &::placeholder {
     color: ${({ theme }) => theme.color.mainGray};
   }
   &:focus {
     border-color: ${({ theme }) => theme.color.mainBlack}; /* 포커스된 상태일 때의 선 색상 변경 */
   }
+  @media screen and (max-width: 480px) {
+    padding: 5px;
+    height: 40px;
+    font-size: 1rem;
+  }
 `;
 
-const Button = styled.button`
-  width: 20%;
+const Button = styled(Btn)`
+  width: 100px;
   padding: 10px 15px;
   font-size: 1.3rem;
   margin: 0 auto;
@@ -60,6 +76,15 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    font-size: 1.1rem;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 5px 10px;
+    width: 60px;
+    font-size: 1rem;
+  }
 `;
 
 interface FormProps {

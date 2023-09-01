@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";
-import { Btn, H2, Paragraph } from "../../module/styled/styledSpanagraph";
+import { Btn, H2, Paragraph } from "../../module/styled/styledFont";
 import { QuestionData } from "../../data/testData";
 import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
 import Card from "./Card";
@@ -10,7 +10,15 @@ import Card from "./Card";
 import TestContent from "./TestContent";
 import ModalBackdrop from "../common/Backdrop";
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1000;
+`;
 
 const ModalView = styled(FlexColumnCenterDiv)`
   padding: 100px 40px;
@@ -23,11 +31,27 @@ const ModalView = styled(FlexColumnCenterDiv)`
   border-radius: 20px;
   overflow: hidden;
   background-color: ${({ theme }) => theme.color.mainWhite};
+  @media screen and (max-width: 1024px) {
+    width: 80%;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 60px 10px;
+  }
+
+  @media screen and (max-width: 375px) {
+    padding: 50px 10px;
+    width: 80%;
+    height: 50%;
+  }
 `;
 
 const ContentBox = styled(FlexColumnCenterDiv)<{ active: number }>`
   gap: ${({ active }) => (active === QuestionData.length ? "0" : "30px")};
   width: 100%;
+
+  @media screen and (max-width: 375px) {
+    gap: ${({ active }) => (active === QuestionData.length ? "0" : "10px")};
+  }
 `;
 
 const CloseModal = styled(Icon)`
@@ -38,9 +62,25 @@ const CloseModal = styled(Icon)`
   cursor: pointer;
 `;
 
-const Title = styled(H2)``;
+const Title = styled(H2)`
+  @media screen and (max-width: 768px) {
+    font-size: 2.2rem;
+  }
+  @media screen and (max-width: 375px) {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+`;
 
-const Order = styled(H2)``;
+const Order = styled(H2)`
+  @media screen and (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+  @media screen and (max-width: 375px) {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+`;
 
 const GaugeBox = styled.div`
   width: 70%;
@@ -58,6 +98,9 @@ const GaugeBar = styled.div<GaugeBarProps>`
 
 const ResultBox = styled(FlexColumnCenterDiv)`
   gap: 30px;
+  @media screen and (max-width: 375px) {
+    gap: 20px;
+  }
 `;
 
 const ResetButton = styled(Btn)`
@@ -162,7 +205,6 @@ const TestModal = ({ isOpen, closeModal }: TestModalProps) => {
               <H2>
                 {ScoreStandard()}({calculateResult()}점)
               </H2>
-
               <Paragraph>하단의 설명을 확인하세요</Paragraph>
               <ResetButton onClick={resetTest}>다시 테스트하기</ResetButton>
             </ResultBox>

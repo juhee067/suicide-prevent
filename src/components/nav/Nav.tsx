@@ -20,7 +20,8 @@ const NavWrapper = styled(FlexRowCenterDiv)`
   border-right: none;
   border-left: 0;
   background-color: ${({ theme }) => theme.color.mainWhite};
-
+  font-size: 1.8em;
+  font-weight: 700;
   @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -31,10 +32,7 @@ const NavWrapper = styled(FlexRowCenterDiv)`
   }
 `;
 
-const Menus = styled(FlexRowDiv)`
-  font-size: 1.8em;
-  font-weight: 700;
-`;
+const Menus = styled(FlexRowDiv)``;
 
 const MovePage = styled(Link)`
   padding: 15px 20px;
@@ -57,6 +55,11 @@ const MovePage = styled(Link)`
   }
 `;
 
+const RightBox = styled(FlexRowDiv)`
+  align-items: center;
+  gap: 20px;
+`;
+
 const IconBox = styled(FlexRowDiv)`
   gap: 15px;
   align-items: center;
@@ -67,8 +70,11 @@ const IconBox = styled(FlexRowDiv)`
   }
 `;
 
-const Login = styled.div``;
+const Login = styled.div`
+  font-size: 2rem;
+`;
 const Logout = styled.div`
+  font-size: 2rem;
   cursor: pointer;
 `;
 
@@ -86,6 +92,7 @@ const Nav = () => {
   const menuItems = [
     { to: "/", label: "Home" },
     { to: "/test", label: "Test" },
+    { to: "/post", label: "Post" },
     { to: "/letter", label: "Letter" },
     { to: "/information", label: "Info" },
   ];
@@ -126,7 +133,7 @@ const Nav = () => {
           </MovePage>
         ))}
       </Menus>
-      <IconBox>
+      <RightBox>
         {accessToken ? (
           <Logout onClick={handleLogout}>Logout</Logout>
         ) : (
@@ -134,10 +141,11 @@ const Nav = () => {
             <Link to="/auth/signIn">Login</Link>
           </Login>
         )}
-        <FaRegWindowMinimize style={{ marginRight: "4px" }} />
-        <FaRegWindowMaximize />
-        <CgClose style={{ fontSize: "3rem" }} />
-      </IconBox>
+        <IconBox>
+          <FaRegWindowMaximize />
+          <CgClose style={{ fontSize: "3rem" }} />
+        </IconBox>
+      </RightBox>
     </NavWrapper>
   );
 };

@@ -160,7 +160,7 @@ const SignUpForm = ({ onLogin, onChange }: any) => {
   const db = getFirestore();
 
   const handleSubmitSignUp = async (
-    e: { preventDefault: any },
+    e: React.FormEvent,
     userId: string,
     password: string,
     nickName: string
@@ -188,9 +188,7 @@ const SignUpForm = ({ onLogin, onChange }: any) => {
   };
 
   return (
-    <Form
-      onSubmit={(e: { preventDefault: () => void }) => handleSubmitSignUp(e, userId, password, nickName)}
-    >
+    <Form onSubmit={(e) => handleSubmitSignUp(e, userId, password, nickName)}>
       <Nicknamebox>
         <Input
           type="text"

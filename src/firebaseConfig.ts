@@ -2,8 +2,6 @@ import { initializeApp } from "firebase/app";
 import {getFirestore} from "@firebase/firestore"
 import { 
   getAuth,// authentication 설정
-  signInWithPopup, //google 로그인을 팝업창에 띄우기 위해
-  GoogleAuthProvider, //google login 기능
   signInWithEmailAndPassword,// email 로그인
   createUserWithEmailAndPassword, //email 회원가입
 } from 'firebase/auth';
@@ -21,11 +19,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+export const db = getFirestore(app);
 
-// auth 설정 필수!!
 const auth = getAuth();
 
-export const db = getFirestore(app);
 //Email 로그인
 export const signupEmail = (email: string, password: string) => {
   return createUserWithEmailAndPassword(auth, email, password);

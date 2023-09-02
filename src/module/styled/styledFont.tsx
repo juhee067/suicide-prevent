@@ -26,6 +26,7 @@ export const H3 = styled.span`
 export const Title = styled.span`
   font-size: 4.5rem;
   font-family: KyoboHandwriting2022khn;
+
   @media screen and (max-width: 1024px) {
     font-size: 4rem;
   }

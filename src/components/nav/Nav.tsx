@@ -4,6 +4,10 @@ import styled from "styled-components";
 import { FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { FaRegWindowMinimize, FaRegWindowMaximize } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
+import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
 
 const NavWrapper = styled(FlexRowCenterDiv)`
   padding: 0 20px;
@@ -64,22 +68,17 @@ const IconBox = styled(FlexRowDiv)`
 `;
 
 const Login = styled.div``;
+const Logout = styled.div`
+  cursor: pointer;
+`;
 
 const Nav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
   const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
-
-  useEffect(() => {
-    // 현재 URL 경로에 따라 selectedMenu 초기화
-    const pathname = location.pathname;
-    const matchingIndex = menuItems.findIndex((item) => item.to === pathname);
-    if (matchingIndex !== -1) {
-      setSelectedMenu(matchingIndex);
-    }
-  }, [location]);
-
-  // ... (나머지 코드)
-
+  const dispatch = useDispatch();
+  const accessToken = useSelector(
+    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
+  );
   const handleMenuClick = (index: number) => {
     setSelectedMenu(index);
   };
@@ -90,6 +89,26 @@ const Nav = () => {
     { to: "/letter", label: "Letter" },
     { to: "/information", label: "Info" },
   ];
+
+  const handleLogIn = () => {
+    setSelectedMenu(undefined);
+  };
+
+  const handleLogout = () => {
+    dispatch(setUserLoginDataSlice({ uid: "", userEmail: "", authToken: "" }));
+    dispatch(setUserLoginAccessTokenSlice(""));
+    console.log("로그아웃이 완료 되었습니다.");
+  };
+
+  useEffect(() => {
+    // 현재 URL 경로에 따라 selectedMenu 초기화
+    const pathname = location.pathname;
+    const matchingIndex = menuItems.findIndex((item) => item.to === pathname);
+
+    if (matchingIndex !== -1) {
+      setSelectedMenu(matchingIndex);
+    }
+  }, [location]);
 
   return (
     <NavWrapper>
@@ -108,10 +127,13 @@ const Nav = () => {
         ))}
       </Menus>
       <IconBox>
-        <Login>
-          <Link to="/auth/signIn">Login</Link>
-        </Login>
-
+        {accessToken ? (
+          <Logout onClick={handleLogout}>Logout</Logout>
+        ) : (
+          <Login onClick={handleLogIn}>
+            <Link to="/auth/signIn">Login</Link>
+          </Login>
+        )}
         <FaRegWindowMinimize style={{ marginRight: "4px" }} />
         <FaRegWindowMaximize />
         <CgClose style={{ fontSize: "3rem" }} />

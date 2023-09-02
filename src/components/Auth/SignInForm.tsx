@@ -1,8 +1,12 @@
+import { getAuth } from "firebase/auth";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { loginEmail, signupEmail } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
+import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
+import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
+// import { login } from "../../module/tokenManager";
 
 const Form = styled.form``;
 
@@ -62,10 +66,17 @@ const SignInBtn = styled(Btn)`
   margin-bottom: 20px;
 `;
 
-const SignInForm = ({ onLogin, onChange }: any) => {
+interface UserData {
+  uid: string;
+  userEmail: string;
+  authToken: string;
+}
+
+const SignInForm = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -76,10 +87,18 @@ const SignInForm = ({ onLogin, onChange }: any) => {
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    const userEmail = `${userId}@myapp.com`;
     try {
-      const result = await loginEmail(`${userId}@myapp.com`, password);
-      const user = result.user;
-      console.log(user);
+      const user = getAuth().currentUser;
+
+      if (user) {
+        user.getIdToken().then(function (idToken: any) {
+          // idToken을 이용하여 작업 수행
+          dispatch(setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken }));
+          dispatch(setUserLoginAccessTokenSlice({ authToken: idToken }));
+        });
+      }
+
       alert("로그인되었습니다.");
       navigate("/");
     } catch (error) {

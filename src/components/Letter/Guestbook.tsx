@@ -118,7 +118,7 @@ const Guestbook: React.FC = () => {
     };
 
     getUsers();
-  }, [messages]);
+  });
 
   const createUsers = async () => {
     try {

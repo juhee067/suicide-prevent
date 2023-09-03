@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexRowCenterDiv } from "../../module/styled/FlexDiv";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const FormContainer = styled.div`
   width: 80%;
@@ -102,8 +106,12 @@ const FormButton = styled(Btn)``;
 function BoardForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [userNickname, setUserNickname] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
+
+  const navigate = useNavigate();
+  const userData = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -111,7 +119,6 @@ function BoardForm() {
       alert("제목과 내용을 모두 입력하세요.");
       return;
     }
-
     setTitle("");
     setContent("");
   };
@@ -151,6 +158,53 @@ function BoardForm() {
     setIsDragOver(false);
   };
 
+  const usersCollectionRef = collection(db, "posts");
+
+  const createPosts = async () => {
+    try {
+      // addDoc을 이용해서 내가 원하는 collection에 내가 원하는 key로 값을 추가한다.
+      await addDoc(usersCollectionRef, {
+        userName: userNickname,
+        // comments: comments,
+        title: title,
+        content: content,
+        postTime: new Date().toISOString(),
+      });
+
+      // 데이터를 추가한 후, 상태 초기화
+      setTitle("");
+      setContent("");
+      console.log("데이터 전달");
+      navigate("/post");
+    } catch (error) {
+      console.error("Error adding document:", error);
+    }
+  };
+
+  useEffect(() => {
+    const usersCollectionRef = collection(db, "nickName");
+    const userEmailData = userData.userEmail;
+    // 비동기로 데이터 받을준비
+    const getUserNickname = async () => {
+      const querySnapshot = await getDocs(usersCollectionRef);
+      const documents = querySnapshot.docs.map((doc) => {
+        const data = doc.data() as { email: string; nickname: string; id: string };
+        return { ...data, id: doc.id };
+      });
+
+      const foundObject = documents.find((item) => item.email === userEmailData);
+
+      if (foundObject) {
+        const nickname = foundObject.nickname;
+        setUserNickname(nickname);
+      } else {
+        console.log(`이메일 ${userEmailData}에 해당하는 객체를 찾을 수 없습니다.`);
+      }
+    };
+
+    getUserNickname();
+  }, []);
+
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
@@ -165,7 +219,9 @@ function BoardForm() {
         <FormGroup>
           <FormTextarea
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+              setContent(e.target.value)
+            }
             placeholder="내용"
           />
         </FormGroup>
@@ -202,7 +258,9 @@ function BoardForm() {
         </FormGroup>
 
         <FormCancel type="submit">취소하기</FormCancel>
-        <FormButton type="submit">게시하기</FormButton>
+        <FormButton type="submit" onClick={createPosts}>
+          게시하기
+        </FormButton>
       </Form>
     </FormContainer>
   );

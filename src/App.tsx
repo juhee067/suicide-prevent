@@ -34,7 +34,7 @@ const App = React.memo(() => {
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.element} />
         ))}
-        <Route path="/post/:idx" element={<PostDetail />} />
+        <Route path="/post/:postId" element={<PostDetail />} />
         <Route path="/BoardForm" element={<BoardWriting />} />
       </Routes>
     </ThemeProvider>

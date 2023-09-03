@@ -1,26 +1,12 @@
 import { collection, DocumentData, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
+import { displayCreatedAt } from "../../module/postTime";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Btn, Caption, Description, Subtitle, Title } from "../../module/styled/styledFont";
-
-// 가상 데이터: 게시글 목록
-const mockData = [
-  { id: 1, title: "게시글 제목 1", content: "게시글 내용 1" },
-  { id: 2, title: "게시글 제목 2", content: "게시글 내용 2" },
-  { id: 3, title: "게시글 제목 3", content: "게시글 내용 3" },
-  { id: 4, title: "게시글 제목 4", content: "게시글 내용 1" },
-  { id: 5, title: "게시글 제목 5", content: "게시글 내용 2" },
-  { id: 6, title: "게시글 제목 6", content: "게시글 내용 3" },
-  { id: 7, title: "게시글 제목 7", content: "게시글 내용 1" },
-  { id: 8, title: "게시글 제목 8", content: "게시글 내용 2" },
-  { id: 9, title: "게시글 제목 9", content: "게시글 내용 3" },
-  { id: 10, title: "게시글 제목 10", content: "게시글 내용 1" },
-  { id: 11, title: "게시글 제목 11", content: "게시글 내용 2" },
-  { id: 12, title: "게시글 제목 12", content: "게시글 내용 3" },
-];
 
 // 네비게이션 바 높이
 const navHeight = 52;
@@ -65,7 +51,9 @@ const ListItemBox = styled.div`
   width: 60%;
 `;
 
-const UserNickname = styled(Subtitle)``;
+const UserNickname = styled(Subtitle)`
+  width: 20%;
+`;
 
 const ListTitle = styled.h3`
   font-size: 18px;
@@ -103,7 +91,10 @@ const PageButton = styled.button<{ active: boolean }>`
 function BoardList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState<DocumentData[]>([]);
-
+  const accessToken = useSelector(
+    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
+  );
+  const navigate = useNavigate();
   // 현재 페이지의 게시물 목록을 계산합니다.
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -124,9 +115,15 @@ function BoardList() {
       // users에 data안의 자료 추가. 객체에 id 덮어씌우는거
       setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
-    console.log(posts);
+
     getPosts();
-  }, []);
+  });
+
+  // 페이지를 변경하는 함수
+  const AccessTokenError = () => {
+    alert("로그인을 해주세요");
+    return navigate("/auth/signIn");
+  };
 
   return (
     <CenteredContainer>
@@ -135,30 +132,33 @@ function BoardList() {
           <PostListBox>
             <Title>허심탄회</Title>
             <SearchBox>
-              <Link to={`/BoardForm`}> 글쓰기</Link>
+              {accessToken ? (
+                <Link to={`/BoardForm`}>글쓰기</Link>
+              ) : (
+                <span onClick={AccessTokenError}>글쓰기</span>
+              )}
             </SearchBox>
           </PostListBox>
-
           {currentPosts.length
             ? currentPosts.map((item) => (
-                <ListBox key={item.id}>
-                  <UserNickname>{item.userName}</UserNickname>
-                  <ListItemBox>
-                    <ListTitle>
-                      <Link to={`/post/${item.id}`}> {item.title}</Link>
-                    </ListTitle>
-                    <ListContent>{item.content}</ListContent>
-                  </ListItemBox>
-                  <Etc>
-                    <Comment>댓글 {item.comments}</Comment>
-                    <PostTime>{item.postTime}</PostTime>
-                  </Etc>
-                </ListBox>
+                <Link to={`/post/${item.id}`}>
+                  <ListBox key={item.id}>
+                    <UserNickname>{item.userName}</UserNickname>
+                    <ListItemBox>
+                      <ListTitle>{item.title}</ListTitle>
+                      <ListContent>{item.content}</ListContent>
+                    </ListItemBox>
+                    <Etc>
+                      <Comment>댓글 {item.comments}</Comment>
+                      <PostTime>{displayCreatedAt(item.postTime)}</PostTime>
+                    </Etc>
+                  </ListBox>
+                </Link>
               ))
             : "응원 메시지가 없습니다"}
         </ListContainer>
         <PaginationContainer>
-          {Array.from({ length: Math.ceil(mockData.length / postsPerPage) }).map((_, index) => (
+          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }).map((_, index) => (
             <PageButton
               key={index}
               active={index + 1 === currentPage}

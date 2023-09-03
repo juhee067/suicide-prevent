@@ -11,6 +11,9 @@ import Information from "./pages/Information";
 import Letter from "./pages/Letter";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Post from "./pages/Post";
+import PostDetail from "./components/Post/PostDetail";
+import BoardWriting from "./pages/BoardWriting";
 
 const App = React.memo(() => {
   const routes = [
@@ -18,6 +21,7 @@ const App = React.memo(() => {
     { path: "/letter", element: <Letter /> },
     { path: "/test", element: <Test /> },
     { path: "/information", element: <Information /> },
+    { path: "/post", element: <Post /> },
     { path: "/auth/signUp", element: <SignUp /> },
     { path: "/auth/signIn", element: <SignIn /> },
   ];
@@ -30,6 +34,8 @@ const App = React.memo(() => {
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.element} />
         ))}
+        <Route path="/post/:postId" element={<PostDetail />} />
+        <Route path="/BoardForm" element={<BoardWriting />} />
       </Routes>
     </ThemeProvider>
   );

@@ -26,6 +26,7 @@ export const H3 = styled.span`
 export const Title = styled.span`
   font-size: 4.5rem;
   font-family: KyoboHandwriting2022khn;
+
   @media screen and (max-width: 1024px) {
     font-size: 4rem;
   }
@@ -39,14 +40,14 @@ export const Title = styled.span`
   }
 `;
 
-export const Subtitle = styled.span`
+export const Subtitle = styled.div`
   font-size: 2rem;
   font-weight: 500;
 `;
 
-export const Caption = styled.span`
+export const Caption = styled.div`
   font-size: 1.4rem;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.2;
 `;
 

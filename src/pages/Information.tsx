@@ -9,6 +9,7 @@ import Map from "../components/info/Map";
 
 const InfoWrapper = styled.div`
   width: 100%;
+  min-height: 100vh;
   margin: 52px auto 0;
   background-color: ${({ theme }) => theme.color.infoBg};
   border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};

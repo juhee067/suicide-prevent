@@ -1,58 +1,109 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { FlexRowCenterDiv } from "../../module/styled/FlexDiv";
+import { Btn, HighlightText } from "../../module/styled/styledFont";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
-// 스타일드 컴포넌트를 사용하여 폼 요소를 스타일링합니다.
 const FormContainer = styled.div`
-  background-color: #f0f0f0;
-  padding: 20px;
+  width: 80%;
+  max-width: 1000px;
+  background-color: #fff;
+  padding: 30px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
-
-const FormTitle = styled.h2`
-  font-size: 24px;
-  margin-bottom: 16px;
-`;
+const Form = styled.form``;
 
 const FormGroup = styled.div`
+  text-align: left;
   margin-bottom: 16px;
-`;
-
-const FormLabel = styled.label`
-  font-weight: bold;
 `;
 
 const FormInput = styled.input`
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px;
+  border: none;
+
+  font-size: 16px;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  &:focus {
+    border-color: ${({ theme }) => theme.color.mainBlack};
+  }
 `;
 
 const FormTextarea = styled.textarea`
   width: 100%;
-  padding: 8px;
+  height: 200px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-`;
-
-const FormButton = styled.button`
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-
-  &:hover {
-    background-color: #0056b3;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  &:focus {
+    border-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
+
+const FormFile = styled.input`
+  display: none;
+`;
+
+const FileDragArea = styled(FlexRowCenterDiv)`
+  gap: 10px;
+  height: 100px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  border: 2px dotted #a4a4a4;
+  border-radius: 4px;
+  font-size: 1.3rem;
+`;
+
+const FormFileLabel = styled.label``;
+
+const FileAttachment = styled(HighlightText)``;
+
+const UploadedFileList = styled.ul`
+  display: flex;
+  margin-bottom: 50px;
+`;
+
+const UploadedFileItem = styled(FlexRowCenterDiv)`
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 8px;
+  margin: 10px 5px;
+  gap: 10px;
+  color: ${({ theme }) => theme.color.mainWhite};
+  background-color: ${({ theme }) => theme.color.mainBlack};
+`;
+
+const FileName = styled.div`
+  color: ${({ theme }) => theme.color.mainWhite};
+`;
+const Delete = styled.div`
+  font-size: 1.5rem;
+`;
+
+const FormCancel = styled(Btn)`
+  margin-right: 10px;
+  color: ${({ theme }) => theme.color.mainBlack};
+  background-color: ${({ theme }) => theme.color.mainWhite};
+  border: 1px solid ${({ theme }) => theme.color.mainBlack};
+  &:hover {
+    color: 1px solid ${({ theme }) => theme.color.mainWhite};
+    background-color: ${({ theme }) => theme.color.mainBlack};
+  }
+`;
+
+const FormButton = styled(Btn)``;
 
 function BoardForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -60,26 +111,99 @@ function BoardForm() {
       alert("제목과 내용을 모두 입력하세요.");
       return;
     }
-    console.log("게시글 제목:", title);
-    console.log("게시글 내용:", content);
+
     setTitle("");
     setContent("");
   };
 
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setUploadedFiles([...uploadedFiles, ...fileArray]);
+    }
+  };
+
+  const handleFileDrag = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const files = e.dataTransfer.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setUploadedFiles([...uploadedFiles, ...fileArray]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
   return (
     <FormContainer>
-      <FormTitle>게시판 폼</FormTitle>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <FormGroup>
-          <FormLabel>제목:</FormLabel>
-          <FormInput type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <FormInput
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목"
+          />
         </FormGroup>
         <FormGroup>
-          <FormLabel>내용:</FormLabel>
-          <FormTextarea value={content} onChange={(e) => setContent(e.target.value)} />
+          <FormTextarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="내용"
+          />
         </FormGroup>
-        <FormButton type="submit">게시글 작성</FormButton>
-      </form>
+        <FormGroup>
+          <FileDragArea
+            onDrop={handleFileDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            className={isDragOver ? "dragover" : ""}
+          >
+            <FormFileLabel htmlFor="fileInput">
+              <FileAttachment showunderline> 파일 첨부</FileAttachment>
+            </FormFileLabel>
+            or
+            <FileAttachment>파일 드래그</FileAttachment>
+            <FormFile
+              id="fileInput"
+              type="file"
+              accept=".jpg, .jpeg, .png, .gif"
+              onChange={handleFileInputChange}
+            />
+          </FileDragArea>
+
+          <UploadedFileList>
+            {uploadedFiles.map((file, index) => (
+              <UploadedFileItem key={index}>
+                <FileName>{file.name}</FileName>
+                <Delete>
+                  <AiOutlineCloseCircle />
+                </Delete>
+              </UploadedFileItem>
+            ))}
+          </UploadedFileList>
+        </FormGroup>
+
+        <FormCancel type="submit">취소하기</FormCancel>
+        <FormButton type="submit">게시하기</FormButton>
+      </Form>
     </FormContainer>
   );
 }

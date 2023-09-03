@@ -11,8 +11,8 @@ const Post = () => {
 
   return (
     <PostWrapper>
-      {/* <PostList /> */}
-      <PostDetail />
+      <PostList />
+      {/* <PostDetail /> */}
     </PostWrapper>
   );
 };

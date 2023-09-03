@@ -98,12 +98,12 @@ const MessageList: React.FC<MessageListProps> = ({
   const handleSaveEdit = async (id: string) => {
     try {
       // 선택한 아이디에 해당하는 문서 가져오기
-
       const userDoc = doc(db, "users", id);
       const data = await getDoc(userDoc);
       if (data.exists()) {
         const userData = data.data();
         console.log(userData.password);
+
         // 선택한 게시물의 패스워드와 입력한 패스워드 비교
         if (userData && editingPassword !== userData.password) {
           alert("비밀번호가 일치하지 않습니다.");

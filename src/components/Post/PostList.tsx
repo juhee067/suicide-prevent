@@ -60,7 +60,12 @@ const ListTitle = styled.h3`
   margin-bottom: 20px;
 `;
 
-const ListContent = styled(Description)``;
+const ListContent = styled(Description)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%; /* 필요에 따라 최대 너비를 조정하세요. */
+`;
 
 const Etc = styled.div`
   text-align: right;

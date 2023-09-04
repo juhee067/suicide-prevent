@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
+import { formatDateTime } from "../../module/postTime";
 import { FlexColumnCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Btn, Caption, Description, Subtitle } from "../../module/styled/styledFont";
 import Comment from "./Comment";
@@ -162,7 +163,7 @@ function PostDetail() {
         <PostHeaderBox>
           <WritingBox>
             <PostTitle>{detailPost.title}</PostTitle>
-            <PostTime>{detailPost.postTime}</PostTime>
+            <PostTime>{formatDateTime(detailPost.postTime)}</PostTime>
           </WritingBox>
 
           <PostAuthor>{detailPost.author}</PostAuthor>

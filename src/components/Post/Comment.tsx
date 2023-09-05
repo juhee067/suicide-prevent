@@ -56,11 +56,6 @@ function Comment({ comments }: CommentsProps) {
   );
   const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
-  useEffect(() => {
-    console.log(currentUser);
-    console.log(comments, "comments");
-  });
-
   return (
     <CommentContainer>
       <CommentList>

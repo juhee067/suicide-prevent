@@ -1,11 +1,12 @@
 import { addDoc, collection, doc, DocumentData, getDoc, getDocs } from "firebase/firestore";
 import React, { useEffect, useId, useState } from "react";
+import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
 import { formatDateTime } from "../../module/postTime";
-import { FlexColumnCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
+import { FlexColumnCenterDiv, FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Btn, Caption, Description, Subtitle } from "../../module/styled/styledFont";
 import Comment from "./Comment";
 
@@ -32,10 +33,15 @@ const PostHeaderBox = styled(FlexRowDiv)`
   align-items: center;
 `;
 
-const WritingBox = styled(FlexRowDiv)`
-  justify-content: space-between;
-  align-items: end;
+const WritingBox = styled(FlexRowCenterDiv)`
   gap: 20px;
+`;
+
+const UserActions = styled(FlexRowDiv)`
+  gap: 10px;
+  color: ${({ theme }) => theme.color.mainGray};
+  font-size: 1.8rem;
+  cursor: pointer;
 `;
 
 const PostTitle = styled.h1`
@@ -45,7 +51,7 @@ const PostTitle = styled.h1`
 const PostTime = styled(Caption)`
   color: ${({ theme }) => theme.color.mainGray};
 `;
-const PostAuthor = styled(Subtitle)``;
+const PostAuthor = styled(Caption)``;
 
 const PostContent = styled(Description)`
   height: 100px;
@@ -162,7 +168,6 @@ function PostDetail() {
             return { ...data, commentId: doc.id }; // 댓글 문서 ID를 추가해서 저장
           });
           setComments(commentsData);
-          console.log(commentsData);
         } else {
           console.log("댓글을 찾을 수 없습니다.");
         }
@@ -170,7 +175,7 @@ function PostDetail() {
         console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
       }
     }
-
+    console.log(detailPost, "detailPost");
     fetchComments(); // 댓글 정보를 가져오는 함수 호출
   }, []);
 
@@ -182,6 +187,7 @@ function PostDetail() {
   const AccessTokenError = () => {
     alert("로그인을 해주세요");
   };
+
   const createComment = async () => {
     try {
       // addDoc을 이용해서 내가 원하는 collection에 내가 원하는 key로 값을 추가한다.
@@ -205,10 +211,16 @@ function PostDetail() {
         <PostHeaderBox>
           <WritingBox>
             <PostTitle>{detailPost.title}</PostTitle>
+            <PostAuthor>{detailPost.userName}</PostAuthor>
             <PostTime>{formatDateTime(detailPost.postTime)}</PostTime>
           </WritingBox>
-
-          <PostAuthor>{detailPost.author}</PostAuthor>
+          {accessToken && currentUser && currentUser.nickname === detailPost.userName ? (
+            // 댓글 작성자와 현재 사용자가 동일한 경우 수정 및 삭제 버튼 표시
+            <UserActions>
+              <FiEdit />
+              <FiDelete />
+            </UserActions>
+          ) : null}
         </PostHeaderBox>
         <PostContentBox>
           {detailPost.previewImage ? <PreviewImage>{detailPost.previewImage}</PreviewImage> : null}

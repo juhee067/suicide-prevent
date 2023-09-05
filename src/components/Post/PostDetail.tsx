@@ -1,23 +1,13 @@
-import { collection, doc, DocumentData, getDoc, getDocs } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { addDoc, collection, doc, DocumentData, getDoc, getDocs } from "firebase/firestore";
+import React, { useEffect, useId, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
 import { formatDateTime } from "../../module/postTime";
 import { FlexColumnCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Btn, Caption, Description, Subtitle } from "../../module/styled/styledFont";
 import Comment from "./Comment";
-
-// 가상 데이터: 게시글 내용
-const postContent = {
-  id: 1,
-  title: "게시글 제목 1",
-  content: "게시글 내용 1. 이 부분은 실제 게시물 내용입니다. 심플하게 보여줍니다.",
-  author: "배영은",
-  comments: 5,
-  postTime: "2023.09.24",
-  previewImage: "미리보기 이미지 텍스트", // 미리보기 이미지 대체 텍스트
-};
 
 // 스타일드 컴포넌트를 사용하여 상세보기 스타일을 정의합니다.
 const CenteredContainer = styled(FlexColumnCenterDiv)`
@@ -113,24 +103,30 @@ const CommentBox = styled.div``;
 const CommentCount = styled(Caption)``;
 
 function PostDetail() {
+  const uniqueId = useId();
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
+  const [postID, setPostID] = useState<string | undefined>("");
   const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
-
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState<string[]>([]);
+  const [comments, setComments] = useState<DocumentData[]>([]);
+  const navigate = useNavigate();
+  const accessToken = useSelector(
+    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
+  );
+  const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
+
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!comment.trim()) {
       alert("댓글 내용을 입력하세요.");
       return;
     }
-
-    // 새 댓글을 기존 댓글 목록에 추가
-    setComments([...comments, comment]);
+    createComment();
 
     // 댓글 입력 필드 초기화
     setComment("");
   };
+  const usersCollectionRef = collection(db, `posts/${postId}/comments`);
 
   useEffect(() => {
     // Firebase Firestore에서 해당 게시물의 정보를 가져오는 비동기 함수
@@ -141,7 +137,7 @@ function PostDetail() {
 
         if (docSnap.exists()) {
           const postData = docSnap.data(); // 게시물 정보를 가져옵니다.
-          setDetailPost(postData);
+          setDetailPost({ ...postData, postId });
         } else {
           console.log("게시물을 찾을 수 없습니다.");
         }
@@ -149,14 +145,60 @@ function PostDetail() {
         console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
       }
     }
-    console.log(postId);
+
     fetchPost(); // 게시물 정보를 가져오는 함수 호출
   }, [postId]);
+
+  useEffect(() => {
+    // Firebase Firestore에서 해당 게시물의 댓글 정보를 가져오는 비동기 함수
+    async function fetchComments() {
+      try {
+        const commentsRef = collection(db, `posts/${postId}/comments`); // "comments"는 댓글 컬렉션 이름
+        const querySnapshot = await getDocs(commentsRef);
+
+        if (!querySnapshot.empty) {
+          const commentsData = querySnapshot.docs.map((doc) => {
+            const data = doc.data();
+            return { ...data, commentId: doc.id }; // 댓글 문서 ID를 추가해서 저장
+          });
+          setComments(commentsData);
+          console.log(commentsData);
+        } else {
+          console.log("댓글을 찾을 수 없습니다.");
+        }
+      } catch (error) {
+        console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
+      }
+    }
+
+    fetchComments(); // 댓글 정보를 가져오는 함수 호출
+  }, []);
 
   // 게시물 정보가 로드되기 전에는 로딩 상태를 처리할 수 있습니다.
   if (!detailPost) {
     return <div>Loading...</div>;
   }
+
+  const AccessTokenError = () => {
+    alert("로그인을 해주세요");
+  };
+  const createComment = async () => {
+    try {
+      // addDoc을 이용해서 내가 원하는 collection에 내가 원하는 key로 값을 추가한다.
+      await addDoc(usersCollectionRef, {
+        commentId: uniqueId,
+        userName: currentUser.nickname,
+        comment: comment,
+        commentTime: new Date().toISOString(),
+      });
+
+      setComment("");
+      console.log("댓글 전달");
+    } catch (error) {
+      console.error("Error adding document:", error);
+    }
+  };
+
   return (
     <CenteredContainer>
       <DetailContainer>
@@ -173,17 +215,27 @@ function PostDetail() {
 
           <PostContent>{detailPost.content}</PostContent>
         </PostContentBox>
-        <CommentForm onSubmit={handleSubmit}>
+        <CommentForm>
           <CommentInput
             placeholder="댓글을 작성하세요."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
-          <CommentSubmitButton type="submit">작성</CommentSubmitButton>
+          {accessToken ? (
+            <CommentSubmitButton onClick={handleSubmit}>작성</CommentSubmitButton>
+          ) : (
+            <CommentSubmitButton onClick={AccessTokenError}>작성</CommentSubmitButton>
+          )}
         </CommentForm>
         <CommentBox>
-          <CommentCount>댓글 수: {postContent.comments}</CommentCount>
-          <Comment />
+          {comments ? (
+            <>
+              <CommentCount>댓글 수: {comments.length}</CommentCount>
+              <Comment comments={comments} />
+            </>
+          ) : (
+            <CommentCount>댓글이 없습니다.</CommentCount>
+          )}
         </CommentBox>
       </DetailContainer>
     </CenteredContainer>

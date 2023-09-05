@@ -1,4 +1,4 @@
-import { collection, DocumentData, getDocs } from "firebase/firestore";
+import { collection, doc, DocumentData, getDocs, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -118,11 +118,29 @@ function BoardList() {
       // getDocs로 컬렉션안에 데이터 가져오기
       const data = await getDocs(usersCollectionRef);
       // users에 data안의 자료 추가. 객체에 id 덮어씌우는거
-      setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const postsData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      for (const post of postsData) {
+        await updateCommentCount(post.id);
+      }
+
+      setPosts(postsData);
     };
 
     getPosts();
-  });
+  }, []);
+
+  // 게시물의 댓글 수를 업데이트하는 함수
+  async function updateCommentCount(postId: string) {
+    const commentsRef = collection(db, `posts/${postId}/comments`);
+    const querySnapshot = await getDocs(commentsRef);
+    const commentCount = querySnapshot.size; // 댓글 수 계산
+
+    // 해당 게시물 문서 업데이트
+    const postRef = doc(db, "posts", postId);
+    await updateDoc(postRef, {
+      comments: commentCount, // 댓글 수를 업데이트
+    });
+  }
 
   // 페이지를 변경하는 함수
   const AccessTokenError = () => {

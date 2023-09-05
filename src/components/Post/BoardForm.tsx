@@ -131,11 +131,6 @@ function BoardForm() {
     }
   };
 
-  const handleFileDrag = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -164,8 +159,8 @@ function BoardForm() {
     try {
       // addDoc을 이용해서 내가 원하는 collection에 내가 원하는 key로 값을 추가한다.
       await addDoc(usersCollectionRef, {
+        // postID: postID,
         userName: userNickname,
-        // comments: comments,
         title: title,
         content: content,
         postTime: new Date().toISOString(),

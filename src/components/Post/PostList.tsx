@@ -84,9 +84,9 @@ const PaginationContainer = styled.div`
   margin-top: 20px;
 `;
 
-const PageButton = styled.button<{ active: boolean }>`
-  background-color: ${({ active }) => (active ? "#000" : "#fff")};
-  color: ${({ active }) => (active ? "#fff" : "#000")};
+const PageButton = styled.button<{ $active: boolean }>`
+  background-color: ${(props) => (props.$active ? "#000" : "#fff")};
+  color: ${(props) => (props.$active ? "#fff" : "#000")};
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   padding: 5px 10px;
   margin: 0 5px;
@@ -163,8 +163,8 @@ function BoardList() {
             </SearchBox>
           </PostListBox>
           {currentPosts.length
-            ? currentPosts.map((item) => (
-                <Link to={`/post/${item.id}`}>
+            ? currentPosts.map((item, index) => (
+                <Link to={`/post/${item.id}`} key={index}>
                   <ListBox key={item.id}>
                     <UserNickname>{item.userName}</UserNickname>
                     <ListItemBox>
@@ -184,7 +184,7 @@ function BoardList() {
           {Array.from({ length: Math.ceil(posts.length / postsPerPage) }).map((_, index) => (
             <PageButton
               key={index}
-              active={index + 1 === currentPage}
+              $active={index + 1 === currentPage}
               onClick={() => paginate(index + 1)}
             >
               {index + 1}

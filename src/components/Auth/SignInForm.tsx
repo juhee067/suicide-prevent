@@ -160,7 +160,7 @@ const SignInForm = () => {
       <Register>
         <Link to="/auth/signUp">
           회원이 아니신가요?
-          <SignUpBox showunderline>회원가입</SignUpBox>
+          <SignUpBox $showunderline={true}>회원가입</SignUpBox>
         </Link>
       </Register>
     </Form>

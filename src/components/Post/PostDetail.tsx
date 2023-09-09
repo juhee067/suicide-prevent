@@ -175,7 +175,7 @@ function PostDetail() {
         console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
       }
     }
-    console.log(detailPost, "detailPost");
+
     fetchComments(); // 댓글 정보를 가져오는 함수 호출
   }, []);
 

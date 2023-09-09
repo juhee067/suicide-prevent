@@ -198,7 +198,7 @@ function BoardForm() {
     };
 
     getUserNickname();
-  }, []);
+  }, [uploadedFiles]);
 
   return (
     <FormContainer>
@@ -228,7 +228,7 @@ function BoardForm() {
             className={isDragOver ? "dragover" : ""}
           >
             <FormFileLabel htmlFor="fileInput">
-              <FileAttachment showunderline> 파일 첨부</FileAttachment>
+              <FileAttachment $showunderline> 파일 첨부</FileAttachment>
             </FormFileLabel>
             or
             <FileAttachment>파일 드래그</FileAttachment>

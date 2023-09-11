@@ -1,8 +1,10 @@
 import { getAuth } from "firebase/auth";
-import React, { useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { db } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
 import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
 import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
@@ -73,6 +75,7 @@ interface UserData {
 }
 
 const SignInForm = () => {
+  const [nickName, setNickName] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -92,15 +95,32 @@ const SignInForm = () => {
       const user = getAuth().currentUser;
 
       if (user) {
-        user.getIdToken().then(function (idToken: any) {
-          // idToken을 이용하여 작업 수행
-          dispatch(setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken }));
-          dispatch(setUserLoginAccessTokenSlice({ authToken: idToken }));
-        });
-      }
+        const idToken = await user.getIdToken();
 
-      alert("로그인되었습니다.");
-      navigate("/");
+        // Firestore 쿼리 생성
+        const q = query(collection(db, "nickName"), where("email", "==", userEmail));
+
+        // Firestore에서 유저의 닉네임 조회
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // 첫 번째 문서의 닉네임을 가져옴
+          const userDoc = querySnapshot.docs[0];
+          const userData = userDoc.data();
+          const nickName = userData.nickname;
+
+          // idToken 및 닉네임과 함께 상태에 저장
+          dispatch(
+            setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken, nickname: nickName })
+          );
+          dispatch(setUserLoginAccessTokenSlice({ authToken: idToken }));
+        } else {
+          console.log("해당 이메일 주소의 닉네임을 찾을 수 없습니다.");
+        }
+
+        alert("로그인되었습니다.");
+        navigate("/");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -140,7 +160,7 @@ const SignInForm = () => {
       <Register>
         <Link to="/auth/signUp">
           회원이 아니신가요?
-          <SignUpBox showunderline>회원가입</SignUpBox>
+          <SignUpBox $showunderline={true}>회원가입</SignUpBox>
         </Link>
       </Register>
     </Form>

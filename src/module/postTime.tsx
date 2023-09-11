@@ -18,3 +18,15 @@ export const displayCreatedAt = (createdDate: string | number | Date) => {
     return "방금 전";
   }
 };
+
+export function formatDateTime(dateTimeString: string | number | Date) {
+  const date = new Date(dateTimeString);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고 2자리로 포맷팅
+  const day = String(date.getDate()).padStart(2, "0"); // 일
+  const hours = String(date.getHours()).padStart(2, "0"); // 시간
+  const minutes = String(date.getMinutes()).padStart(2, "0"); // 분
+
+  return `${year}.${month}.${day} ${hours}:${minutes}`;
+}

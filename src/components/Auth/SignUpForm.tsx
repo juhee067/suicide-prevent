@@ -235,7 +235,7 @@ const SignUpForm = ({ onLogin, onChange }: any) => {
       <Register>
         <Link to="/auth/signIn">
           이미 회원이신가요?
-          <SigninBox showunderline>로그인</SigninBox>
+          <SigninBox $showunderline>로그인</SigninBox>
         </Link>
       </Register>
     </Form>

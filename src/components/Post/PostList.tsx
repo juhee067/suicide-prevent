@@ -1,4 +1,4 @@
-import { collection, DocumentData, getDocs } from "firebase/firestore";
+import { collection, doc, DocumentData, getDocs, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -60,7 +60,12 @@ const ListTitle = styled.h3`
   margin-bottom: 20px;
 `;
 
-const ListContent = styled(Description)``;
+const ListContent = styled(Description)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%; /* 필요에 따라 최대 너비를 조정하세요. */
+`;
 
 const Etc = styled.div`
   text-align: right;
@@ -79,9 +84,9 @@ const PaginationContainer = styled.div`
   margin-top: 20px;
 `;
 
-const PageButton = styled.button<{ active: boolean }>`
-  background-color: ${({ active }) => (active ? "#000" : "#fff")};
-  color: ${({ active }) => (active ? "#fff" : "#000")};
+const PageButton = styled.button<{ $active: boolean }>`
+  background-color: ${(props) => (props.$active ? "#000" : "#fff")};
+  color: ${(props) => (props.$active ? "#fff" : "#000")};
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   padding: 5px 10px;
   margin: 0 5px;
@@ -113,11 +118,29 @@ function BoardList() {
       // getDocs로 컬렉션안에 데이터 가져오기
       const data = await getDocs(usersCollectionRef);
       // users에 data안의 자료 추가. 객체에 id 덮어씌우는거
-      setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const postsData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      for (const post of postsData) {
+        await updateCommentCount(post.id);
+      }
+
+      setPosts(postsData);
     };
 
     getPosts();
-  });
+  }, []);
+
+  // 게시물의 댓글 수를 업데이트하는 함수
+  async function updateCommentCount(postId: string) {
+    const commentsRef = collection(db, `posts/${postId}/comments`);
+    const querySnapshot = await getDocs(commentsRef);
+    const commentCount = querySnapshot.size; // 댓글 수 계산
+
+    // 해당 게시물 문서 업데이트
+    const postRef = doc(db, "posts", postId);
+    await updateDoc(postRef, {
+      comments: commentCount, // 댓글 수를 업데이트
+    });
+  }
 
   // 페이지를 변경하는 함수
   const AccessTokenError = () => {
@@ -140,8 +163,8 @@ function BoardList() {
             </SearchBox>
           </PostListBox>
           {currentPosts.length
-            ? currentPosts.map((item) => (
-                <Link to={`/post/${item.id}`}>
+            ? currentPosts.map((item, index) => (
+                <Link to={`/post/${item.id}`} key={index}>
                   <ListBox key={item.id}>
                     <UserNickname>{item.userName}</UserNickname>
                     <ListItemBox>
@@ -161,7 +184,7 @@ function BoardList() {
           {Array.from({ length: Math.ceil(posts.length / postsPerPage) }).map((_, index) => (
             <PageButton
               key={index}
-              active={index + 1 === currentPage}
+              $active={index + 1 === currentPage}
               onClick={() => paginate(index + 1)}
             >
               {index + 1}

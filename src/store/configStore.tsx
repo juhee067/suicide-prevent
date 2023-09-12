@@ -1,19 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
-import { combineReducers } from "redux";
-import { userLoginAccessTokenSlice } from "./reducer/userData/userData/userLoginAccessTokenSlice";
-import { userLoginDataSlice } from "./reducer/userData/userData/userLoginDataSlice";
 import { persistReducer } from "redux-persist";
-import storage from "redux-persist/es/storage";
+import storage from "redux-persist/lib/storage";
+import { setUserLoginAccessToken } from "./reducer/userData/userData/userLoginAccessTokenSlice";
+import { setUserLoginData } from "./reducer/userData/userData/userLoginDataSlice";
 
 const reducers = combineReducers({
-  userLoginDataSlice: userLoginDataSlice.reducer,
-  userLoginAccessTokenSlice: userLoginAccessTokenSlice.reducer,
+  userLoginData: setUserLoginData,
+  userLoginAccessToken: setUserLoginAccessToken,
 });
 
 const persistConfig = {
   key: "root",
-  storage, // localStorage에 저장
+  storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

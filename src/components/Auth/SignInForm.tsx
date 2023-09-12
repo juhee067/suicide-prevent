@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db, loginEmail } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
-import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
-import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
+import { setUserLoginAccessToken } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
+import { setUserLoginData } from "../../store/reducer/userData/userData/userLoginDataSlice";
 // import { login } from "../../module/tokenManager";
 
 const Form = styled.form``;
@@ -104,9 +104,9 @@ const SignInForm = () => {
 
           // idToken 및 닉네임과 함께 상태에 저장
           dispatch(
-            setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken, nickName: nickName })
+            setUserLoginData({ uid: user.uid, userEmail, authToken: idToken, nickName: nickName })
           );
-          dispatch(setUserLoginAccessTokenSlice({ authToken: idToken }));
+          dispatch(setUserLoginAccessToken({ authToken: idToken }));
         } else {
           console.log("해당 이메일 주소의 닉네임을 찾을 수 없습니다.");
         }

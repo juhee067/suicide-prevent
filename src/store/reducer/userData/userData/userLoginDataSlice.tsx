@@ -19,7 +19,7 @@ export const userLoginDataSlice = createSlice({
   name: "userLoginData",
   initialState,
   reducers: {
-    setUserLoginDataSlice: (state, action: PayloadAction<UserLoginDataState>) => {
+    setUserLoginData: (state, action: PayloadAction<UserLoginDataState>) => {
       return { ...state, ...action.payload };
     },
   },
@@ -28,4 +28,6 @@ export const userLoginDataSlice = createSlice({
   },
 });
 
-export const { setUserLoginDataSlice } = userLoginDataSlice.actions;
+export const { setUserLoginData } = userLoginDataSlice.actions;
+
+export default userLoginDataSlice.reducer;

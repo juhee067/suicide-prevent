@@ -3,15 +3,9 @@ import thunk from "redux-thunk";
 import { combineReducers } from "redux";
 import { userLoginAccessTokenSlice } from "./reducer/userData/userData/userLoginAccessTokenSlice";
 import { userLoginDataSlice } from "./reducer/userData/userData/userLoginDataSlice";
-import { persistReducer, PURGE } from "redux-persist";
+import { persistReducer } from "redux-persist";
 import storage from "redux-persist/es/storage";
 
-// export default configureStore({
-//   reducer: {
-//     userLoginDataSlice: userLoginDataSlice.reducer,
-//     userLoginAccessTokenSlice: userLoginAccessTokenSlice.reducer,
-//   },
-// });
 const reducers = combineReducers({
   userLoginDataSlice: userLoginDataSlice.reducer,
   userLoginAccessTokenSlice: userLoginAccessTokenSlice.reducer,

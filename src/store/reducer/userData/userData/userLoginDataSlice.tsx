@@ -1,8 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PURGE } from "redux-persist";
 
-const initialState = {
+interface UserLoginDataState {
+  uid: string;
+  userEmail: string;
+  nickName: string;
+  authToken: any;
+}
+
+const initialState: UserLoginDataState = {
   uid: "",
   userEmail: "",
   nickName: "",
@@ -13,8 +19,8 @@ export const userLoginDataSlice = createSlice({
   name: "userLoginData",
   initialState,
   reducers: {
-    setUserLoginDataSlice: (state, action: PayloadAction<any>) => {
-      return action.payload;
+    setUserLoginDataSlice: (state, action: PayloadAction<UserLoginDataState>) => {
+      return { ...state, ...action.payload };
     },
   },
   extraReducers: (builder) => {
@@ -22,4 +28,4 @@ export const userLoginDataSlice = createSlice({
   },
 });
 
-export let { setUserLoginDataSlice } = userLoginDataSlice.actions;
+export const { setUserLoginDataSlice } = userLoginDataSlice.actions;

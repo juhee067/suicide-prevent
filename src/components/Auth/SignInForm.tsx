@@ -69,8 +69,8 @@ const SignInBtn = styled(Btn)`
 `;
 
 const SignInForm = () => {
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
 
@@ -104,7 +104,7 @@ const SignInForm = () => {
 
           // idToken 및 닉네임과 함께 상태에 저장
           dispatch(
-            setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken, nickname: nickName })
+            setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken, nickName: nickName })
           );
           dispatch(setUserLoginAccessTokenSlice({ authToken: idToken }));
         } else {

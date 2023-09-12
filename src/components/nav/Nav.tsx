@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
-import { FaRegWindowMinimize, FaRegWindowMaximize } from "react-icons/fa";
+import { FaRegWindowMaximize } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
-import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
 import { persistor } from "../..";
 
 const NavWrapper = styled(FlexRowCenterDiv)`
@@ -82,7 +79,6 @@ const Logout = styled.div`
 const Nav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
   const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
-  const dispatch = useDispatch();
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
@@ -103,20 +99,12 @@ const Nav = () => {
     setSelectedMenu(undefined);
   };
 
-  // const handleLogout = () => {
-  //   dispatch(setUserLoginDataSlice({ uid: "", userEmail: "", authToken: "" }));
-  //   dispatch(setUserLoginAccessTokenSlice(""));
-  //   console.log("로그아웃이 완료 되었습니다.");
-  // };
-
   const handleLogout = async () => {
     window.location.reload();
     await persistor.purge(); // persistStore의 데이터 전부 날림
   };
 
   useEffect(() => {
-    console.log(accessToken);
-    // 현재 URL 경로에 따라 selectedMenu 초기화
     const pathname = location.pathname;
     const matchingIndex = menuItems.findIndex((item) => item.to === pathname);
 

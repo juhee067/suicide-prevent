@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
 import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
+import { persistor } from "../..";
 
 const NavWrapper = styled(FlexRowCenterDiv)`
   padding: 0 20px;
@@ -85,6 +86,7 @@ const Nav = () => {
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
+
   const handleMenuClick = (index: number) => {
     setSelectedMenu(index);
   };
@@ -101,13 +103,19 @@ const Nav = () => {
     setSelectedMenu(undefined);
   };
 
-  const handleLogout = () => {
-    dispatch(setUserLoginDataSlice({ uid: "", userEmail: "", authToken: "" }));
-    dispatch(setUserLoginAccessTokenSlice(""));
-    console.log("로그아웃이 완료 되었습니다.");
+  // const handleLogout = () => {
+  //   dispatch(setUserLoginDataSlice({ uid: "", userEmail: "", authToken: "" }));
+  //   dispatch(setUserLoginAccessTokenSlice(""));
+  //   console.log("로그아웃이 완료 되었습니다.");
+  // };
+
+  const handleLogout = async () => {
+    window.location.reload();
+    await persistor.purge(); // persistStore의 데이터 전부 날림
   };
 
   useEffect(() => {
+    console.log(accessToken);
     // 현재 URL 경로에 따라 selectedMenu 초기화
     const pathname = location.pathname;
     const matchingIndex = menuItems.findIndex((item) => item.to === pathname);

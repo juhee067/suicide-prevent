@@ -15,28 +15,31 @@ import Post from "./pages/Post";
 import PostDetail from "./components/Post/PostDetail";
 import BoardWriting from "./pages/BoardWriting";
 
-const App = React.memo(() => {
-  const routes = [
-    { path: "/", element: <Main /> },
-    { path: "/letter", element: <Letter /> },
-    { path: "/test", element: <Test /> },
-    { path: "/information", element: <Information /> },
-    { path: "/post", element: <Post /> },
-    { path: "/auth/signUp", element: <SignUp /> },
-    { path: "/auth/signIn", element: <SignIn /> },
-  ];
+const routes = [
+  { path: "/", element: <Main /> },
+  { path: "/letter", element: <Letter /> },
+  { path: "/test", element: <Test /> },
+  { path: "/information", element: <Information /> },
+  { path: "/post", element: <Post /> },
+  { path: "/auth/signUp", element: <SignUp /> },
+  { path: "/auth/signIn", element: <SignIn /> },
+];
 
+const Menu = (
+  <Routes>
+    {routes.map((route, index) => (
+      <Route key={index} path={route.path} element={route.element} />
+    ))}
+    <Route path="/post/:postId" element={<PostDetail />} />
+    <Route path="/BoardForm" element={<BoardWriting />} />
+  </Routes>
+);
+const App = React.memo(() => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Nav />
-      <Routes>
-        {routes.map((route, index) => (
-          <Route key={index} path={route.path} element={route.element} />
-        ))}
-        <Route path="/post/:postId" element={<PostDetail />} />
-        <Route path="/BoardForm" element={<BoardWriting />} />
-      </Routes>
+      {Menu}
     </ThemeProvider>
   );
 });

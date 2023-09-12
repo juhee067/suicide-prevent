@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { db } from "../../firebaseConfig";
+import { db, loginEmail } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
 import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
 import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
@@ -68,14 +68,7 @@ const SignInBtn = styled(Btn)`
   margin-bottom: 20px;
 `;
 
-interface UserData {
-  uid: string;
-  userEmail: string;
-  authToken: string;
-}
-
 const SignInForm = () => {
-  const [nickName, setNickName] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -92,8 +85,8 @@ const SignInForm = () => {
     e.preventDefault();
     const userEmail = `${userId}@myapp.com`;
     try {
-      const user = getAuth().currentUser;
-
+      const result = await loginEmail(userEmail, password);
+      const user = result.user;
       if (user) {
         const idToken = await user.getIdToken();
 

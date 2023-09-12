@@ -12,7 +12,7 @@ import Letter from "./pages/Letter";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Post from "./pages/Post";
-import PostDetail from "./components/Post/PostDetail";
+import PostDetail from "./pages/PostDetail";
 import BoardWriting from "./pages/BoardWriting";
 
 const routes = [

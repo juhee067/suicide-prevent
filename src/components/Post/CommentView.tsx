@@ -1,33 +1,12 @@
-import { addDoc, collection, doc, DocumentData, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
 import React, { useEffect, useId, useState } from "react";
-import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
-import { formatDateTime } from "../../module/postTime";
-import { FlexColumnCenterDiv, FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Btn, Caption, Description, Subtitle } from "../../module/styled/styledFont";
+
+import { Caption } from "../../module/styled/styledFont";
 import Comment from "./Comment";
-import PostView from "./PostView";
-
-// 스타일드 컴포넌트를 사용하여 상세보기 스타일을 정의합니다.
-const CenteredContainer = styled(FlexColumnCenterDiv)`
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 100px 0;
-  background-color: #e9e9e9;
-`;
-
-const DetailContainer = styled.div`
-  width: 50%;
-  max-width: 1200px;
-  padding: 20px;
-  text-align: left;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
 
 const CommentForm = styled.div`
   display: flex;
@@ -65,9 +44,9 @@ const CommentBox = styled.div``;
 
 const CommentCount = styled(Caption)``;
 
-function PostDetail() {
+function CommentView({ postId }: any) {
   const uniqueId = useId();
-  const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
+
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<DocumentData[]>([]);
   const accessToken = useSelector(
@@ -136,34 +115,31 @@ function PostDetail() {
   };
 
   return (
-    <CenteredContainer>
-      <DetailContainer>
-        <PostView postId={{ postId }} />
-        <CommentForm>
-          <CommentInput
-            placeholder="댓글을 작성하세요."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          {accessToken ? (
-            <CommentSubmitButton onClick={handleSubmit}>작성</CommentSubmitButton>
-          ) : (
-            <CommentSubmitButton onClick={AccessTokenError}>작성</CommentSubmitButton>
-          )}
-        </CommentForm>
-        <CommentBox>
-          {comments ? (
-            <>
-              <CommentCount>댓글 수: {comments.length}</CommentCount>
-              <Comment comments={comments} />
-            </>
-          ) : (
-            <CommentCount>댓글이 없습니다.</CommentCount>
-          )}
-        </CommentBox>
-      </DetailContainer>
-    </CenteredContainer>
+    <>
+      <CommentForm>
+        <CommentInput
+          placeholder="댓글을 작성하세요."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+        {accessToken ? (
+          <CommentSubmitButton onClick={handleSubmit}>작성</CommentSubmitButton>
+        ) : (
+          <CommentSubmitButton onClick={AccessTokenError}>작성</CommentSubmitButton>
+        )}
+      </CommentForm>
+      <CommentBox>
+        {comments ? (
+          <>
+            <CommentCount>댓글 수: {comments.length}</CommentCount>
+            <Comment comments={comments} />
+          </>
+        ) : (
+          <CommentCount>댓글이 없습니다.</CommentCount>
+        )}
+      </CommentBox>
+    </>
   );
 }
 
-export default PostDetail;
+export default CommentView;

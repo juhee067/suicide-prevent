@@ -2,6 +2,7 @@ import { collection, doc, DocumentData, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
+
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
 import { formatDateTime } from "../../module/postTime";

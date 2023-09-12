@@ -9,6 +9,7 @@ import { formatDateTime } from "../../module/postTime";
 import { FlexColumnCenterDiv, FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Btn, Caption, Description, Subtitle } from "../../module/styled/styledFont";
 import Comment from "./Comment";
+import PostView from "./PostView";
 
 // 스타일드 컴포넌트를 사용하여 상세보기 스타일을 정의합니다.
 const CenteredContainer = styled(FlexColumnCenterDiv)`
@@ -26,50 +27,6 @@ const DetailContainer = styled.div`
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const PostHeaderBox = styled(FlexRowDiv)`
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const WritingBox = styled(FlexRowCenterDiv)`
-  gap: 20px;
-`;
-
-const UserActions = styled(FlexRowDiv)`
-  gap: 10px;
-  color: ${({ theme }) => theme.color.mainGray};
-  font-size: 1.8rem;
-  cursor: pointer;
-`;
-
-const PostTitle = styled.h1`
-  font-size: 24px;
-  margin: 0;
-`;
-const PostTime = styled(Caption)`
-  color: ${({ theme }) => theme.color.mainGray};
-`;
-const PostAuthor = styled(Caption)``;
-
-const PostContent = styled(Description)`
-  height: 100px;
-  margin: 20px;
-`;
-
-const PostContentBox = styled.div`
-  margin: 20px 0;
-  border-top: 1px solid ${({ theme }) => theme.color.mainBlack};
-  border-bottom: 1px solid ${({ theme }) => theme.color.mainBlack};
-`;
-
-const PreviewImage = styled.div`
-  width: 100%;
-  height: 200px;
-  text-align: center;
-  line-height: 200px;
-  font-size: 20px;
 `;
 
 const CommentForm = styled.div`
@@ -111,11 +68,8 @@ const CommentCount = styled(Caption)``;
 function PostDetail() {
   const uniqueId = useId();
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
-  const [postID, setPostID] = useState<string | undefined>("");
-  const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<DocumentData[]>([]);
-  const navigate = useNavigate();
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
@@ -133,27 +87,6 @@ function PostDetail() {
     setComment("");
   };
   const usersCollectionRef = collection(db, `posts/${postId}/comments`);
-
-  useEffect(() => {
-    // Firebase Firestore에서 해당 게시물의 정보를 가져오는 비동기 함수
-    async function fetchPost() {
-      try {
-        const postRef = doc(collection(db, "posts"), postId); // "posts"는 컬렉션 이름, yourFirestoreInstance는 Firestore 인스턴스입니다.
-        const docSnap = await getDoc(postRef);
-
-        if (docSnap.exists()) {
-          const postData = docSnap.data(); // 게시물 정보를 가져옵니다.
-          setDetailPost({ ...postData, postId });
-        } else {
-          console.log("게시물을 찾을 수 없습니다.");
-        }
-      } catch (error) {
-        console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
-      }
-    }
-
-    fetchPost(); // 게시물 정보를 가져오는 함수 호출
-  }, [postId]);
 
   useEffect(() => {
     // Firebase Firestore에서 해당 게시물의 댓글 정보를 가져오는 비동기 함수
@@ -180,9 +113,6 @@ function PostDetail() {
   }, []);
 
   // 게시물 정보가 로드되기 전에는 로딩 상태를 처리할 수 있습니다.
-  if (!detailPost) {
-    return <div>Loading...</div>;
-  }
 
   const AccessTokenError = () => {
     alert("로그인을 해주세요");
@@ -208,25 +138,7 @@ function PostDetail() {
   return (
     <CenteredContainer>
       <DetailContainer>
-        <PostHeaderBox>
-          <WritingBox>
-            <PostTitle>{detailPost.title}</PostTitle>
-            <PostAuthor>{detailPost.userName}</PostAuthor>
-            <PostTime>{formatDateTime(detailPost.postTime)}</PostTime>
-          </WritingBox>
-          {accessToken && currentUser && currentUser.nickname === detailPost.userName ? (
-            // 댓글 작성자와 현재 사용자가 동일한 경우 수정 및 삭제 버튼 표시
-            <UserActions>
-              <FiEdit />
-              <FiDelete />
-            </UserActions>
-          ) : null}
-        </PostHeaderBox>
-        <PostContentBox>
-          {detailPost.previewImage ? <PreviewImage>{detailPost.previewImage}</PreviewImage> : null}
-
-          <PostContent>{detailPost.content}</PostContent>
-        </PostContentBox>
+        <PostView postId={{ postId }} />
         <CommentForm>
           <CommentInput
             placeholder="댓글을 작성하세요."

@@ -103,7 +103,7 @@ const FormCancel = styled(Btn)`
 
 const FormButton = styled(Btn)``;
 
-function BoardForm() {
+function PostCreate() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userNickname, setUserNickname] = useState<string>("");
@@ -158,7 +158,7 @@ function BoardForm() {
   const createPosts = async () => {
     try {
       // addDoc을 이용해서 내가 원하는 collection에 내가 원하는 key로 값을 추가한다.
-      await addDoc(usersCollectionRef, {
+      const docRef = await addDoc(usersCollectionRef, {
         // postID: postID,
         userName: userNickname,
         title: title,
@@ -166,6 +166,8 @@ function BoardForm() {
         postTime: new Date().toISOString(),
       });
 
+      const postId = docRef.id;
+      navigate(`/post/edit/${postId}`);
       // 데이터를 추가한 후, 상태 초기화
       setTitle("");
       setContent("");
@@ -261,4 +263,4 @@ function BoardForm() {
   );
 }
 
-export default BoardForm;
+export default PostCreate;

@@ -2,11 +2,14 @@ import { collection, doc, DocumentData, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
 import { formatDateTime } from "../../module/postTime";
 import { FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Caption, Description } from "../../module/styled/styledFont";
+
+const PostViewBox = styled.div``;
 
 const PostHeaderBox = styled(FlexRowDiv)`
   justify-content: space-between;
@@ -63,7 +66,6 @@ const PostView = ({ postId }: any) => {
   const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
   useEffect(() => {
-    console.log(accessToken, currentUser);
     // Firebase Firestore에서 해당 게시물의 정보를 가져오는 비동기 함수
     async function fetchPost() {
       try {
@@ -89,7 +91,7 @@ const PostView = ({ postId }: any) => {
   }
 
   return (
-    <>
+    <PostViewBox>
       <PostHeaderBox>
         <WritingBox>
           <PostTitle>{detailPost.title}</PostTitle>
@@ -99,7 +101,10 @@ const PostView = ({ postId }: any) => {
         {accessToken && currentUser.nickName === detailPost.userName ? (
           // 댓글 작성자와 현재 사용자가 동일한 경우 수정 및 삭제 버튼 표시
           <UserActions>
-            <FiEdit />
+            <Link to={`/post/edit/${postId}`}>
+              <FiEdit />
+            </Link>
+
             <FiDelete />
           </UserActions>
         ) : null}
@@ -109,7 +114,7 @@ const PostView = ({ postId }: any) => {
 
         <PostContent>{detailPost.content}</PostContent>
       </PostContentBox>
-    </>
+    </PostViewBox>
   );
 };
 

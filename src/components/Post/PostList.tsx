@@ -156,7 +156,7 @@ function BoardList() {
             <Title>허심탄회</Title>
             <SearchBox>
               {accessToken ? (
-                <Link to={`/BoardForm`}>글쓰기</Link>
+                <Link to={`/PostCreate`}>글쓰기</Link>
               ) : (
                 <span onClick={AccessTokenError}>글쓰기</span>
               )}

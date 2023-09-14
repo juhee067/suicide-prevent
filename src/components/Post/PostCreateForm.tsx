@@ -119,6 +119,7 @@ function PostCreate() {
       alert("제목과 내용을 모두 입력하세요.");
       return;
     }
+    createPosts();
     setTitle("");
     setContent("");
   };
@@ -254,10 +255,8 @@ function PostCreate() {
           </UploadedFileList>
         </FormGroup>
 
-        <FormCancel type="submit">취소하기</FormCancel>
-        <FormButton type="submit" onClick={createPosts}>
-          게시하기
-        </FormButton>
+        <FormCancel>취소하기</FormCancel>
+        <FormButton type="submit">게시하기</FormButton>
       </Form>
     </FormContainer>
   );

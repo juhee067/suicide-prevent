@@ -1,7 +1,7 @@
-import { collection, doc, DocumentData, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { FlexRowCenterDiv } from "../../module/styled/FlexDiv";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
@@ -108,16 +108,38 @@ function EditPostForm({ initialData }: any) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   async function fetchPost() {
+  //     try {
+  //       const postRef = doc(collection(db, "posts"), postId);
+  //       const docSnap = await getDoc(postRef);
+
+  //       if (docSnap.exists()) {
+  //         const postData = docSnap.data();
+  //         setDetailPost({ ...postData, postId });
+  //         await updateDoc(postRef, {
+  //           title: title,
+  //           content: content,
+  //           postTime: new Date().toISOString(),
+  //         });
+  //       } else {
+  //         console.log("게시물을 찾을 수 없습니다.");
+  //       }
+  //     } catch (error) {
+  //       console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
+  //     }
+  //   }
 
   useEffect(() => {
-    // Firebase Firestore에서 해당 게시물의 정보를 가져오는 비동기 함수
     async function fetchPost() {
       try {
-        const postRef = doc(collection(db, "posts"), postId); // "posts"는 컬렉션 이름, yourFirestoreInstance는 Firestore 인스턴스입니다.
+        const postRef = doc(collection(db, "posts"), postId);
         const docSnap = await getDoc(postRef);
 
         if (docSnap.exists()) {
-          const postData = docSnap.data(); // 게시물 정보를 가져옵니다.
+          const postData = docSnap.data();
           setDetailPost({ ...postData, postId });
           console.log(detailPost, "detailPost");
         } else {
@@ -128,7 +150,7 @@ function EditPostForm({ initialData }: any) {
       }
     }
 
-    fetchPost(); // 게시물 정보를 가져오는 함수 호출
+    fetchPost();
   }, [postId]);
 
   useEffect(() => {
@@ -139,11 +161,50 @@ function EditPostForm({ initialData }: any) {
     }
   }, [detailPost]);
 
+  const handleTitleChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setTitle(e.target.value);
+  };
+
+  const handleTextAreaChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setContent(e.target.value);
+  };
   // 폼 제출 시 호출되는 함수
+
+  const editPost = async () => {
+    try {
+      const postRef = doc(collection(db, "posts"), postId); // 기존 데이터를 수정할 문서에 대한 참조
+      const docSnap = await getDoc(postRef);
+
+      if (docSnap.exists()) {
+        const postData = docSnap.data(); // 가져온 데이터
+
+        // 수정할 내용을 postData 객체에 반영
+        postData.title = title; // 새로운 제목으로 업데이트
+        postData.content = content; // 새로운 내용으로 업데이트
+
+        // Firestore에 데이터 업데이트
+        await updateDoc(postRef, postData);
+
+        // 업데이트가 완료되면 페이지를 다시 보여줄 수 있습니다.
+        navigate(`/post/${postId}`);
+      } else {
+        console.log("게시물을 찾을 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("게시물을 수정하는 중 오류가 발생했습니다.", error);
+    }
+  };
+
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // 폼 데이터를 서버로 보내거나 원하는 작업을 수행할 수 있음
-    // console.log("폼 데이터:", formData);
+    if (!title || !content) {
+      alert("제목과 내용을 모두 입력하세요.");
+      return;
+    }
+
+    setTitle("");
+    setContent("");
+    editPost();
   };
 
   return (
@@ -154,7 +215,7 @@ function EditPostForm({ initialData }: any) {
             type="text"
             name="title" // input 요소의 name 속성을 추가해야 합니다.
             value={title}
-            // onChange={handleTitleChange}
+            onChange={handleTitleChange}
             placeholder="제목"
           />
         </FormGroup>
@@ -163,7 +224,7 @@ function EditPostForm({ initialData }: any) {
           <FormTextarea
             name="content" // textarea 요소의 name 속성을 추가해야 합니다.
             value={content}
-            // onChange={handleTextAreaChange}
+            onChange={handleTextAreaChange}
             placeholder="내용"
           />
         </FormGroup>
@@ -188,7 +249,7 @@ function EditPostForm({ initialData }: any) {
           </FileDragArea>
         </FormGroup>
 
-        <FormCancel type="submit">취소하기</FormCancel>
+        <FormCancel>취소하기</FormCancel>
         <FormButton type="submit">수정완료</FormButton>
       </Form>
     </FormContainer>

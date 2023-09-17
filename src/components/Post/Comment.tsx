@@ -1,4 +1,4 @@
-import { collection, DocumentData, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, DocumentData, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
@@ -48,30 +48,95 @@ const UserActions = styled(FlexRowDiv)`
 
 interface CommentsProps {
   comments: DocumentData[] | null;
+  postId: any;
 }
 
-function Comment({ comments }: CommentsProps) {
+function Comment({ comments, postId }: CommentsProps) {
+  const [commentItems, setCommentItems] = useState<
+    Array<{ commentId: string; userName: string; comment: string; commentTime: string }>
+  >([]);
+
   const commentsArray = comments || [];
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
   const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
+  useEffect(() => {
+    // Firebase Firestore에서 해당 게시물의 댓글 정보를 가져오는 비동기 함수
+    async function fetchComments() {
+      try {
+        const commentsRef = collection(db, `posts/${postId}/comments`);
+        const querySnapshot = await getDocs(commentsRef);
+
+        if (!querySnapshot.empty) {
+          const commentsData = querySnapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              commentId: doc.id,
+              userName: data.userName, // 댓글 작성자 이름 가져오기
+              comment: data.comment, // 댓글 내용 가져오기
+              commentTime: data.commentTime, // 댓글 작성 시간 가져오기
+            };
+          });
+          setCommentItems(commentsData); // 댓글 데이터를 업데이트
+        } else {
+          console.log("댓글을 찾을 수 없습니다.");
+        }
+      } catch (error) {
+        console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
+      }
+    }
+
+    fetchComments();
+  }, []);
+
+  const commentDelete = async (commentId: string) => {
+    try {
+      const commentRef = doc(db, `posts/${postId}/comments/${commentId}`);
+      await deleteDoc(commentRef);
+
+      // 댓글 삭제 후 목록을 다시 불러와서 업데이트
+      const commentsRef = collection(db, `posts/${postId}/comments`);
+      const querySnapshot = await getDocs(commentsRef);
+
+      if (!querySnapshot.empty) {
+        const commentsData = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            commentId: doc.id,
+            userName: data.userName, // 댓글 작성자 이름 가져오기
+            comment: data.comment, // 댓글 내용 가져오기
+            commentTime: data.commentTime, // 댓글 작성 시간 가져오기
+          };
+        });
+        setCommentItems(commentsData);
+        console.log(commentsData);
+      } else {
+        setCommentItems([]);
+      }
+
+      alert("댓글을 삭제하셨습니다.");
+    } catch (error) {
+      console.error("댓글을 삭제하는 중 오류가 발생했습니다.", error);
+    }
+  };
+
   return (
     <CommentContainer>
       <CommentList>
-        {commentsArray.map((comment) => (
+        {commentItems.map((comment) => (
           <CommentItem key={comment.commentId}>
             <CommentBox>
               <CommentAuthor>{comment.userName}</CommentAuthor>
               <CommentContent>{comment.comment}</CommentContent>
               <CommentTime>{displayCreatedAt(comment.commentTime)}</CommentTime>
             </CommentBox>
-            {accessToken && currentUser && currentUser.nickname === comment.userName ? (
+            {accessToken && currentUser && currentUser.nickName === comment.userName ? (
               // 댓글 작성자와 현재 사용자가 동일한 경우 수정 및 삭제 버튼 표시
               <UserActions>
                 <FiEdit />
-                <FiDelete />
+                <FiDelete onClick={() => commentDelete(comment.commentId)} />
               </UserActions>
             ) : null}
           </CommentItem>

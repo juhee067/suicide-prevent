@@ -137,7 +137,7 @@ function CommentView({ postId }: any) {
         {comments ? (
           <>
             <CommentCount>댓글 수: {comments.length}</CommentCount>
-            <Comment comments={comments} />
+            <Comment comments={comments} postId={postId} />
           </>
         ) : (
           <CommentCount>댓글이 없습니다.</CommentCount>

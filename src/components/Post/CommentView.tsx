@@ -65,6 +65,7 @@ function CommentView({ postId }: any) {
     // 댓글 입력 필드 초기화
     setComment("");
   };
+
   const usersCollectionRef = collection(db, `posts/${postId}/comments`);
 
   useEffect(() => {
@@ -99,13 +100,17 @@ function CommentView({ postId }: any) {
 
   const createComment = async () => {
     try {
-      // addDoc을 이용해서 내가 원하는 collection에 내가 원하는 key로 값을 추가한다.
-      await addDoc(usersCollectionRef, {
+      const newComment = {
         commentId: uniqueId,
-        userName: currentUser.nickname,
+        userName: currentUser.nickName,
         comment: comment,
         commentTime: new Date().toISOString(),
-      });
+      };
+
+      // 댓글 배열에 새로운 댓글을 추가
+      setComments((prevComments) => [...prevComments, newComment]);
+      // Firestore에 댓글 데이터 추가
+      await addDoc(usersCollectionRef, newComment);
 
       setComment("");
       console.log("댓글 전달");

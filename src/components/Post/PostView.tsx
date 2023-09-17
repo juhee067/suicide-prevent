@@ -97,6 +97,8 @@ const PostView = ({ postId }: any) => {
 
       // 삭제가 성공하면 원하는 동작을 수행할 수 있습니다.
       console.log("게시물이 성공적으로 삭제되었습니다.");
+      alert("게시글을 삭제하시겠습까?");
+      alert("게시글이 삭제되었습니다.");
       navigator("/post");
     } catch (error) {
       console.error("게시물을 삭제하는 중 오류가 발생했습니다.", error);

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { db } from "../../firebaseConfig";
 import { displayCreatedAt } from "../../module/postTime";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Caption, Subtitle } from "../../module/styled/styledFont";
+import { Caption, H3, Subtitle } from "../../module/styled/styledFont";
 
 const CommentContainer = styled.div`
   margin-top: 30px;
@@ -26,7 +26,8 @@ const CommentItem = styled.li`
 `;
 const CommentBox = styled.div``;
 
-const CommentAuthor = styled(Subtitle)`
+const CommentAuthor = styled(Caption)`
+  font-weight: 500;
   margin-bottom: 10px;
 `;
 

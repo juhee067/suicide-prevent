@@ -1,8 +1,8 @@
-import { collection, doc, DocumentData, getDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, DocumentData, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
 import { formatDateTime } from "../../module/postTime";
@@ -58,7 +58,7 @@ const PreviewImage = styled.div`
 const PostView = ({ postId }: any) => {
   const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
   // URL 파라미터에서 게시물 ID를 추출
-
+  let navigator = useNavigate();
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
@@ -90,6 +90,19 @@ const PostView = ({ postId }: any) => {
     return <div>Loading...</div>;
   }
 
+  const postDelete = async (postId: string) => {
+    try {
+      const postRef = doc(db, "posts", postId); // 삭제할 게시물의 문서에 대한 참조
+      await deleteDoc(postRef); // Firestore에서 게시물 삭제
+
+      // 삭제가 성공하면 원하는 동작을 수행할 수 있습니다.
+      console.log("게시물이 성공적으로 삭제되었습니다.");
+      navigator("/post");
+    } catch (error) {
+      console.error("게시물을 삭제하는 중 오류가 발생했습니다.", error);
+    }
+  };
+
   return (
     <PostViewBox>
       <PostHeaderBox>
@@ -105,7 +118,7 @@ const PostView = ({ postId }: any) => {
               <FiEdit />
             </Link>
 
-            <FiDelete />
+            <FiDelete onClick={() => postDelete(postId)} />
           </UserActions>
         ) : null}
       </PostHeaderBox>

@@ -1,4 +1,12 @@
-import { collection, deleteDoc, doc, DocumentData, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  DocumentData,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
@@ -6,7 +14,8 @@ import styled from "styled-components";
 import { db } from "../../firebaseConfig";
 import { displayCreatedAt } from "../../module/postTime";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Caption, H3, Subtitle } from "../../module/styled/styledFont";
+import { Btn, Caption, H3, Subtitle } from "../../module/styled/styledFont";
+import EditComment from "./EditComment";
 
 const CommentContainer = styled.div`
   margin-top: 30px;
@@ -24,7 +33,12 @@ const CommentItem = styled.li`
   padding: 10px;
   margin: 10px 0;
 `;
-const CommentBox = styled.div``;
+const CommentBox = styled.div`
+  width: 100%;
+`;
+const CommentUser = styled(FlexRowDiv)`
+  justify-content: space-between;
+`;
 
 const CommentAuthor = styled(Caption)`
   font-weight: 500;
@@ -47,14 +61,20 @@ const UserActions = styled(FlexRowDiv)`
 `;
 
 interface CommentsProps {
-  comments: DocumentData[] | null;
+  comments: DocumentData[];
   postId: any;
+  fetchComments: () => Promise<void>;
 }
 
-function Comment({ comments, postId }: CommentsProps) {
+function Comment({ comments, postId, fetchComments }: CommentsProps) {
   const [commentItems, setCommentItems] = useState<
     Array<{ commentId: string; userName: string; comment: string; commentTime: string }>
   >([]);
+  // 수정 상태를 관리하는 상태 변수
+  const [editStatus, setEditStatus] = useState(false);
+  // 수정된 댓글 내용을 관리하는 상태 변수
+  const [editedComment, setEditedComment] = useState("");
+  const [selectedCommentId, setSelectedCommentId] = useState("");
 
   const commentsArray = comments || [];
   const accessToken = useSelector(
@@ -122,27 +142,95 @@ function Comment({ comments, postId }: CommentsProps) {
     }
   };
 
+  // 댓글 수정 버튼 클릭 시 실행되는 함수
+  const handleEditClick = (commentId: string, initialComment: string) => {
+    // 수정 상태를 true로 변경하고, 수정된 댓글 내용을 초기 댓글 내용으로 설정
+    setEditStatus(true);
+    setEditedComment(initialComment);
+    setSelectedCommentId(commentId); // 선택한 댓글의 ID를 상태에 저장
+  };
+
+  // 댓글 수정 취소 시 실행되는 함수
+  const handleCancelClick = () => {
+    // 수정 상태를 false로 변경하고, 수정된 댓글 내용 초기화
+    setEditStatus(false);
+    setEditedComment("");
+  };
+
+  // 댓글 수정 완료 시 실행되는 함수
+  const handleEditSubmit = async (commentId: string) => {
+    try {
+      // Firebase Firestore에서 해당 댓글 문서에 대한 참조 가져오기
+      const commentRef = doc(db, `posts/${postId}/comments/${commentId}`);
+
+      await updateDoc(commentRef, {
+        comment: editedComment,
+      });
+
+      const commentsRef = collection(db, `posts/${postId}/comments`);
+      const querySnapshot = await getDocs(commentsRef);
+
+      if (!querySnapshot.empty) {
+        const commentsData = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            commentId: doc.id,
+            userName: data.userName, // 댓글 작성자 이름 가져오기
+            comment: data.comment, // 댓글 내용 가져오기
+            commentTime: data.commentTime, // 댓글 작성 시간 가져오기
+          };
+        });
+        setCommentItems(commentsData);
+        setEditStatus(false);
+        setEditedComment("");
+      } else {
+        setCommentItems([]);
+      }
+    } catch (error) {
+      console.error("댓글을 수정하는 중 오류가 발생했습니다.", error);
+    }
+  };
   return (
     <CommentContainer>
       <CommentList>
         {commentItems.map((comment) => (
           <CommentItem key={comment.commentId}>
             <CommentBox>
-              <CommentAuthor>{comment.userName}</CommentAuthor>
-              <CommentContent>{comment.comment}</CommentContent>
+              <CommentUser>
+                <CommentAuthor>{comment.userName}</CommentAuthor>
+                {accessToken && currentUser && currentUser.nickName === comment.userName ? (
+                  <>
+                    {editStatus ? null : (
+                      <UserActions>
+                        <FiEdit onClick={() => handleEditClick(comment.commentId, comment.comment)} />
+                        <FiDelete onClick={() => commentDelete(comment.commentId)} />
+                      </UserActions>
+                    )}
+                  </>
+                ) : (
+                  <CommentContent>{comment.comment}</CommentContent>
+                )}
+              </CommentUser>
+
+              {selectedCommentId === comment.commentId && editStatus ? (
+                <>
+                  <EditComment
+                    editedComment={editedComment}
+                    commentId={comment.commentId}
+                    setEditedComment={setEditedComment}
+                    handleEditSubmit={handleEditSubmit}
+                    handleCancelClick={handleCancelClick}
+                  />
+                </>
+              ) : (
+                <CommentContent>{comment.comment}</CommentContent>
+              )}
+
               <CommentTime>{displayCreatedAt(comment.commentTime)}</CommentTime>
             </CommentBox>
-            {accessToken && currentUser && currentUser.nickName === comment.userName ? (
-              // 댓글 작성자와 현재 사용자가 동일한 경우 수정 및 삭제 버튼 표시
-              <UserActions>
-                <FiEdit />
-                <FiDelete onClick={() => commentDelete(comment.commentId)} />
-              </UserActions>
-            ) : null}
           </CommentItem>
         ))}
       </CommentList>
-      {/* {loading && <div>Loading...</div>} */}
     </CommentContainer>
   );
 }

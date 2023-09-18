@@ -110,28 +110,6 @@ function EditPostForm({ initialData }: any) {
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   async function fetchPost() {
-  //     try {
-  //       const postRef = doc(collection(db, "posts"), postId);
-  //       const docSnap = await getDoc(postRef);
-
-  //       if (docSnap.exists()) {
-  //         const postData = docSnap.data();
-  //         setDetailPost({ ...postData, postId });
-  //         await updateDoc(postRef, {
-  //           title: title,
-  //           content: content,
-  //           postTime: new Date().toISOString(),
-  //         });
-  //       } else {
-  //         console.log("게시물을 찾을 수 없습니다.");
-  //       }
-  //     } catch (error) {
-  //       console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   }
-
   useEffect(() => {
     async function fetchPost() {
       try {

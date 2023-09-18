@@ -49,6 +49,7 @@ function CommentView({ postId }: any) {
 
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<DocumentData[]>([]);
+
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
@@ -68,26 +69,27 @@ function CommentView({ postId }: any) {
 
   const usersCollectionRef = collection(db, `posts/${postId}/comments`);
 
+  async function fetchComments() {
+    try {
+      const commentsRef = collection(db, `posts/${postId}/comments`); // "comments"는 댓글 컬렉션 이름
+      const querySnapshot = await getDocs(commentsRef);
+
+      if (!querySnapshot.empty) {
+        const commentsData = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return { ...data, commentId: doc.id }; // 댓글 문서 ID를 추가해서 저장
+        });
+        setComments(commentsData);
+      } else {
+        console.log("댓글을 찾을 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
+    }
+  }
+
   useEffect(() => {
     // Firebase Firestore에서 해당 게시물의 댓글 정보를 가져오는 비동기 함수
-    async function fetchComments() {
-      try {
-        const commentsRef = collection(db, `posts/${postId}/comments`); // "comments"는 댓글 컬렉션 이름
-        const querySnapshot = await getDocs(commentsRef);
-
-        if (!querySnapshot.empty) {
-          const commentsData = querySnapshot.docs.map((doc) => {
-            const data = doc.data();
-            return { ...data, commentId: doc.id }; // 댓글 문서 ID를 추가해서 저장
-          });
-          setComments(commentsData);
-        } else {
-          console.log("댓글을 찾을 수 없습니다.");
-        }
-      } catch (error) {
-        console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
-      }
-    }
 
     fetchComments(); // 댓글 정보를 가져오는 함수 호출
   }, []);
@@ -137,7 +139,7 @@ function CommentView({ postId }: any) {
         {comments ? (
           <>
             <CommentCount>댓글 수: {comments.length}</CommentCount>
-            <Comment comments={comments} postId={postId} />
+            <Comment comments={comments} postId={postId} fetchComments={fetchComments} />
           </>
         ) : (
           <CommentCount>댓글이 없습니다.</CommentCount>

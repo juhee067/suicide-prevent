@@ -1,12 +1,14 @@
-import { collection, doc, DocumentData, getDocs, updateDoc } from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
-import { displayCreatedAt } from "../../module/postTime";
+
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Btn, Caption, Description, Subtitle, Title } from "../../module/styled/styledFont";
+import { Btn, Title } from "../../module/styled/styledFont";
+import Pagination from "./Pagination";
+import PostItem from "./PostItem";
 
 // 네비게이션 바 높이
 const navHeight = 52;
@@ -39,66 +41,25 @@ const PostListBox = styled(FlexRowDiv)`
 
 const SearchBox = styled(Btn)``;
 
-const ListBox = styled(FlexRowDiv)`
-  justify-content: space-between;
-  padding: 20px 0;
-  margin-bottom: 10px;
-  border-top: 2px solid ${({ theme }) => theme.color.mainBlack};
-  text-align: left;
-`;
-
-const ListItemBox = styled.div`
-  width: 60%;
-`;
-
-const UserNickname = styled(Subtitle)`
-  width: 20%;
-`;
-
-const ListTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 20px;
-`;
-
-const ListContent = styled(Description)`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%; /* 필요에 따라 최대 너비를 조정하세요. */
-`;
-
-const Etc = styled.div`
-  text-align: right;
-`;
-const Comment = styled(Caption)`
-  margin-bottom: 20px;
-`;
-const PostTime = styled.div``;
-
 // 페이지당 표시할 게시물 수
 const postsPerPage = 6;
 
-const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const PageButton = styled.button<{ $active: boolean }>`
-  background-color: ${(props) => (props.$active ? "#000" : "#fff")};
-  color: ${(props) => (props.$active ? "#fff" : "#000")};
-  border: 1px solid ${({ theme }) => theme.color.mainBlack};
-  padding: 5px 10px;
-  margin: 0 5px;
-  cursor: pointer;
-`;
+interface PostItemData {
+  id: string;
+  userName: string;
+  title: string;
+  content: string;
+  comments: number;
+  postTime: string;
+}
 
 function BoardList() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [posts, setPosts] = useState<DocumentData[]>([]);
+  const [posts, setPosts] = useState<PostItemData[]>([]);
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
+
   const navigate = useNavigate();
   // 현재 페이지의 게시물 목록을 계산합니다.
   const indexOfLastPost = currentPage * postsPerPage;
@@ -118,7 +79,15 @@ function BoardList() {
       // getDocs로 컬렉션안에 데이터 가져오기
       const data = await getDocs(usersCollectionRef);
       // users에 data안의 자료 추가. 객체에 id 덮어씌우는거
-      const postsData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const postsData = data.docs.map((doc) => ({
+        id: doc.id,
+        userName: doc.data().userName,
+        title: doc.data().title,
+        content: doc.data().content,
+        comments: doc.data().comments,
+        postTime: doc.data().postTime,
+      }));
+
       for (const post of postsData) {
         await updateCommentCount(post.id);
       }
@@ -148,49 +117,38 @@ function BoardList() {
     return navigate("/auth/signIn");
   };
 
+  const renderCreatePostLink = () => {
+    return accessToken ? (
+      <Link to="/PostCreate">글쓰기</Link>
+    ) : (
+      <span onClick={AccessTokenError}>글쓰기</span>
+    );
+  };
+
+  const renderPostList = () => {
+    return currentPosts.length ? (
+      currentPosts.map((item) => <PostItem key={item.id} item={item} />)
+    ) : (
+      <div>응원 메시지가 없습니다</div>
+    );
+  };
+
   return (
     <CenteredContainer>
       <PostListContainer>
         <ListContainer>
           <PostListBox>
             <Title>허심탄회</Title>
-            <SearchBox>
-              {accessToken ? (
-                <Link to={`/PostCreate`}>글쓰기</Link>
-              ) : (
-                <span onClick={AccessTokenError}>글쓰기</span>
-              )}
-            </SearchBox>
+            <SearchBox>{renderCreatePostLink()}</SearchBox>
           </PostListBox>
-          {currentPosts.length
-            ? currentPosts.map((item, index) => (
-                <Link to={`/post/${item.id}`} key={index}>
-                  <ListBox key={item.id}>
-                    <UserNickname>{item.userName}</UserNickname>
-                    <ListItemBox>
-                      <ListTitle>{item.title}</ListTitle>
-                      <ListContent>{item.content}</ListContent>
-                    </ListItemBox>
-                    <Etc>
-                      <Comment>댓글 {item.comments}</Comment>
-                      <PostTime>{displayCreatedAt(item.postTime)}</PostTime>
-                    </Etc>
-                  </ListBox>
-                </Link>
-              ))
-            : "응원 메시지가 없습니다"}
+          {renderPostList()}
         </ListContainer>
-        <PaginationContainer>
-          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }).map((_, index) => (
-            <PageButton
-              key={index}
-              $active={index + 1 === currentPage}
-              onClick={() => paginate(index + 1)}
-            >
-              {index + 1}
-            </PageButton>
-          ))}
-        </PaginationContainer>
+        <Pagination
+          posts={posts}
+          postsPerPage={postsPerPage}
+          currentPage={currentPage}
+          paginate={paginate}
+        />
       </PostListContainer>
     </CenteredContainer>
   );

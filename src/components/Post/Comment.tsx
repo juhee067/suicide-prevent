@@ -134,11 +134,10 @@ function Comment({ comments, postId, fetchComments }: CommentsProps) {
           };
         });
         setCommentItems(commentsData);
-        console.log(commentsData);
       } else {
         setCommentItems([]);
       }
-
+      alert("댓글을 삭제하시겠습니까?");
       alert("댓글을 삭제하셨습니다.");
     } catch (error) {
       console.error("댓글을 삭제하는 중 오류가 발생했습니다.", error);

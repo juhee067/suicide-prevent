@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../firebaseConfig";
+import { getPosts } from "../../module/firestore";
 
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Btn, Title } from "../../module/styled/styledFont";
@@ -72,44 +73,30 @@ function BoardList() {
   };
 
   useEffect(() => {
-    const usersCollectionRef = collection(db, "posts");
-
-    // 비동기로 데이터 받을준비
-    const getPosts = async () => {
-      // getDocs로 컬렉션안에 데이터 가져오기
-      const data = await getDocs(usersCollectionRef);
-      // users에 data안의 자료 추가. 객체에 id 덮어씌우는거
-      const postsData = data.docs.map((doc) => ({
-        id: doc.id,
-        userName: doc.data().userName,
-        title: doc.data().title,
-        content: doc.data().content,
-        comments: doc.data().comments,
-        postTime: doc.data().postTime,
-      }));
-
-      for (const post of postsData) {
-        await updateCommentCount(post.id);
+    async function getPost() {
+      try {
+        const posts = await getPosts();
+        setPosts(posts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
       }
+    }
 
-      setPosts(postsData);
-    };
-
-    getPosts();
+    getPost();
   }, []);
 
   // 게시물의 댓글 수를 업데이트하는 함수
-  async function updateCommentCount(postId: string) {
-    const commentsRef = collection(db, `posts/${postId}/comments`);
-    const querySnapshot = await getDocs(commentsRef);
-    const commentCount = querySnapshot.size; // 댓글 수 계산
+  // async function updateCommentCount(postId: string) {
+  //   const commentsRef = collection(db, `posts/${postId}/comments`);
+  //   const querySnapshot = await getDocs(commentsRef);
+  //   const commentCount = querySnapshot.size; // 댓글 수 계산
 
-    // 해당 게시물 문서 업데이트
-    const postRef = doc(db, "posts", postId);
-    await updateDoc(postRef, {
-      comments: commentCount, // 댓글 수를 업데이트
-    });
-  }
+  //   // 해당 게시물 문서 업데이트
+  //   const postRef = doc(db, "posts", postId);
+  //   await updateDoc(postRef, {
+  //     comments: commentCount, // 댓글 수를 업데이트
+  //   });
+  // }
 
   // 페이지를 변경하는 함수
   const AccessTokenError = () => {

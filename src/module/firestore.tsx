@@ -65,3 +65,28 @@ export const createPost = async ({ userNickname, title, content }: UserData) => 
     console.error("Error adding document:", error);
   }
 };
+
+export const getUserNicknameByEmail = async (userEmailData: string) => {
+  try {
+    const usersCollectionRef = collection(db, "nickName");
+
+    const querySnapshot = await getDocs(usersCollectionRef);
+    const documents = querySnapshot.docs.map((doc) => {
+      const data = doc.data() as { email: string; nickname: string; id: string };
+      return { ...data, id: doc.id };
+    });
+
+    const foundObject = documents.find((item) => item.email === userEmailData);
+
+    if (foundObject) {
+      const nickname = foundObject.nickname;
+      return nickname;
+    } else {
+      console.log(`이메일 ${userEmailData}에 해당하는 객체를 찾을 수 없습니다.`);
+      return null;
+    }
+  } catch (error) {
+    console.error("닉네임 가져오기 실패:", error);
+    return null; // 에러 처리를 위해 null을 반환하거나 다른 처리 방법을 사용할 수 있습니다.
+  }
+};

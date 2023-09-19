@@ -7,7 +7,7 @@ import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { createPost } from "../../module/firestore";
+import { createPost, getUserNicknameByEmail } from "../../module/firestore";
 
 const FormContainer = styled.div`
   width: 80%;
@@ -130,75 +130,48 @@ function PostCreate() {
     navigate("/post");
   };
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files);
-      setUploadedFiles([...uploadedFiles, ...fileArray]);
-    }
-  };
+  // const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = e.target.files;
+  //   if (files) {
+  //     const fileArray = Array.from(files);
+  //     setUploadedFiles([...uploadedFiles, ...fileArray]);
+  //   }
+  // };
 
-  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const files = e.dataTransfer.files;
-    if (files) {
-      const fileArray = Array.from(files);
-      setUploadedFiles([...uploadedFiles, ...fileArray]);
-    }
-  };
+  // const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   const files = e.dataTransfer.files;
+  //   if (files) {
+  //     const fileArray = Array.from(files);
+  //     setUploadedFiles([...uploadedFiles, ...fileArray]);
+  //   }
+  // };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragOver(true);
-  };
+  // const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   setIsDragOver(true);
+  // };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragOver(false);
-  };
-
-  const usersCollectionRef = collection(db, "posts");
-
-  const createPosts = async () => {
-    try {
-      // addDoc을 이용해서 내가 원하는 collection에 내가 원하는 key로 값을 추가한다.
-      const docRef = await addDoc(usersCollectionRef, {
-        // postID: postID,
-        userName: userNickname,
-        title: title,
-        content: content,
-        postTime: new Date().toISOString(),
-      });
-
-      const postId = docRef.id;
-      navigate(`/post/edit/${postId}`);
-      // 데이터를 추가한 후, 상태 초기화
-      setTitle("");
-      setContent("");
-      console.log("데이터 전달");
-      navigate("/post");
-    } catch (error) {
-      console.error("Error adding document:", error);
-    }
-  };
+  // const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   setIsDragOver(false);
+  // };
 
   useEffect(() => {
-    const usersCollectionRef = collection(db, "nickName");
     const userEmailData = userData.userEmail;
-    // 비동기로 데이터 받을준비
     const getUserNickname = async () => {
-      const querySnapshot = await getDocs(usersCollectionRef);
-      const documents = querySnapshot.docs.map((doc) => {
-        const data = doc.data() as { email: string; nickname: string; id: string };
-        return { ...data, id: doc.id };
-      });
+      const nicknameData = await getUserNicknameByEmail(userEmailData);
 
-      const foundObject = documents.find((item) => item.email === userEmailData);
+      if (nicknameData !== null) {
+        // nicknameData가 null이 아닌 경우에만 처리
+        const foundObject = {
+          email: userEmailData,
+          nickname: nicknameData,
+        };
 
-      if (foundObject) {
         const nickname = foundObject.nickname;
         setUserNickname(nickname);
       } else {
@@ -231,9 +204,9 @@ function PostCreate() {
         </FormGroup>
         <FormGroup>
           <FileDragArea
-            onDrop={handleFileDrop}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
+            // onDrop={handleFileDrop}
+            // onDragOver={handleDragOver}
+            // onDragLeave={handleDragLeave}
             className={isDragOver ? "dragover" : ""}
           >
             <FormFileLabel htmlFor="fileInput">
@@ -245,7 +218,7 @@ function PostCreate() {
               id="fileInput"
               type="file"
               accept=".jpg, .jpeg, .png, .gif"
-              onChange={handleFileInputChange}
+              // onChange={handleFileInputChange}
             />
           </FileDragArea>
 

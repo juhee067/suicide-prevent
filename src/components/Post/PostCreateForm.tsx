@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FlexRowCenterDiv } from "../../module/styled/FlexDiv";
-import { Btn, HighlightText } from "../../module/styled/styledFont";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
+import { Btn } from "../../module/styled/styledFont";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { createPost, getUserNicknameByEmail } from "../../module/firestore";
+import UploadedFileList from "./UploadedFileList";
+import FileDragArea from "./FileDragArea";
 
 const FormContainer = styled.div`
   width: 80%;
@@ -51,46 +49,6 @@ const FormTextarea = styled.textarea`
   }
 `;
 
-const FormFile = styled.input`
-  display: none;
-`;
-
-const FileDragArea = styled(FlexRowCenterDiv)`
-  gap: 10px;
-  height: 100px;
-  margin-bottom: 12px;
-  font-size: 1.5rem;
-  border: 2px dotted #a4a4a4;
-  border-radius: 4px;
-  font-size: 1.3rem;
-`;
-
-const FormFileLabel = styled.label``;
-
-const FileAttachment = styled(HighlightText)``;
-
-const UploadedFileList = styled.ul`
-  display: flex;
-  margin-bottom: 50px;
-`;
-
-const UploadedFileItem = styled(FlexRowCenterDiv)`
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 8px;
-  margin: 10px 5px;
-  gap: 10px;
-  color: ${({ theme }) => theme.color.mainWhite};
-  background-color: ${({ theme }) => theme.color.mainBlack};
-`;
-
-const FileName = styled.div`
-  color: ${({ theme }) => theme.color.mainWhite};
-`;
-const Delete = styled.div`
-  font-size: 1.5rem;
-`;
-
 const FormCancel = styled(Btn)`
   margin-right: 10px;
   color: ${({ theme }) => theme.color.mainBlack};
@@ -130,13 +88,13 @@ function PostCreate() {
     navigate("/post");
   };
 
-  // const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = e.target.files;
-  //   if (files) {
-  //     const fileArray = Array.from(files);
-  //     setUploadedFiles([...uploadedFiles, ...fileArray]);
-  //   }
-  // };
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setUploadedFiles([...uploadedFiles, ...fileArray]);
+    }
+  };
 
   // const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
   //   e.preventDefault();
@@ -180,7 +138,7 @@ function PostCreate() {
     };
 
     getUserNickname();
-  }, [uploadedFiles]);
+  }, []);
 
   return (
     <FormContainer>
@@ -203,37 +161,9 @@ function PostCreate() {
           />
         </FormGroup>
         <FormGroup>
-          <FileDragArea
-            // onDrop={handleFileDrop}
-            // onDragOver={handleDragOver}
-            // onDragLeave={handleDragLeave}
-            className={isDragOver ? "dragover" : ""}
-          >
-            <FormFileLabel htmlFor="fileInput">
-              <FileAttachment $showunderline> 파일 첨부</FileAttachment>
-            </FormFileLabel>
-            or
-            <FileAttachment>파일 드래그</FileAttachment>
-            <FormFile
-              id="fileInput"
-              type="file"
-              accept=".jpg, .jpeg, .png, .gif"
-              // onChange={handleFileInputChange}
-            />
-          </FileDragArea>
-
-          <UploadedFileList>
-            {uploadedFiles.map((file, index) => (
-              <UploadedFileItem key={index}>
-                <FileName>{file.name}</FileName>
-                <Delete>
-                  <AiOutlineCloseCircle />
-                </Delete>
-              </UploadedFileItem>
-            ))}
-          </UploadedFileList>
+          <FileDragArea handleFileInputChange={handleFileInputChange} />
+          <UploadedFileList uploadedFiles={uploadedFiles} />
         </FormGroup>
-
         <FormCancel>취소하기</FormCancel>
         <FormButton type="submit">게시하기</FormButton>
       </Form>

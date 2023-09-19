@@ -5,6 +5,8 @@ import {
   DocumentData,
   getDoc,
   getDocs,
+  orderBy,
+  query,
   updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -87,10 +89,11 @@ function Comment({ comments, postId, fetchComments }: CommentsProps) {
     async function fetchComments() {
       try {
         const commentsRef = collection(db, `posts/${postId}/comments`);
-        const querySnapshot = await getDocs(commentsRef);
+        const q = query(commentsRef, orderBy("commentTime", "desc"));
+        const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          const commentsData = querySnapshot.docs.map((doc) => {
+          const commentsData = querySnapshot.docs.map((doc: { data: () => any; id: any }) => {
             const data = doc.data();
             return {
               commentId: doc.id,
@@ -207,9 +210,7 @@ function Comment({ comments, postId, fetchComments }: CommentsProps) {
                       </UserActions>
                     )}
                   </>
-                ) : (
-                  <CommentContent>{comment.comment}</CommentContent>
-                )}
+                ) : null}
               </CommentUser>
 
               {selectedCommentId === comment.commentId && editStatus ? (

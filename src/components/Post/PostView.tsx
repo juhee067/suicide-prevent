@@ -114,7 +114,6 @@ const PostView = ({ postId }: any) => {
           <PostTime>{formatDateTime(detailPost.postTime)}</PostTime>
         </WritingBox>
         {accessToken && currentUser.nickName === detailPost.userName ? (
-          // 댓글 작성자와 현재 사용자가 동일한 경우 수정 및 삭제 버튼 표시
           <UserActions>
             <Link to={`/post/edit/${postId}`}>
               <FiEdit />

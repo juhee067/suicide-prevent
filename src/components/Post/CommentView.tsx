@@ -68,7 +68,6 @@ function CommentView({ postId }: any) {
   };
 
   const usersCollectionRef = collection(db, `posts/${postId}/comments`);
-
   async function fetchComments() {
     try {
       const commentsRef = collection(db, `posts/${postId}/comments`); // "comments"는 댓글 컬렉션 이름

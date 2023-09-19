@@ -7,6 +7,7 @@ import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { createPost } from "../../module/firestore";
 
 const FormContainer = styled.div`
   width: 80%;
@@ -119,9 +120,14 @@ function PostCreate() {
       alert("제목과 내용을 모두 입력하세요.");
       return;
     }
-    createPosts();
+    createPost({
+      userNickname: userNickname,
+      title: title,
+      content: content,
+    });
     setTitle("");
     setContent("");
+    navigate("/post");
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

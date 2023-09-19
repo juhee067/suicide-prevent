@@ -46,7 +46,7 @@ const PostTime = styled.div``;
 // item 매개변수의 타입을 명시
 interface PostItemProps {
   item: {
-    id: string;
+    postId: string;
     userName: string;
     title: string;
     content: string;
@@ -57,8 +57,8 @@ interface PostItemProps {
 
 const PostItem: React.FC<PostItemProps> = ({ item }) => {
   return (
-    <Link to={`/post/${item.id}`} key={item.id}>
-      <ListBox key={item.id}>
+    <Link to={`/post/${item.postId}`} key={item.postId}>
+      <ListBox key={item.postId}>
         <UserNickname>{item.userName}</UserNickname>
         <ListItemBox>
           <ListTitle>{item.title}</ListTitle>

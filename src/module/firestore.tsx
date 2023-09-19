@@ -1,8 +1,8 @@
-import { collection, getDocs, DocumentData } from "firebase/firestore";
+import { collection, getDocs, DocumentData, doc, updateDoc, addDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
 interface PostItemData {
-  id: string;
+  postId: string;
   userName: string;
   title: string;
   content: string;
@@ -10,6 +10,13 @@ interface PostItemData {
   postTime: string;
 }
 
+interface UserData {
+  userNickname: string;
+  title: string;
+  content: string;
+}
+
+// 게시글 불러오기
 export async function getPosts(): Promise<PostItemData[]> {
   try {
     const postsCollection = collection(db, "posts");
@@ -17,14 +24,44 @@ export async function getPosts(): Promise<PostItemData[]> {
     const posts: PostItemData[] = [];
 
     snapshot.forEach((doc: DocumentData) => {
-      const postData = doc.data() as PostItemData;
+      const postData = { ...doc.data(), postId: doc.id };
       posts.push(postData);
     });
-
-    console.log(posts, "데이터 가져옴");
     return posts;
   } catch (error) {
     console.error("데이터 가져오기 실패:", error);
     return []; // 에러 처리를 위해 빈 배열을 반환하거나 다른 처리 방법을 사용할 수 있습니다.
   }
 }
+
+// 댓글 수 업데이트
+export async function updateCommentCount(postId: string) {
+  try {
+    const commentsRef = collection(db, `posts/${postId}/comments`);
+    const querySnapshot = await getDocs(commentsRef);
+    const commentCount = querySnapshot.size; // 댓글 수 계산
+
+    // 해당 게시물 문서 업데이트
+    const postRef = doc(db, "posts", postId);
+    await updateDoc(postRef, {
+      comments: commentCount, // 댓글 수를 업데이트
+    });
+  } catch (error) {
+    console.error("댓글 수 업데이트 실패:", error);
+  }
+}
+
+export const createPost = async ({ userNickname, title, content }: UserData) => {
+  try {
+    const usersCollectionRef = collection(db, "posts");
+
+    await addDoc(usersCollectionRef, {
+      userName: userNickname,
+      title: title,
+      content: content,
+      postTime: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Error adding document:", error);
+  }
+};

@@ -17,7 +17,7 @@ const PageButton = styled.button<{ $active: boolean }>`
 `;
 
 interface PostItemData {
-  id: string;
+  postId: string;
   userName: string;
   title: string;
   content: string;

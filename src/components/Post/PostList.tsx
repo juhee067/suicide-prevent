@@ -43,10 +43,10 @@ const PostListBox = styled(FlexRowDiv)`
 const SearchBox = styled(Btn)``;
 
 // 페이지당 표시할 게시물 수
-const postsPerPage = 6;
+const POSTS_PER_PAGE = 10;
 
 interface PostItemData {
-  id: string;
+  postId: string;
   userName: string;
   title: string;
   content: string;
@@ -57,14 +57,16 @@ interface PostItemData {
 function BoardList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState<PostItemData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const accessToken = useSelector(
     (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
   );
 
   const navigate = useNavigate();
   // 현재 페이지의 게시물 목록을 계산합니다.
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const indexOfLastPost = currentPage * POSTS_PER_PAGE;
+  const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   // 페이지를 변경하는 함수
@@ -73,30 +75,45 @@ function BoardList() {
   };
 
   useEffect(() => {
-    async function getPost() {
+    async function fetchData() {
       try {
-        const posts = await getPosts();
-        setPosts(posts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
+        const fetchedPosts = await getPosts();
+        setPosts(fetchedPosts);
+        setLoading(false);
+        for (const post of fetchedPosts) {
+          if (post && post.postId) {
+            await updateCommentCount(post.postId);
+          }
+        }
+      } catch (err) {
+        setError(err);
+        setLoading(false);
       }
     }
 
-    getPost();
-  }, []);
+    fetchData();
+  });
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>문제가 발생했습니다.</div>;
+  }
 
   // 게시물의 댓글 수를 업데이트하는 함수
-  // async function updateCommentCount(postId: string) {
-  //   const commentsRef = collection(db, `posts/${postId}/comments`);
-  //   const querySnapshot = await getDocs(commentsRef);
-  //   const commentCount = querySnapshot.size; // 댓글 수 계산
+  async function updateCommentCount(postId: string) {
+    const commentsRef = collection(db, `posts/${postId}/comments`);
+    const querySnapshot = await getDocs(commentsRef);
+    const commentCount = querySnapshot.size; // 댓글 수 계산
 
-  //   // 해당 게시물 문서 업데이트
-  //   const postRef = doc(db, "posts", postId);
-  //   await updateDoc(postRef, {
-  //     comments: commentCount, // 댓글 수를 업데이트
-  //   });
-  // }
+    // 해당 게시물 문서 업데이트
+    const postRef = doc(db, "posts", postId);
+    await updateDoc(postRef, {
+      comments: commentCount, // 댓글 수를 업데이트
+    });
+  }
 
   // 페이지를 변경하는 함수
   const AccessTokenError = () => {
@@ -114,7 +131,7 @@ function BoardList() {
 
   const renderPostList = () => {
     return currentPosts.length ? (
-      currentPosts.map((item) => <PostItem key={item.id} item={item} />)
+      currentPosts.map((item) => <PostItem key={item.postId} item={item} />)
     ) : (
       <div>응원 메시지가 없습니다</div>
     );
@@ -132,7 +149,7 @@ function BoardList() {
         </ListContainer>
         <Pagination
           posts={posts}
-          postsPerPage={postsPerPage}
+          postsPerPage={POSTS_PER_PAGE}
           currentPage={currentPage}
           paginate={paginate}
         />

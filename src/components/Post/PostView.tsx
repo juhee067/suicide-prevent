@@ -8,6 +8,7 @@ import { db } from "../../firebaseConfig";
 import { formatDateTime } from "../../module/postTime";
 import { FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Caption, Description } from "../../module/styled/styledFont";
+import PostActions from "./PostActions";
 
 const PostViewBox = styled.div``;
 
@@ -95,8 +96,6 @@ const PostView = ({ postId }: any) => {
       const postRef = doc(db, "posts", postId); // 삭제할 게시물의 문서에 대한 참조
       await deleteDoc(postRef); // Firestore에서 게시물 삭제
 
-      // 삭제가 성공하면 원하는 동작을 수행할 수 있습니다.
-      console.log("게시물이 성공적으로 삭제되었습니다.");
       alert("게시글을 삭제하시겠습까?");
       alert("게시글이 삭제되었습니다.");
       navigator("/post");
@@ -113,19 +112,15 @@ const PostView = ({ postId }: any) => {
           <PostAuthor>{detailPost.userName}</PostAuthor>
           <PostTime>{formatDateTime(detailPost.postTime)}</PostTime>
         </WritingBox>
-        {accessToken && currentUser.nickName === detailPost.userName ? (
-          <UserActions>
-            <Link to={`/post/edit/${postId}`}>
-              <FiEdit />
-            </Link>
-
-            <FiDelete onClick={() => postDelete(postId)} />
-          </UserActions>
-        ) : null}
+        <PostActions
+          postId={postId}
+          accessToken={accessToken}
+          currentUser={currentUser}
+          postDelete={postDelete}
+        />
       </PostHeaderBox>
       <PostContentBox>
         {detailPost.previewImage ? <PreviewImage>{detailPost.previewImage}</PreviewImage> : null}
-
         <PostContent>{detailPost.content}</PostContent>
       </PostContentBox>
     </PostViewBox>

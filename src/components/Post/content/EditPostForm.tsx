@@ -71,6 +71,8 @@ function EditPostForm(initialData: any) {
   const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
   const navigate = useNavigate();
+  const postCollectionRef = collection(db, "posts");
+  const postRef = doc(postCollectionRef, postId);
 
   useEffect(() => {
     async function fetchPost() {
@@ -98,35 +100,29 @@ function EditPostForm(initialData: any) {
     }
   }, [detailPost]);
 
-  const handleTitleChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
-  const handleTextAreaChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
+
   // 폼 제출 시 호출되는 함수
 
   const editPost = async () => {
     try {
-      const postRef = doc(collection(db, "posts"), postId); // 기존 데이터를 수정할 문서에 대한 참조
-      const docSnap = await getDoc(postRef);
-
-      if (docSnap.exists()) {
-        const postData = docSnap.data(); // 가져온 데이터
-
-        // 수정할 내용을 postData 객체에 반영
-        postData.title = title; // 새로운 제목으로 업데이트
-        postData.content = content; // 새로운 내용으로 업데이트
-
-        // Firestore에 데이터 업데이트
-        await updateDoc(postRef, postData);
-
-        // 업데이트가 완료되면 페이지를 다시 보여줄 수 있습니다.
-        navigate(`/post/${postId}`);
-      } else {
+      if (!detailPost) {
         console.log("게시물을 찾을 수 없습니다.");
+        return;
       }
+      const updatedPostData = {
+        ...detailPost,
+        title,
+        content,
+      };
+      await updateDoc(postRef, updatedPostData);
+      navigate(`/post/${postId}`);
     } catch (error) {
       console.error("게시물을 수정하는 중 오류가 발생했습니다.", error);
     }

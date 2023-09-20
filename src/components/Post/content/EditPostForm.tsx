@@ -64,33 +64,13 @@ const FormCancel = styled(Btn)`
 const FormButton = styled(Btn)``;
 
 function EditPostForm(initialData: any) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
+  const [title, setTitle] = useState(detailPost?.title || "");
+  const [content, setContent] = useState(detailPost?.content || "");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   async function fetchPost() {
-  //     try {
-  //       const postRef = doc(collection(db, "posts"), postId);
-  //       const docSnap = await getDoc(postRef);
-
-  //       if (docSnap.exists()) {
-  //         const postData = docSnap.data();
-  //         setDetailPost({ ...postData, postId });
-  //         console.log(detailPost, "detailPost");
-  //       } else {
-  //         console.log("게시물을 찾을 수 없습니다.");
-  //       }
-  //     } catch (error) {
-  //       console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   }
-
-  //   fetchPost();
-  // }, [postId]);
 
   useEffect(() => {
     async function fetchPost() {

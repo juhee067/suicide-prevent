@@ -1,13 +1,12 @@
 import { collection, deleteDoc, doc, DocumentData, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { db } from "../../firebaseConfig";
-import { formatDateTime } from "../../module/postTime";
-import { FlexRowCenterDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Caption, Description } from "../../module/styled/styledFont";
+import { db } from "../../../firebaseConfig";
+import { formatDateTime } from "../../../module/postTime";
+import { FlexRowCenterDiv, FlexRowDiv } from "../../../module/styled/FlexDiv";
+import { Caption, Description } from "../../../module/styled/styledFont";
 import PostActions from "./PostActions";
 
 const PostViewBox = styled.div``;
@@ -19,13 +18,6 @@ const PostHeaderBox = styled(FlexRowDiv)`
 
 const WritingBox = styled(FlexRowCenterDiv)`
   gap: 20px;
-`;
-
-const UserActions = styled(FlexRowDiv)`
-  gap: 10px;
-  color: ${({ theme }) => theme.color.mainGray};
-  font-size: 1.8rem;
-  cursor: pointer;
 `;
 
 const PostTitle = styled.h1`

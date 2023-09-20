@@ -1,11 +1,13 @@
-import { addDoc, collection, doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
-import { FlexRowCenterDiv } from "../../module/styled/FlexDiv";
-import { Btn, HighlightText } from "../../module/styled/styledFont";
-import { db } from "../../firebaseConfig";
+import { FlexRowCenterDiv } from "../../../module/styled/FlexDiv";
+import { Btn } from "../../../module/styled/styledFont";
+import { db } from "../../../firebaseConfig";
+import UploadedFileList from "../file/UploadedFileList";
+import FileDragArea from "../file/FileDragArea";
+import { getPosts } from "../../../module/firestore";
 const FormContainer = styled.div`
   width: 80%;
   max-width: 1000px;
@@ -48,46 +50,6 @@ const FormTextarea = styled.textarea`
   }
 `;
 
-const FormFile = styled.input`
-  display: none;
-`;
-
-const FileDragArea = styled(FlexRowCenterDiv)`
-  gap: 10px;
-  height: 100px;
-  margin-bottom: 12px;
-  font-size: 1.5rem;
-  border: 2px dotted #a4a4a4;
-  border-radius: 4px;
-  font-size: 1.3rem;
-`;
-
-const FormFileLabel = styled.label``;
-
-const FileAttachment = styled(HighlightText)``;
-
-const UploadedFileList = styled.ul`
-  display: flex;
-  margin-bottom: 50px;
-`;
-
-const UploadedFileItem = styled(FlexRowCenterDiv)`
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 8px;
-  margin: 10px 5px;
-  gap: 10px;
-  color: ${({ theme }) => theme.color.mainWhite};
-  background-color: ${({ theme }) => theme.color.mainBlack};
-`;
-
-const FileName = styled.div`
-  color: ${({ theme }) => theme.color.mainWhite};
-`;
-const Delete = styled.div`
-  font-size: 1.5rem;
-`;
-
 const FormCancel = styled(Btn)`
   margin-right: 10px;
   color: ${({ theme }) => theme.color.mainBlack};
@@ -101,7 +63,7 @@ const FormCancel = styled(Btn)`
 
 const FormButton = styled(Btn)``;
 
-function EditPostForm({ initialData }: any) {
+function EditPostForm(initialData: any) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
@@ -109,17 +71,34 @@ function EditPostForm({ initialData }: any) {
   const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
   const navigate = useNavigate();
+  // useEffect(() => {
+  //   async function fetchPost() {
+  //     try {
+  //       const postRef = doc(collection(db, "posts"), postId);
+  //       const docSnap = await getDoc(postRef);
+
+  //       if (docSnap.exists()) {
+  //         const postData = docSnap.data();
+  //         setDetailPost({ ...postData, postId });
+  //         console.log(detailPost, "detailPost");
+  //       } else {
+  //         console.log("게시물을 찾을 수 없습니다.");
+  //       }
+  //     } catch (error) {
+  //       console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
+  //     }
+  //   }
+
+  //   fetchPost();
+  // }, [postId]);
 
   useEffect(() => {
     async function fetchPost() {
       try {
-        const postRef = doc(collection(db, "posts"), postId);
-        const docSnap = await getDoc(postRef);
-
-        if (docSnap.exists()) {
-          const postData = docSnap.data();
-          setDetailPost({ ...postData, postId });
-          console.log(detailPost, "detailPost");
+        const posts = await getPosts();
+        const selectedPost = posts.find((post) => post.postId === postId);
+        if (selectedPost) {
+          setDetailPost(selectedPost);
         } else {
           console.log("게시물을 찾을 수 없습니다.");
         }
@@ -185,6 +164,14 @@ function EditPostForm({ initialData }: any) {
     editPost();
   };
 
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setUploadedFiles([...uploadedFiles, ...fileArray]);
+    }
+  };
+
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
@@ -207,27 +194,15 @@ function EditPostForm({ initialData }: any) {
           />
         </FormGroup>
         <FormGroup>
-          <FileDragArea
-            // onDrop={handleFileDrop}
-            // onDragOver={handleDragOver}
-            // onDragLeave={handleDragLeave}
-            className={isDragOver ? "dragover" : ""}
-          >
-            <FormFileLabel htmlFor="fileInput">
-              <FileAttachment $showunderline> 파일 첨부</FileAttachment>
-            </FormFileLabel>
-
-            <FileAttachment>파일 드래그</FileAttachment>
-            <FormFile
-              id="fileInput"
-              type="file"
-              accept=".jpg, .jpeg, .png, .gif"
-              // onChange={handleFileInputChange}
-            />
-          </FileDragArea>
+          <FormGroup>
+            <FileDragArea handleFileInputChange={handleFileInputChange} />
+            <UploadedFileList uploadedFiles={uploadedFiles} />
+          </FormGroup>
         </FormGroup>
 
-        <FormCancel>취소하기</FormCancel>
+        <FormCancel>
+          <Link to="/post">취소하기</Link>
+        </FormCancel>
         <FormButton type="submit">수정완료</FormButton>
       </Form>
     </FormContainer>

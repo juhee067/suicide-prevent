@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexRowCenterDiv } from "../../module/styled/FlexDiv";
-import { HighlightText } from "../../module/styled/styledFont";
+import { FlexRowCenterDiv } from "../../../module/styled/FlexDiv";
+import { HighlightText } from "../../../module/styled/styledFont";
 
 const FileDragAreaBox = styled(FlexRowCenterDiv)`
   height: 100px;

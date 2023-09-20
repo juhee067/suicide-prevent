@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-import PostList from "../components/Post/PostList";
+import PostList from "../components/Post/content/PostList";
 
 const Post = () => {
   const PostWrapper = styled.div`

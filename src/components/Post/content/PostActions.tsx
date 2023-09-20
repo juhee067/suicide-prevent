@@ -2,7 +2,7 @@ import React from "react";
 import { FiEdit, FiDelete } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-import { FlexRowDiv } from "../../module/styled/FlexDiv";
+import { FlexRowDiv } from "../../../module/styled/FlexDiv";
 
 const UserActions = styled(FlexRowDiv)`
   gap: 10px;

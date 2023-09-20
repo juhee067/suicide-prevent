@@ -14,7 +14,7 @@ import SignIn from "./pages/SignIn";
 import Post from "./pages/Post";
 import PostDetail from "./pages/PostDetail";
 import PostCreate from "./pages/PostCreate";
-import EditPost from "./components/Post/EditPost";
+import EditPost from "./components/Post/content/EditPost";
 
 const routes = [
   { path: "/", element: <Main /> },

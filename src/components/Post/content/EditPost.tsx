@@ -2,8 +2,8 @@ import { collection, doc, DocumentData, getDoc, getDocs } from "firebase/firesto
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
-import { db } from "../../firebaseConfig";
-import { FlexColumnCenterDiv } from "../../module/styled/FlexDiv";
+import { db } from "../../../firebaseConfig";
+import { FlexColumnCenterDiv } from "../../../module/styled/FlexDiv";
 import EditPostForm from "./EditPostForm";
 
 const EditPostWrapper = styled(FlexColumnCenterDiv)`

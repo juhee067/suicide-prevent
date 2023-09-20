@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { db } from "../../firebaseConfig";
-import { getPosts } from "../../module/firestore";
+import { db } from "../../../firebaseConfig";
+import { getPosts } from "../../../module/firestore";
+import { FlexRowDiv } from "../../../module/styled/FlexDiv";
+import { Btn, Title } from "../../../module/styled/styledFont";
 
-import { FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Btn, Title } from "../../module/styled/styledFont";
 import Pagination from "./Pagination";
 import PostItem from "./PostItem";
 

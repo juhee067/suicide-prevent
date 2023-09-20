@@ -2,8 +2,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { FlexColumnCenterDiv } from "../module/styled/FlexDiv";
-import CommentView from "../components/Post/CommentView";
-import PostView from "../components/Post/PostView";
+import CommentView from "../components/Post/comment/CommentView";
+import PostView from "../components/Post/content/PostView";
 import { Btn } from "../module/styled/styledFont";
 import { Link } from "react-router-dom";
 

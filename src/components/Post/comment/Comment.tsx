@@ -3,7 +3,6 @@ import {
   deleteDoc,
   doc,
   DocumentData,
-  getDoc,
   getDocs,
   orderBy,
   query,
@@ -13,10 +12,10 @@ import React, { useEffect, useState } from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { db } from "../../firebaseConfig";
-import { displayCreatedAt } from "../../module/postTime";
-import { FlexRowDiv } from "../../module/styled/FlexDiv";
-import { Btn, Caption, H3, Subtitle } from "../../module/styled/styledFont";
+import { db } from "../../../firebaseConfig";
+import { displayCreatedAt } from "../../../module/postTime";
+import { FlexRowDiv } from "../../../module/styled/FlexDiv";
+import { Caption } from "../../../module/styled/styledFont";
 import EditComment from "./EditComment";
 
 const CommentContainer = styled.div`

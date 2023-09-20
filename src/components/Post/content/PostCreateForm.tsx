@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Btn } from "../../module/styled/styledFont";
+
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { createPost, getUserNicknameByEmail } from "../../module/firestore";
-import UploadedFileList from "./UploadedFileList";
-import FileDragArea from "./FileDragArea";
+import { Btn } from "../../../module/styled/styledFont";
+import { createPost, getUserNicknameByEmail } from "../../../module/firestore";
+import FileDragArea from "../file/FileDragArea";
+import UploadedFileList from "../file/UploadedFileList";
 
 const FormContainer = styled.div`
   width: 80%;

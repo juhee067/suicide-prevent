@@ -1,9 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Caption, Description, Subtitle } from "../../module/styled/styledFont";
-import { FlexRowDiv } from "../../module/styled/FlexDiv";
+
 import { Link } from "react-router-dom";
-import { displayCreatedAt } from "../../module/postTime";
+import { FlexRowDiv } from "../../../module/styled/FlexDiv";
+import { Caption, Description, Subtitle } from "../../../module/styled/styledFont";
+import { displayCreatedAt } from "../../../module/postTime";
 
 const ListBox = styled(FlexRowDiv)`
   justify-content: space-between;

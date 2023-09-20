@@ -1,11 +1,10 @@
 import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
 import React, { useEffect, useId, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { db } from "../../firebaseConfig";
+import { db } from "../../../firebaseConfig";
 
-import { Caption } from "../../module/styled/styledFont";
+import { Caption } from "../../../module/styled/styledFont";
 import Comment from "./Comment";
 
 const CommentForm = styled.div`

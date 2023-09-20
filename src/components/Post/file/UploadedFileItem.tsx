@@ -3,7 +3,7 @@
 import React from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { styled } from "styled-components";
-import { FlexRowCenterDiv } from "../../module/styled/FlexDiv";
+import { FlexRowCenterDiv } from "../../../module/styled/FlexDiv";
 
 const FileName = styled.div`
   color: ${({ theme }) => theme.color.mainWhite};

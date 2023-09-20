@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import PostCreateForm from "../components/Post/PostCreateForm";
+import PostCreateForm from "../components/Post/content/PostCreateForm";
 
 import { FlexColumnCenterDiv } from "../module/styled/FlexDiv";
 

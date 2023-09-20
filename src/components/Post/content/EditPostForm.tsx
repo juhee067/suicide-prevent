@@ -63,8 +63,7 @@ const FormCancel = styled(Btn)`
 
 const FormButton = styled(Btn)``;
 
-function EditPostForm(initialData: any) {
-  const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
+function EditPostForm(detailPost: any) {
   const [title, setTitle] = useState(detailPost?.title || "");
   const [content, setContent] = useState(detailPost?.content || "");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -73,24 +72,6 @@ function EditPostForm(initialData: any) {
   const navigate = useNavigate();
   const postCollectionRef = collection(db, "posts");
   const postRef = doc(postCollectionRef, postId);
-
-  useEffect(() => {
-    async function fetchPost() {
-      try {
-        const posts = await getPosts();
-        const selectedPost = posts.find((post) => post.postId === postId);
-        if (selectedPost) {
-          setDetailPost(selectedPost);
-        } else {
-          console.log("게시물을 찾을 수 없습니다.");
-        }
-      } catch (error) {
-        console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
-      }
-    }
-
-    fetchPost();
-  }, [postId]);
 
   useEffect(() => {
     if (detailPost) {

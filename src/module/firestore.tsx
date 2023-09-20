@@ -27,7 +27,7 @@ export async function getPosts(): Promise<PostItemData[]> {
       const postData = { ...doc.data(), postId: doc.id };
       posts.push(postData);
     });
-    console.log(posts, "postspostsposts");
+
     return posts;
   } catch (error) {
     console.error("데이터 가져오기 실패:", error);

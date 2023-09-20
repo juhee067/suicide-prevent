@@ -1,22 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface UserLoginAccessTokenState {
-  authToken: any;
-}
-
-const initialState: UserLoginAccessTokenState = {
-  authToken: "",
-};
+const initialState = "";
 
 export const userLoginAccessTokenSlice = createSlice({
   name: "userLoginAccessToken",
   initialState,
   reducers: {
-    setUserLoginAccessToken: (state, action: PayloadAction<any>) => {
-      state.authToken = action.payload;
+    setUserLoginAccessTokenSlice: (state, action: PayloadAction<any>) => {
+      return action.payload;
     },
   },
 });
 
-export const { setUserLoginAccessToken } = userLoginAccessTokenSlice.actions;
-export default userLoginAccessTokenSlice.reducer;
+export const { setUserLoginAccessTokenSlice } = userLoginAccessTokenSlice.actions;

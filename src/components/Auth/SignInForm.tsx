@@ -6,8 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db, loginEmail } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
-import { setUserLoginAccessToken } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
-import { setUserLoginData } from "../../store/reducer/userData/userData/userLoginDataSlice";
+import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
+import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
+
 // import { login } from "../../module/tokenManager";
 
 const Form = styled.form``;
@@ -89,7 +90,6 @@ const SignInForm = () => {
       const user = result.user;
       if (user) {
         const idToken = await user.getIdToken();
-
         // Firestore 쿼리 생성
         const q = query(collection(db, "nickName"), where("email", "==", userEmail));
 
@@ -104,9 +104,9 @@ const SignInForm = () => {
 
           // idToken 및 닉네임과 함께 상태에 저장
           dispatch(
-            setUserLoginData({ uid: user.uid, userEmail, authToken: idToken, nickName: nickName })
+            setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken, nickName: nickName })
           );
-          dispatch(setUserLoginAccessToken({ authToken: idToken }));
+          dispatch(setUserLoginAccessTokenSlice({ authToken: idToken }));
         } else {
           console.log("해당 이메일 주소의 닉네임을 찾을 수 없습니다.");
         }

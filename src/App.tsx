@@ -12,8 +12,9 @@ import Letter from "./pages/Letter";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Post from "./pages/Post";
-import PostDetail from "./components/Post/PostDetail";
-import BoardWriting from "./pages/BoardWriting";
+import PostDetail from "./pages/PostDetail";
+import PostCreate from "./pages/PostCreate";
+import EditPost from "./components/Post/content/EditPost";
 
 const routes = [
   { path: "/", element: <Main /> },
@@ -31,7 +32,8 @@ const Menu = (
       <Route key={index} path={route.path} element={route.element} />
     ))}
     <Route path="/post/:postId" element={<PostDetail />} />
-    <Route path="/BoardForm" element={<BoardWriting />} />
+    <Route path="/PostCreate" element={<PostCreate />} />
+    <Route path="/post/edit/:postId" element={<EditPost />} />
   </Routes>
 );
 const App = React.memo(() => {

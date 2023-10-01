@@ -25,6 +25,9 @@ const CenteredContainer = styled.div`
 
 const PostListContainer = styled.div`
   padding: ${paddingTopValue} 0 70px;
+  @media screen and (max-width: 768px) {
+    padding: 100px 0px;
+  }
 `;
 
 const ListContainer = styled.div`

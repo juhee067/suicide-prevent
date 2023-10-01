@@ -1,4 +1,3 @@
-import { getAuth } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -8,8 +7,6 @@ import { db, loginEmail } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
 import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
 import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
-
-// import { login } from "../../module/tokenManager";
 
 const Form = styled.form``;
 
@@ -73,44 +70,109 @@ const SignInForm = () => {
   const [userId, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isChecked, setIsChecked] = useState(false);
+  const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null); // Use NodeJS.Timeout for setTimeout
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const AUTO_LOGOUT_TIME = 10 * 60 * 1000; // 10분(10 * 60 * 1000 밀리초)
 
   const handleCheckboxChange = () => {
     const newChecked = !isChecked;
     setIsChecked(newChecked);
   };
+  // 자동 로그인 체크박스 상태가 변경될 때 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem("autoLogin", isChecked ? "true" : "false");
+  }, [isChecked]);
 
-  const handleLogin = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    const userEmail = `${userId}@myapp.com`;
+  // 페이지 로드 시, 로컬 스토리지에서 자동 로그인 체크박스 상태를 가져옴
+  useEffect(() => {
+    const storedAutoLogin = localStorage.getItem("autoLogin");
+    if (storedAutoLogin === "true") {
+      setIsChecked(true);
+    }
+  }, []);
+
+  // 로그아웃 함수
+  const logoutUser = () => {
+    // 타이머 해제
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
+    }
+
+    // 로그아웃 관련 작업 추가 (예: Firebase 로그아웃 호출)
+
+    // 상태 초기화
+    setUserId("");
+    setPassword("");
+    setIsChecked(false);
+  };
+
+  type UserLoginInput = {
+    userEmail: string;
+    password: string;
+    isChecked: boolean;
+  };
+
+  const loginUser = async ({ userEmail, password, isChecked }: UserLoginInput) => {
     try {
       const result = await loginEmail(userEmail, password);
       const user = result.user;
+
       if (user) {
         const idToken = await user.getIdToken();
+
+        // 사용자가 자동 로그인 체크박스를 선택한 경우, 로컬 스토리지에 해당 정보 저장
+        if (isChecked) {
+          localStorage.setItem("autoLogin", "true");
+        } else {
+          localStorage.removeItem("autoLogin");
+        }
+
+        const refreshToken = user.refreshToken;
+
         // Firestore 쿼리 생성
         const q = query(collection(db, "nickName"), where("email", "==", userEmail));
 
         // Firestore에서 유저의 닉네임 조회
         const querySnapshot = await getDocs(q);
 
+        let nickName = "";
         if (!querySnapshot.empty) {
           // 첫 번째 문서의 닉네임을 가져옴
           const userDoc = querySnapshot.docs[0];
           const userData = userDoc.data();
-          const nickName = userData.nickname;
-
-          // idToken 및 닉네임과 함께 상태에 저장
-          dispatch(
-            setUserLoginDataSlice({ uid: user.uid, userEmail, authToken: idToken, nickName: nickName })
-          );
-          dispatch(setUserLoginAccessTokenSlice({ authToken: idToken }));
+          nickName = userData.nickname;
         } else {
           console.log("해당 이메일 주소의 닉네임을 찾을 수 없습니다.");
         }
 
+        return { uid: user.uid, userEmail, authToken: idToken, refreshToken, nickName };
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+    return null;
+  };
+
+  const handleLogin = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const userEmail = `${userId}@myapp.com`;
+
+    const userLoginInput: UserLoginInput = {
+      userEmail,
+      password, // 패스워드 변수는 어디서 가져오는지 확인 필요
+      isChecked,
+    };
+    try {
+      const userData = await loginUser(userLoginInput);
+
+      if (userData) {
+        dispatch(setUserLoginDataSlice(userData));
+        dispatch(setUserLoginAccessTokenSlice({ authToken: userData.authToken }));
+        setLogoutTimer(setTimeout(logoutUser, AUTO_LOGOUT_TIME));
         alert("로그인되었습니다.");
         navigate("/");
       }

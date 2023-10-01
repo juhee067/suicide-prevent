@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Img } from "../components/common/Img";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
-import { Btn, H2, H3, MutedText, Paragraph, Title } from "../module/styled/styledFont";
+import { Btn, H3, MutedText, Paragraph, Title } from "../module/styled/styledFont";
 import { FiAlertOctagon } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 import Map from "../components/info/Map";
@@ -10,7 +10,6 @@ import Map from "../components/info/Map";
 const InfoWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
-  margin: 52px auto 0;
   background-color: ${({ theme }) => theme.color.infoBg};
   border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
@@ -25,14 +24,17 @@ const InformationContainer = styled.div`
     width: 80%;
     padding: 130px 0 70px;
   }
+
   @media screen and (max-width: 480px) {
     width: 70%;
     padding: 100px 0 30px;
   }
+
   @media screen and (max-width: 375px) {
     width: 80%;
     padding: 70px 0 0;
   }
+
   @media screen and (max-width: 320px) {
     padding: 70px 0 20px;
   }

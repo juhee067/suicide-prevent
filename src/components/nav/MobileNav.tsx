@@ -22,7 +22,8 @@ const ShadowBox = styled.div<{ isOpen: boolean }>`
   right: 0;
   bottom: 0;
   z-index: 990;
-  background-color: #0000009b;
+  background-color: ${({ theme }) => theme.color.mainBlack};
+  opacity: 0.6;
 `;
 
 const NavWrapper = styled.div<{ isOpen: boolean }>`
@@ -68,7 +69,7 @@ const CloseButton = styled.button`
 const Auth = styled.div`
   padding: 10px;
   margin-bottom: 20px;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 const Login = styled.div`

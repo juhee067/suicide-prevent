@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = "";
+const initialState = null;
 
 export const userLoginAccessTokenSlice = createSlice({
   name: "userLoginAccessToken",
@@ -9,7 +9,11 @@ export const userLoginAccessTokenSlice = createSlice({
     setUserLoginAccessTokenSlice: (state, action: PayloadAction<any>) => {
       return action.payload;
     },
+    clearUserLoginAccessTokenSlice: (state) => {
+      return null;
+    },
   },
 });
 
-export const { setUserLoginAccessTokenSlice } = userLoginAccessTokenSlice.actions;
+export const { setUserLoginAccessTokenSlice, clearUserLoginAccessTokenSlice } =
+  userLoginAccessTokenSlice.actions;

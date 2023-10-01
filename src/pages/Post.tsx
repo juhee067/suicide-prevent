@@ -4,7 +4,6 @@ import PostList from "../components/Post/content/PostList";
 
 const Post = () => {
   const PostWrapper = styled.div`
-    height: 100vh;
     background-color: #e9e9e9;
   `;
 

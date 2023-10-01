@@ -6,6 +6,7 @@ interface UserLoginDataState {
   userEmail: string;
   nickName: string;
   authToken: any;
+  refreshToken: string;
 }
 
 const initialState: UserLoginDataState = {
@@ -13,6 +14,7 @@ const initialState: UserLoginDataState = {
   userEmail: "",
   nickName: "",
   authToken: "",
+  refreshToken: "",
 };
 
 export const userLoginDataSlice = createSlice({

@@ -12,8 +12,8 @@ const MobileNavBox = styled.div`
   position: relative;
 `;
 
-const ShadowBox = styled.div<{ isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+const ShadowBox = styled.div<{ $isOpen: boolean }>`
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -26,14 +26,14 @@ const ShadowBox = styled.div<{ isOpen: boolean }>`
   opacity: 0.6;
 `;
 
-const NavWrapper = styled.div<{ isOpen: boolean }>`
+const NavWrapper = styled.div<{ $isOpen: boolean }>`
   /* 스타일과 위치 설정은 필요에 따라 조절하세요. */
   width: 80%;
   height: 100%;
   padding: 20px;
   position: fixed;
   top: 0;
-  left: ${({ isOpen }) => (isOpen ? "0" : "-80%")};
+  left: ${({ $isOpen }) => ($isOpen ? "0" : "-80%")};
   background-color: ${({ theme }) => theme.color.mainWhite};
   transition: left 0.3s ease-in-out;
   z-index: 1000;
@@ -125,7 +125,6 @@ const MobileNav = () => {
   };
 
   const handleLogout = async () => {
-    window.location.reload();
     await persistor.purge(); // persistStore의 데이터 전부 날림
     setIsOpen(!isOpen);
   };
@@ -145,7 +144,7 @@ const MobileNav = () => {
       <MenuButton onClick={handleOpenClick}>
         <HiMenu />
       </MenuButton>
-      <NavWrapper isOpen={isOpen}>
+      <NavWrapper $isOpen={isOpen}>
         <Content>
           <CloseButton onClick={handleOpenClick}>
             <CgClose />
@@ -176,7 +175,7 @@ const MobileNav = () => {
         </Content>
       </NavWrapper>
 
-      <ShadowBox isOpen={isOpen} onClick={handleOpenClick} />
+      <ShadowBox $isOpen={isOpen} onClick={handleOpenClick} />
     </MobileNavBox>
   );
 };

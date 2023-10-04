@@ -70,43 +70,13 @@ const SignInForm = () => {
   const [userId, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isChecked, setIsChecked] = useState(false);
-  const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null); // Use NodeJS.Timeout for setTimeout
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  const AUTO_LOGOUT_TIME = 10 * 60 * 1000; // 10분(10 * 60 * 1000 밀리초)
-
   const handleCheckboxChange = () => {
     const newChecked = !isChecked;
     setIsChecked(newChecked);
-  };
-  // 자동 로그인 체크박스 상태가 변경될 때 로컬 스토리지에 저장
-  useEffect(() => {
-    localStorage.setItem("autoLogin", isChecked ? "true" : "false");
-  }, [isChecked]);
-
-  // 페이지 로드 시, 로컬 스토리지에서 자동 로그인 체크박스 상태를 가져옴
-  useEffect(() => {
-    const storedAutoLogin = localStorage.getItem("autoLogin");
-    if (storedAutoLogin === "true") {
-      setIsChecked(true);
-    }
-  }, []);
-
-  // 로그아웃 함수
-  const logoutUser = () => {
-    // 타이머 해제
-    if (logoutTimer) {
-      clearTimeout(logoutTimer);
-    }
-
-    // 로그아웃 관련 작업 추가 (예: Firebase 로그아웃 호출)
-
-    // 상태 초기화
-    setUserId("");
-    setPassword("");
-    setIsChecked(false);
   };
 
   type UserLoginInput = {
@@ -127,7 +97,7 @@ const SignInForm = () => {
         if (isChecked) {
           localStorage.setItem("autoLogin", "true");
         } else {
-          localStorage.removeItem("autoLogin");
+          localStorage.setItem("autoLogin", "false");
         }
 
         const refreshToken = user.refreshToken;
@@ -172,7 +142,6 @@ const SignInForm = () => {
       if (userData) {
         dispatch(setUserLoginDataSlice(userData));
         dispatch(setUserLoginAccessTokenSlice({ authToken: userData.authToken }));
-        setLogoutTimer(setTimeout(logoutUser, AUTO_LOGOUT_TIME));
         alert("로그인되었습니다.");
         navigate("/");
       }

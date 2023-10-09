@@ -6,6 +6,8 @@ import { FaRegWindowMaximize } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
 import { useSelector } from "react-redux";
 import { persistor } from "../..";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "firebase-admin";
 
 const DesktopNavBox = styled(FlexRowDiv)`
   padding: 0 20px;

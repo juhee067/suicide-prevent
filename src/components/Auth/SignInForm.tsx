@@ -69,23 +69,23 @@ const SignInBtn = styled(Btn)`
 const SignInForm = () => {
   const [userId, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  const handleCheckboxChange = () => {
-    const newChecked = !isChecked;
-    setIsChecked(newChecked);
-  };
+  // const handleCheckboxChange = () => {
+  //   const newChecked = !isChecked;
+  //   setIsChecked(newChecked);
+  // };
 
   type UserLoginInput = {
     userEmail: string;
     password: string;
-    isChecked: boolean;
+    // isChecked: boolean;
   };
 
-  const loginUser = async ({ userEmail, password, isChecked }: UserLoginInput) => {
+  const loginUser = async ({ userEmail, password }: UserLoginInput) => {
     try {
       const result = await loginEmail(userEmail, password);
       const user = result.user;
@@ -94,11 +94,11 @@ const SignInForm = () => {
         const idToken = await user.getIdToken();
 
         // 사용자가 자동 로그인 체크박스를 선택한 경우, 로컬 스토리지에 해당 정보 저장
-        if (isChecked) {
-          localStorage.setItem("autoLogin", "true");
-        } else {
-          localStorage.setItem("autoLogin", "false");
-        }
+        // if (isChecked) {
+        //   localStorage.setItem("autoLogin", "true");
+        // } else {
+        //   localStorage.setItem("autoLogin", "false");
+        // }
 
         const refreshToken = user.refreshToken;
 
@@ -134,8 +134,9 @@ const SignInForm = () => {
     const userLoginInput: UserLoginInput = {
       userEmail,
       password, // 패스워드 변수는 어디서 가져오는지 확인 필요
-      isChecked,
+      // isChecked,
     };
+
     try {
       const userData = await loginUser(userLoginInput);
 
@@ -175,10 +176,10 @@ const SignInForm = () => {
         />
       </Passwordbox>
       <ProcessBox>
-        <CheckboxLabel>
+        {/* <CheckboxLabel>
           <CheckboxInput type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
           <AutoLoginText>자동 로그인</AutoLoginText>
-        </CheckboxLabel>
+        </CheckboxLabel> */}
       </ProcessBox>
       <SignInBtn type="submit">로그인</SignInBtn>
       <Register>

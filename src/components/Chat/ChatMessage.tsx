@@ -25,7 +25,7 @@ const Message = styled.div<{ isUser: boolean }>`
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, isUser }) => {
   return (
     <MessageContainer>
-      <Message isUser={isUser}> {message}</Message>
+      <Message isUser={isUser}>{message}</Message>
     </MessageContainer>
   );
 };

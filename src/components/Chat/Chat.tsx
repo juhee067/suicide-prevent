@@ -1,6 +1,7 @@
 import { collection, DocumentData, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
+import { fetchMessages } from "../../api/message";
 
 import { db } from "../../firebaseConfig";
 import ChatInputForm from "./ChatInputForm";
@@ -25,24 +26,11 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<DocumentData[]>([]);
 
   // Firestore에서 메시지를 가져오는 함수
-  const fetchMessages = async () => {
-    const messagesCollection = collection(db, "messages");
-    const q = query(messagesCollection, orderBy("createdAt", "asc"), limit(100));
-
-    onSnapshot(q, (querySnapshot) => {
-      const updatedMessages: ((prevState: never[]) => never[]) | DocumentData[] = [];
-      querySnapshot.forEach((doc) => {
-        updatedMessages.push(doc.data());
-      });
-      console.log(messages);
-      setMessages(updatedMessages);
-    });
-  };
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 Firestore에서 메시지를 가져오는 함수를 호출
 
-    fetchMessages();
+    fetchMessages(setMessages);
   }, []); // 빈 배열을 전달하여 한 번만 호출되도록 함
 
   return (

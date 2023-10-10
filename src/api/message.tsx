@@ -1,38 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+// firebaseUtils.js
 
-interface ChatMessage {
-  message: string;
-  id: string;
-  // 다른 필요한 속성들을 여기에 추가할 수 있습니다.
-}
+import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
-// export function useFirestoreQuery(query: any): ChatMessage[] {
-//   const [docs, setDocs] = useState<ChatMessage[]>([]);
+export const fetchMessages = (setMessages: (arg0: any[]) => void) => {
+  const messagesCollection = collection(db, "messages");
+  const q = query(messagesCollection, orderBy("createdAt", "asc"), limit(100));
 
-//   const queryRef = useRef(query);
-
-//   useEffect(() => {
-//     if (!queryRef?.current?.isEqual(query)) {
-//       queryRef.current = query;
-//     }
-//   });
-
-//   useEffect(() => {
-//     if (!queryRef.current) {
-//       return null;
-//     }
-
-//     const unsubscribe = queryRef.current.onSnapshot((querySnapshot: { docs: any[] }) => {
-//       const data = querySnapshot.docs.map((doc) => ({
-//         ...doc.data(),
-//         id: doc.id,
-//       }));
-
-//       setDocs(data);
-//     });
-
-//     return unsubscribe;
-//   }, [queryRef]);
-
-//   return docs;
-// }
+  onSnapshot(q, (querySnapshot) => {
+    const updatedMessages: any[] = [];
+    querySnapshot.forEach((doc) => {
+      updatedMessages.push(doc.data());
+    });
+    setMessages(updatedMessages);
+  });
+};

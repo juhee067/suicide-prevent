@@ -1,9 +1,8 @@
 import { collection, DocumentData, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { styled } from "styled-components";
 import { fetchMessages } from "../../api/message";
-
-import { db } from "../../firebaseConfig";
 import ChatInputForm from "./ChatInputForm";
 import ChatMessage from "./ChatMessage";
 
@@ -25,11 +24,9 @@ const ChatMessageBox = styled.div`
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<DocumentData[]>([]);
 
-  // Firestore에서 메시지를 가져오는 함수
-
   useEffect(() => {
     // 컴포넌트가 마운트될 때 Firestore에서 메시지를 가져오는 함수를 호출
-
+    console.log(messages);
     fetchMessages(setMessages);
   }, []); // 빈 배열을 전달하여 한 번만 호출되도록 함
 
@@ -37,7 +34,7 @@ const Chat: React.FC = () => {
     <ChatContainer>
       <ChatMessageBox>
         {messages.map((msg, index) => (
-          <ChatMessage key={index} message={msg.text} isUser={msg.isUser} />
+          <ChatMessage key={index} message={msg.text} isUser={msg.nickname} time={msg.createdAt} />
         ))}
       </ChatMessageBox>
       <ChatInputForm />

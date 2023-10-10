@@ -1,11 +1,22 @@
 // ChatInputForm.tsx
 
 import firebase from "firebase/compat";
-import { addDoc, collection, limit, orderBy, query, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  FieldValue,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { db } from "../../firebaseConfig";
+import { formatDateTime } from "../../module/postTime";
 
 const InputContainer = styled.div`
   display: flex;
@@ -24,7 +35,7 @@ const InputField = styled.input`
 `;
 
 const SendButton = styled.button`
-  background-color: #008cba;
+  background-color: #000;
   color: white;
   border: none;
   border-radius: 4px;
@@ -40,17 +51,20 @@ const ChatInputForm = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
+  const userData = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (message.trim() !== "") {
       try {
         // 새로운 메시지를 Firestore에 추가
         await addDoc(messagesRef, {
           text: message,
-          createdAt: serverTimestamp(), // 서버 시간으로 설정
+          createdAt: formatDateTime(new Date()).toLocaleString(),
+          nickname: userData.nickName,
         });
-
+        console.log(formatDateTime(new Date()).toLocaleString());
         // 입력 필드 초기화
         setMessage("");
       } catch (error) {

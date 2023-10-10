@@ -8,8 +8,8 @@ const PaginationContainer = styled.div`
 `;
 
 const PageButton = styled.button<{ $active: boolean }>`
-  background-color: ${(props) => (props.$active ? "#000" : "#fff")};
-  color: ${(props) => (props.$active ? "#fff" : "#000")};
+  background-color: ${(props) => (props.$active ? "${({ theme }) => theme.color.mainBlack};" : "#fff")};
+  color: ${(props) => (props.$active ? "#fff" : "${({ theme }) => theme.color.mainBlack};")};
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   padding: 5px 10px;
   margin: 0 5px;

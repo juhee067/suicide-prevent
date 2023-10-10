@@ -12,8 +12,8 @@ const MobileNavBox = styled.div`
   position: relative;
 `;
 
-const ShadowBox = styled.div<{ isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+const ShadowBox = styled.div<{ $isOpen: boolean }>`
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -22,17 +22,18 @@ const ShadowBox = styled.div<{ isOpen: boolean }>`
   right: 0;
   bottom: 0;
   z-index: 990;
-  background-color: #0000009b;
+  background-color: ${({ theme }) => theme.color.mainBlack};
+  opacity: 0.6;
 `;
 
-const NavWrapper = styled.div<{ isOpen: boolean }>`
+const NavWrapper = styled.div<{ $isOpen: boolean }>`
   /* 스타일과 위치 설정은 필요에 따라 조절하세요. */
   width: 80%;
   height: 100%;
   padding: 20px;
   position: fixed;
   top: 0;
-  left: ${({ isOpen }) => (isOpen ? "0" : "-80%")};
+  left: ${({ $isOpen }) => ($isOpen ? "0" : "-80%")};
   background-color: ${({ theme }) => theme.color.mainWhite};
   transition: left 0.3s ease-in-out;
   z-index: 1000;
@@ -68,7 +69,7 @@ const CloseButton = styled.button`
 const Auth = styled.div`
   padding: 10px;
   margin-bottom: 20px;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid ${({ theme }) => theme.color.mainBlack};
 `;
 
 const Login = styled.div`
@@ -106,12 +107,14 @@ const MovePage = styled(Link)`
 const MobileNav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
   const [isOpen, setIsOpen] = useState(false); // 사이드바 열림/닫힘 상태
+
   const menuItems = [
-    { to: "/", label: "Home" },
-    { to: "/test", label: "Test" },
-    { to: "/post", label: "Post" },
-    { to: "/letter", label: "Letter" },
-    { to: "/information", label: "Info" },
+    { to: "/", label: "홈" },
+    { to: "/test", label: "진단" },
+    { to: "/letter", label: "편지" },
+    { to: "/post", label: "게시판" },
+    { to: "/Chatting", label: "채팅" },
+    { to: "/information", label: "정보" },
   ];
 
   const accessToken = useSelector(
@@ -124,7 +127,6 @@ const MobileNav = () => {
   };
 
   const handleLogout = async () => {
-    window.location.reload();
     await persistor.purge(); // persistStore의 데이터 전부 날림
     setIsOpen(!isOpen);
   };
@@ -144,17 +146,17 @@ const MobileNav = () => {
       <MenuButton onClick={handleOpenClick}>
         <HiMenu />
       </MenuButton>
-      <NavWrapper isOpen={isOpen}>
+      <NavWrapper $isOpen={isOpen}>
         <Content>
           <CloseButton onClick={handleOpenClick}>
             <CgClose />
           </CloseButton>
           <Auth>
             {accessToken ? (
-              <Logout onClick={handleLogout}>Logout</Logout>
+              <Logout onClick={handleLogout}>로그아웃</Logout>
             ) : (
               <Login onClick={handleLogIn}>
-                <Link to="/auth/signIn">Login</Link>
+                <Link to="/auth/signIn">로그인</Link>
               </Login>
             )}
           </Auth>
@@ -175,7 +177,7 @@ const MobileNav = () => {
         </Content>
       </NavWrapper>
 
-      <ShadowBox isOpen={isOpen} onClick={handleOpenClick} />
+      <ShadowBox $isOpen={isOpen} onClick={handleOpenClick} />
     </MobileNavBox>
   );
 };

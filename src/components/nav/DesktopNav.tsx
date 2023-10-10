@@ -6,6 +6,8 @@ import { FaRegWindowMaximize } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
 import { useSelector } from "react-redux";
 import { persistor } from "../..";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "firebase-admin";
 
 const DesktopNavBox = styled(FlexRowDiv)`
   padding: 0 20px;
@@ -33,7 +35,8 @@ const MovePage = styled(Link)`
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   cursor: pointer;
   text-decoration: none;
-
+  font-family: KyoboHandwriting2022khn;
+  font-size: 2rem;
   &.active {
     background-color: ${({ theme }) => theme.color.mainBlack};
     color: ${({ theme }) => theme.color.mainWhite};
@@ -52,6 +55,7 @@ const MovePage = styled(Link)`
 const RightBox = styled(FlexRowDiv)`
   align-items: center;
   gap: 20px;
+  font-family: KyoboHandwriting2022khn;
 `;
 
 const IconBox = styled(FlexRowDiv)`
@@ -81,11 +85,12 @@ const DesktopNav = () => {
   };
 
   const menuItems = [
-    { to: "/", label: "Home" },
-    { to: "/test", label: "Test" },
-    { to: "/post", label: "Post" },
-    { to: "/letter", label: "Letter" },
-    { to: "/information", label: "Info" },
+    { to: "/", label: "홈" },
+    { to: "/test", label: "진단" },
+    { to: "/letter", label: "편지" },
+    { to: "/post", label: "게시판" },
+    { to: "/Chatting", label: "채팅" },
+    { to: "/information", label: "정보" },
   ];
 
   const handleLogIn = () => {
@@ -124,10 +129,10 @@ const DesktopNav = () => {
       </Menus>
       <RightBox>
         {accessToken ? (
-          <Logout onClick={handleLogout}>Logout</Logout>
+          <Logout onClick={handleLogout}>로그아웃</Logout>
         ) : (
           <Login onClick={handleLogIn}>
-            <Link to="/auth/signIn">Login</Link>
+            <Link to="/auth/signIn">로그인</Link>
           </Login>
         )}
         <IconBox>

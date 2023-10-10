@@ -7,6 +7,7 @@ import { Btn } from "../../../module/styled/styledFont";
 import { createPost, getUserNicknameByEmail } from "../../../module/firestore";
 import FileDragArea from "../file/FileDragArea";
 import UploadedFileList from "../file/UploadedFileList";
+import { Link } from "react-router-dom";
 
 const FormContainer = styled.div`
   width: 80%;
@@ -165,7 +166,9 @@ function PostCreate() {
           <FileDragArea handleFileInputChange={handleFileInputChange} />
           <UploadedFileList uploadedFiles={uploadedFiles} />
         </FormGroup>
-        <FormCancel>취소하기</FormCancel>
+        <FormCancel>
+          <Link to="/post"> 취소하기</Link>
+        </FormCancel>
         <FormButton type="submit">게시하기</FormButton>
       </Form>
     </FormContainer>

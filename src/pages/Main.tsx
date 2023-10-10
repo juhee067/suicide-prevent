@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Door from "../components/common/Door";
 import { Img } from "../components/common/Img";
 import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { Btn, H2, Paragraph } from "../module/styled/styledFont";
+import { Btn, Paragraph } from "../module/styled/styledFont";
 
 const MainWrapper = styled.div`
   position: relative;

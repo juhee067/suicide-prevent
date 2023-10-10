@@ -35,12 +35,11 @@ export async function getPosts(): Promise<PostItemData[]> {
   }
 }
 
-// 댓글 수 업데이트
 export async function updateCommentCount(postId: string) {
   try {
     const commentsRef = collection(db, `posts/${postId}/comments`);
     const querySnapshot = await getDocs(commentsRef);
-    const commentCount = querySnapshot.size; // 댓글 수 계산
+    const commentCount = querySnapshot.size;
 
     // 해당 게시물 문서 업데이트
     const postRef = doc(db, "posts", postId);

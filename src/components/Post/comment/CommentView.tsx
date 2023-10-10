@@ -1,5 +1,5 @@
-import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
-import React, { useEffect, useId, useState } from "react";
+import React, { useState, useEffect, useId } from "react";
+import { collection, getDocs, addDoc, DocumentData } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { db } from "../../../firebaseConfig";
@@ -45,7 +45,6 @@ const CommentCount = styled(Caption)``;
 
 function CommentView({ postId }: any) {
   const uniqueId = useId();
-
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<DocumentData[]>([]);
 
@@ -54,71 +53,60 @@ function CommentView({ postId }: any) {
   );
   const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (!comment.trim()) {
-      alert("댓글 내용을 입력하세요.");
-      return;
-    }
-    createComment();
-
-    // 댓글 입력 필드 초기화
-    setComment("");
-  };
-
-  const usersCollectionRef = collection(db, `posts/${postId}/comments`);
-  async function fetchComments() {
+  const fetchComments = async () => {
     try {
-      const commentsRef = collection(db, `posts/${postId}/comments`); // "comments"는 댓글 컬렉션 이름
+      const commentsRef = collection(db, `posts/${postId}/comments`);
       const querySnapshot = await getDocs(commentsRef);
 
       if (!querySnapshot.empty) {
         const commentsData = querySnapshot.docs.map((doc) => {
           const data = doc.data();
-          return { ...data, commentId: doc.id }; // 댓글 문서 ID를 추가해서 저장
+          return { ...data, commentId: doc.id };
         });
         setComments(commentsData);
       } else {
         console.log("댓글을 찾을 수 없습니다.");
+        setComments([]);
       }
     } catch (error) {
       console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
     }
-  }
+  };
 
   useEffect(() => {
-    // Firebase Firestore에서 해당 게시물의 댓글 정보를 가져오는 비동기 함수
-
-    fetchComments(); // 댓글 정보를 가져오는 함수 호출
-  }, []);
-
-  // 게시물 정보가 로드되기 전에는 로딩 상태를 처리할 수 있습니다.
-
+    fetchComments(); // 컴포넌트가 마운트될 때 댓글을 가져와 상태를 업데이트합니다.
+  }, [postId]);
   const AccessTokenError = () => {
     alert("로그인을 해주세요");
   };
 
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log(comment);
+    if (!comment.trim()) {
+      alert("댓글 내용을 입력하세요.");
+      return;
+    }
+    await createComment();
+    setComment("");
+  };
   const createComment = async () => {
     try {
       const newComment = {
-        commentId: uniqueId,
+        commentId: Date.now().toString(), // 고유한 ID 생성
         userName: currentUser.nickName,
         comment: comment,
         commentTime: new Date().toISOString(),
       };
 
-      // 댓글 배열에 새로운 댓글을 추가
       setComments((prevComments) => [...prevComments, newComment]);
-      // Firestore에 댓글 데이터 추가
-      await addDoc(usersCollectionRef, newComment);
 
-      setComment("");
-      console.log("댓글 전달");
+      const commentsRef = collection(db, `posts/${postId}/comments`);
+      await addDoc(commentsRef, newComment);
     } catch (error) {
       console.error("Error adding document:", error);
     }
   };
-
   return (
     <>
       <CommentForm>
@@ -134,7 +122,7 @@ function CommentView({ postId }: any) {
         )}
       </CommentForm>
       <CommentBox>
-        {comments ? (
+        {comments !== null ? (
           <>
             <CommentCount>댓글 수: {comments.length}</CommentCount>
             <Comment comments={comments} postId={postId} fetchComments={fetchComments} />

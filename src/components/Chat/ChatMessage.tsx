@@ -1,14 +1,15 @@
 // ChatMessage.tsx
 
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FlexColumnDiv, FlexRowDiv } from "../../module/styled/FlexDiv";
 import { Caption } from "../../module/styled/styledFont";
 
 interface ChatMessageProps {
   message: string;
-  isUser: boolean;
+  user: string;
   time: string;
+  currentUser: string;
 }
 
 const MessageContainer = styled(FlexColumnDiv)`
@@ -16,6 +17,7 @@ const MessageContainer = styled(FlexColumnDiv)`
 `;
 
 const Message = styled(FlexRowDiv)<{ isUser: boolean }>`
+  flex-direction: ${(props) => (props.isUser ? "row" : "row-reverse")};
   align-self: ${(props) => (props.isUser ? "flex-end" : "flex-start")};
   align-items: flex-end;
   gap: 10px;
@@ -46,30 +48,19 @@ const Time = styled.div`
   font-weight: 300;
 `;
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, isUser, time }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, user, currentUser, time }) => {
+  const isCurrentUser = user === currentUser;
   return (
     <MessageContainer>
-      {isUser ? (
-        <Message isUser={isUser}>
-          <TimeBox>
-            <Time>{time}</Time>
-          </TimeBox>
-          <UserBox isUser={isUser}>
-            <Nickname>{isUser}</Nickname>
-            <Content isUser={isUser}>{message}</Content>
-          </UserBox>
-        </Message>
-      ) : (
-        <Message isUser={isUser}>
-          <UserBox isUser={isUser}>
-            <Nickname>{isUser}</Nickname>
-            <Content isUser={isUser}>{message}</Content>
-          </UserBox>
-          <TimeBox>
-            <Time>{time}</Time>
-          </TimeBox>
-        </Message>
-      )}
+      <Message isUser={isCurrentUser}>
+        <TimeBox>
+          <Time>{time}</Time>
+        </TimeBox>
+        <UserBox isUser={isCurrentUser}>
+          <Nickname>{isCurrentUser ? currentUser : user}</Nickname>
+          <Content isUser={isCurrentUser}>{message}</Content>
+        </UserBox>
+      </Message>
     </MessageContainer>
   );
 };

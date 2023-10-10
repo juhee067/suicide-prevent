@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Btn } from "../../../module/styled/styledFont";
-import { createPost, getUserNicknameByEmail } from "../../../module/firestore";
+import { createPost, getUserNickname, getUserNicknameByEmail } from "../../../module/firestore";
 import FileDragArea from "../file/FileDragArea";
 import UploadedFileList from "../file/UploadedFileList";
 import { Link } from "react-router-dom";
@@ -122,24 +122,8 @@ function PostCreate() {
 
   useEffect(() => {
     const userEmailData = userData.userEmail;
-    const getUserNickname = async () => {
-      const nicknameData = await getUserNicknameByEmail(userEmailData);
 
-      if (nicknameData !== null) {
-        // nicknameData가 null이 아닌 경우에만 처리
-        const foundObject = {
-          email: userEmailData,
-          nickname: nicknameData,
-        };
-
-        const nickname = foundObject.nickname;
-        setUserNickname(nickname);
-      } else {
-        console.log(`이메일 ${userEmailData}에 해당하는 객체를 찾을 수 없습니다.`);
-      }
-    };
-
-    getUserNickname();
+    getUserNickname(userEmailData, setUserNickname);
   }, []);
 
   return (

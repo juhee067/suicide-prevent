@@ -1,4 +1,4 @@
-import { collection, getDocs, DocumentData, doc, updateDoc, addDoc } from "firebase/firestore";
+import { collection, getDocs, DocumentData, doc, updateDoc, addDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
 interface PostItemData {
@@ -88,5 +88,22 @@ export const getUserNicknameByEmail = async (userEmailData: string) => {
   } catch (error) {
     console.error("닉네임 가져오기 실패:", error);
     return null; // 에러 처리를 위해 null을 반환하거나 다른 처리 방법을 사용할 수 있습니다.
+  }
+};
+
+export const getUserNickname = async (userEmailData: any, setUserNickname: any) => {
+  const nicknameData = await getUserNicknameByEmail(userEmailData);
+
+  if (nicknameData !== null) {
+    // nicknameData가 null이 아닌 경우에만 처리
+    const foundObject = {
+      email: userEmailData,
+      nickname: nicknameData,
+    };
+
+    const nickname = foundObject.nickname;
+    setUserNickname(nickname);
+  } else {
+    console.log(`이메일 ${userEmailData}에 해당하는 객체를 찾을 수 없습니다.`);
   }
 };

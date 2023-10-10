@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import GlobalStyles from "./style/GlobalStyles";
 import { ThemeProvider } from "styled-components";
@@ -15,6 +15,7 @@ import Post from "./pages/Post";
 import PostDetail from "./pages/PostDetail";
 import PostCreate from "./pages/PostCreate";
 import EditPost from "./components/Post/content/EditPost";
+import Chatting from "./pages/Chatting";
 
 const routes = [
   { path: "/", element: <Main /> },
@@ -22,6 +23,7 @@ const routes = [
   { path: "/test", element: <Test /> },
   { path: "/information", element: <Information /> },
   { path: "/post", element: <Post /> },
+  { path: "/Chatting", element: <Chatting /> },
   { path: "/auth/signUp", element: <SignUp /> },
   { path: "/auth/signIn", element: <SignIn /> },
 ];
@@ -38,7 +40,7 @@ const Menu = (
 );
 
 // 10분 동안 활동이 없을 경우 로그아웃되는 시간(밀리초)을 정의합니다.
-const AUTO_LOGOUT_TIME = 0.2 * 60 * 1000;
+// const AUTO_LOGOUT_TIME = 10 * 60 * 1000;
 
 const App = React.memo(() => {
   // const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null); // Use NodeJS.Timeout for setTimeout

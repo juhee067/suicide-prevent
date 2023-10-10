@@ -12,10 +12,6 @@ import { Title } from "../../module/styled/styledFont";
 
 const GuestbookContainer = styled(FlexColumnDiv)`
   position: relative;
-  width: 100%;
-  margin: 0 auto;
-  padding: 170px 100px;
-  gap: 80px;
 
   @media screen and (max-width: 1680px) {
     padding: 150px 0;

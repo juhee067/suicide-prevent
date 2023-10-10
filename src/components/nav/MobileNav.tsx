@@ -107,12 +107,14 @@ const MovePage = styled(Link)`
 const MobileNav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
   const [isOpen, setIsOpen] = useState(false); // 사이드바 열림/닫힘 상태
+
   const menuItems = [
-    { to: "/", label: "Home" },
-    { to: "/test", label: "Test" },
-    { to: "/post", label: "Post" },
-    { to: "/letter", label: "Letter" },
-    { to: "/information", label: "Info" },
+    { to: "/", label: "홈" },
+    { to: "/test", label: "진단" },
+    { to: "/letter", label: "편지" },
+    { to: "/post", label: "게시판" },
+    { to: "/Chatting", label: "채팅" },
+    { to: "/information", label: "정보" },
   ];
 
   const accessToken = useSelector(
@@ -151,10 +153,10 @@ const MobileNav = () => {
           </CloseButton>
           <Auth>
             {accessToken ? (
-              <Logout onClick={handleLogout}>Logout</Logout>
+              <Logout onClick={handleLogout}>로그아웃</Logout>
             ) : (
               <Login onClick={handleLogIn}>
-                <Link to="/auth/signIn">Login</Link>
+                <Link to="/auth/signIn">로그인</Link>
               </Login>
             )}
           </Auth>

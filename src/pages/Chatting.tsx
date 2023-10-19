@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import Chat from "../components/Chat/Chat";
 
 const ChatWrapper = styled.div`
-  padding: 100px;
+  padding: 50px;
   height: 100vh;
   background-color: #e9e9e9;
 `;

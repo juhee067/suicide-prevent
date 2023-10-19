@@ -8,7 +8,7 @@ import ChatMessage from "./ChatMessage";
 
 const ChatContainer = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   max-width: 1200px;
   background-color: ${({ theme }) => theme.color.mainWhite};
   transform: translateY(50px);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components";
 import { HiMenu } from "react-icons/hi";
@@ -6,7 +6,8 @@ import { CgClose } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { FlexColumnDiv } from "../../module/styled/FlexDiv";
 import { useSelector } from "react-redux";
-import { persistor } from "../..";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+// import { persistor } from "../..";
 
 const MobileNavBox = styled.div`
   position: relative;
@@ -107,6 +108,7 @@ const MovePage = styled(Link)`
 const MobileNav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
   const [isOpen, setIsOpen] = useState(false); // 사이드바 열림/닫힘 상태
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
 
   const menuItems = [
     { to: "/", label: "홈" },
@@ -117,17 +119,13 @@ const MobileNav = () => {
     { to: "/information", label: "정보" },
   ];
 
-  const accessToken = useSelector(
-    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
-  );
-
   const handleLogIn = () => {
     setSelectedMenu(undefined);
     setIsOpen(!isOpen);
   };
 
   const handleLogout = async () => {
-    await persistor.purge(); // persistStore의 데이터 전부 날림
+    // await persistor.purge(); // persistStore의 데이터 전부 날림
     setIsOpen(!isOpen);
   };
 
@@ -140,7 +138,24 @@ const MobileNav = () => {
     setSelectedMenu(index);
     setIsOpen(!isOpen);
   };
+  const auth = getAuth(); // Firebase Auth 객체를 가져옴
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+      if (user) {
+        // 사용자가 로그인한 경우
+        setIsUserLoggedIn(true);
+      } else {
+        // 사용자가 로그아웃한 경우
+        setIsUserLoggedIn(false);
+      }
+    });
+    console.log(unsubscribe, "unsubscribe");
+    return () => {
+      // 컴포넌트가 언마운트될 때 감시 중단
+      unsubscribe();
+    };
+  }, [auth]);
   return (
     <MobileNavBox>
       <MenuButton onClick={handleOpenClick}>
@@ -152,7 +167,7 @@ const MobileNav = () => {
             <CgClose />
           </CloseButton>
           <Auth>
-            {accessToken ? (
+            {isUserLoggedIn ? (
               <Logout onClick={handleLogout}>로그아웃</Logout>
             ) : (
               <Login onClick={handleLogIn}>

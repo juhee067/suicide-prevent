@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 
-const auth = getAuth();
+export const auth = getAuth();
 
 //Email 로그인
 export const signupEmail = (email: string, password: string) => {

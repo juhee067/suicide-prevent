@@ -4,10 +4,8 @@ import styled from "styled-components";
 import { FlexRowDiv } from "../../module/styled/FlexDiv";
 import { FaRegWindowMaximize } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
-import { useSelector } from "react-redux";
-import { persistor } from "../..";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "firebase-admin";
+import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 const DesktopNavBox = styled(FlexRowDiv)`
   padding: 0 20px;
@@ -75,10 +73,9 @@ const Logout = styled.div`
 
 const DesktopNav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
+
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
   const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
-  const accessToken = useSelector(
-    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
-  );
 
   const handleMenuClick = (index: number) => {
     setSelectedMenu(index);
@@ -98,8 +95,12 @@ const DesktopNav = () => {
   };
 
   const handleLogout = async () => {
-    window.location.reload();
-    await persistor.purge(); // persistStore의 데이터 전부 날림
+    try {
+      await signOut(auth);
+      window.location.reload();
+    } catch (error) {
+      console.error("로그아웃 오류:", error);
+    }
   };
 
   useEffect(() => {
@@ -110,6 +111,17 @@ const DesktopNav = () => {
       setSelectedMenu(matchingIndex);
     }
   }, [location]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user: User | null) => {
+      if (user) {
+        setIsUserLoggedIn(true);
+        console.log("사용자가 로그인했습니다.");
+      } else {
+        console.log("사용자가 로그아웃했습니다.");
+      }
+    });
+  }, [auth]);
 
   return (
     <DesktopNavBox>
@@ -128,7 +140,7 @@ const DesktopNav = () => {
         ))}
       </Menus>
       <RightBox>
-        {accessToken ? (
+        {isUserLoggedIn ? (
           <Logout onClick={handleLogout}>로그아웃</Logout>
         ) : (
           <Login onClick={handleLogIn}>

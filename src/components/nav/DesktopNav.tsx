@@ -74,7 +74,7 @@ const Logout = styled.div`
 const DesktopNav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
 
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState({});
   const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
 
   const handleMenuClick = (index: number) => {
@@ -115,9 +115,11 @@ const DesktopNav = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
-        setIsUserLoggedIn(true);
+        setIsUserLoggedIn(user);
+
         console.log("사용자가 로그인했습니다.");
       } else {
+        setIsUserLoggedIn("");
         console.log("사용자가 로그아웃했습니다.");
       }
     });

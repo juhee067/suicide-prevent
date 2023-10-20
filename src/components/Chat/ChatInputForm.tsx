@@ -1,5 +1,6 @@
 // ChatInputForm.tsx
 
+import { onAuthStateChanged, User } from "firebase/auth";
 import firebase from "firebase/compat";
 import {
   addDoc,
@@ -11,11 +12,12 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { db } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { formatDateTime } from "../../module/postTime";
 
 const InputContainer = styled.div`
@@ -45,32 +47,56 @@ const SendButton = styled.button`
 
 const ChatInputForm = () => {
   const [message, setMessage] = useState("");
-
+  const navigate = useNavigate();
   const messagesRef = collection(db, "messages");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
   const userData = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  // ...
+
+  useEffect(() => {
+    // 사용자의 로그인 상태를 확인합니다.
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+      if (user) {
+        setIsUserLoggedIn(true);
+      } else {
+        setIsUserLoggedIn(false);
+      }
+    });
+
+    return () => {
+      // 컴포넌트가 unmount될 때 구독을 정리합니다.
+      unsubscribe();
+    };
+  }, [auth]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    onAuthStateChanged(auth, async (user: User | null) => {
+      if (isUserLoggedIn) {
+        if (message.trim() !== "") {
+          try {
+            // 새로운 메시지를 Firestore에 추가
+            await addDoc(messagesRef, {
+              text: message,
+              createdAt: formatDateTime(new Date()).toLocaleString(),
+              nickname: userData.nickName,
+            });
 
-    if (message.trim() !== "") {
-      try {
-        // 새로운 메시지를 Firestore에 추가
-        await addDoc(messagesRef, {
-          text: message,
-          createdAt: formatDateTime(new Date()).toLocaleString(),
-          nickname: userData.nickName,
-        });
-
-        // 입력 필드 초기화
-        setMessage("");
-      } catch (error) {
-        console.error("Error adding message: ", error);
+            // 입력 필드 초기화
+            setMessage("");
+          } catch (error) {
+            console.error("Error adding message: ", error);
+          }
+        }
+      } else {
+        alert("로그인이 필요합니다");
+        navigate("/auth/signIn");
       }
-    }
+    });
   };
 
   return (

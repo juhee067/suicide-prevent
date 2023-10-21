@@ -1,5 +1,5 @@
 // CommentItem.js
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { displayCreatedAt } from "../../../module/postTime";
 import { FlexRowDiv } from "../../../module/styled/FlexDiv";

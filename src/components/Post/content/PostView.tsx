@@ -1,6 +1,5 @@
 import { collection, deleteDoc, doc, DocumentData, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../../firebaseConfig";
@@ -52,11 +51,6 @@ const PostView = ({ postId }: any) => {
   const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
   // URL 파라미터에서 게시물 ID를 추출
   let navigator = useNavigate();
-  const accessToken = useSelector(
-    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
-  );
-
-  const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
   useEffect(() => {
     // Firebase Firestore에서 해당 게시물의 정보를 가져오는 비동기 함수
@@ -104,12 +98,7 @@ const PostView = ({ postId }: any) => {
           <PostAuthor>{detailPost.userName}</PostAuthor>
           <PostTime>{formatDateTime(detailPost.postTime)}</PostTime>
         </WritingBox>
-        <PostActions
-          postId={postId}
-          accessToken={accessToken}
-          currentUser={currentUser}
-          postDelete={postDelete}
-        />
+        <PostActions postId={postId} postDelete={postDelete} />
       </PostHeaderBox>
       <PostContentBox>
         {detailPost.previewImage ? <PreviewImage>{detailPost.previewImage}</PreviewImage> : null}

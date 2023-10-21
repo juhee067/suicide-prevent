@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 import Icon from "../common/Icon";

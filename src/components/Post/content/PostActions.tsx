@@ -12,12 +12,10 @@ const UserActions = styled(FlexRowDiv)`
 `;
 interface PostActionsProps {
   postId: string;
-  accessToken: string;
-  currentUser: string;
   postDelete: (postId: string) => Promise<void>;
 }
 
-const PostActions = ({ postId, accessToken, currentUser, postDelete }: PostActionsProps) => {
+const PostActions = ({ postId, postDelete }: PostActionsProps) => {
   return (
     <UserActions>
       <Link to={`/post/edit/${postId}`}>

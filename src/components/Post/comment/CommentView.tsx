@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useId } from "react";
 import { collection, getDocs, addDoc, DocumentData } from "firebase/firestore";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { db } from "../../../firebaseConfig";
 
@@ -48,11 +47,6 @@ function CommentView({ postId }: any) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<DocumentData[]>([]);
 
-  const accessToken = useSelector(
-    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
-  );
-  const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
-
   const fetchComments = async () => {
     try {
       const commentsRef = collection(db, `posts/${postId}/comments`);
@@ -94,7 +88,7 @@ function CommentView({ postId }: any) {
     try {
       const newComment = {
         commentId: Date.now().toString(), // 고유한 ID 생성
-        userName: currentUser.nickName,
+        // userName: currentUser.nickName,
         comment: comment,
         commentTime: new Date().toISOString(),
       };
@@ -115,11 +109,7 @@ function CommentView({ postId }: any) {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
-        {accessToken ? (
-          <CommentSubmitButton onClick={handleSubmit}>작성</CommentSubmitButton>
-        ) : (
-          <CommentSubmitButton onClick={AccessTokenError}>작성</CommentSubmitButton>
-        )}
+        <CommentSubmitButton onClick={handleSubmit}>작성</CommentSubmitButton>
       </CommentForm>
       <CommentBox>
         {comments !== null ? (

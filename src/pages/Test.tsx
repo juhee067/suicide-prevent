@@ -59,6 +59,7 @@ const Test = () => {
       scrollToEvent(moveScrollPosition.current.offsetTop - 100, "smooth");
     }
   };
+
   useEffect(() => {
     scrollToEvent(0, "auto");
   }, []);

@@ -1,8 +1,7 @@
-import { collection, doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, DocumentData, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
-import { FlexRowCenterDiv } from "../../../module/styled/FlexDiv";
 import { Btn } from "../../../module/styled/styledFont";
 import { db } from "../../../firebaseConfig";
 import UploadedFileList from "../file/UploadedFileList";
@@ -56,30 +55,46 @@ const FormCancel = styled(Btn)`
   background-color: ${({ theme }) => theme.color.mainWhite};
   border: 1px solid ${({ theme }) => theme.color.mainBlack};
   &:hover {
-    color: 1px solid ${({ theme }) => theme.color.mainWhite};
+    color: ${({ theme }) => theme.color.mainWhite};
     background-color: ${({ theme }) => theme.color.mainBlack};
   }
 `;
 
 const FormButton = styled(Btn)``;
 
-function EditPostForm(detailPost: any) {
-  const [title, setTitle] = useState(detailPost?.title || "");
-  const [content, setContent] = useState(detailPost?.content || "");
+function EditPostForm() {
+  const [title, setTitle] = useState("");
+  // 초기값을 detailPost에서 가져오도록 수정
+  const [content, setContent] = useState("");
+  const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
   const { postId } = useParams(); // URL 파라미터에서 게시물 ID를 추출
   const navigate = useNavigate();
   const postCollectionRef = collection(db, "posts");
   const postRef = doc(postCollectionRef, postId);
 
+  async function fetchPost() {
+    try {
+      const posts = await getPosts();
+      const selectedPost = posts.find((post) => post.postId === postId);
+      if (selectedPost) {
+        setDetailPost(selectedPost);
+      } else {
+        console.log("게시물을 찾을 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
+    }
+  }
+
   useEffect(() => {
-    if (detailPost) {
-      // detailPost가 존재하면 폼 컨트롤의 초기값 설정
+    let a = fetchPost();
+    console.log(a);
+    if (detailPost && detailPost.title) {
       setTitle(detailPost.title);
       setContent(detailPost.content);
     }
-  }, [detailPost]);
+  }, []);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -90,7 +105,6 @@ function EditPostForm(detailPost: any) {
   };
 
   // 폼 제출 시 호출되는 함수
-
   const editPost = async () => {
     try {
       if (!detailPost) {
@@ -131,11 +145,11 @@ function EditPostForm(detailPost: any) {
 
   return (
     <FormContainer>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <FormGroup>
           <FormInput
             type="text"
-            name="title" // input 요소의 name 속성을 추가해야 합니다.
+            name="title"
             value={title}
             onChange={handleTitleChange}
             placeholder="제목"
@@ -144,7 +158,7 @@ function EditPostForm(detailPost: any) {
 
         <FormGroup>
           <FormTextarea
-            name="content" // textarea 요소의 name 속성을 추가해야 합니다.
+            name="content"
             value={content}
             onChange={handleTextAreaChange}
             placeholder="내용"
@@ -160,7 +174,7 @@ function EditPostForm(detailPost: any) {
         <FormCancel>
           <Link to="/post">취소하기</Link>
         </FormCancel>
-        <FormButton type="submit">수정완료</FormButton>
+        <FormButton onClick={handleSubmit}>수정완료</FormButton>
       </Form>
     </FormContainer>
   );

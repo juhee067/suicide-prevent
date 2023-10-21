@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { db } from "../../../firebaseConfig";
 import { displayCreatedAt } from "../../../module/postTime";
-import { FlexRowDiv } from "../../../module/styled/FlexDiv";
 import { Caption } from "../../../module/styled/styledFont";
 import CommentUser from "./CommentUser";
 import EditComment from "./EditComment";
@@ -33,16 +32,9 @@ const CommentItem = styled.li`
   padding: 10px;
   margin: 10px 0;
 `;
+
 const CommentBox = styled.div`
   width: 100%;
-`;
-// const CommentUser = styled(FlexRowDiv)`
-//   justify-content: space-between;
-// `;
-
-const CommentAuthor = styled(Caption)`
-  font-weight: 500;
-  margin-bottom: 10px;
 `;
 
 const CommentContent = styled(Caption)`
@@ -53,20 +45,14 @@ const CommentTime = styled(Caption)`
   color: ${({ theme }) => theme.color.mainGray};
 `;
 
-const UserActions = styled(FlexRowDiv)`
-  gap: 10px;
-  color: ${({ theme }) => theme.color.mainGray};
-  font-size: 1.8rem;
-  cursor: pointer;
-`;
-
 interface CommentsProps {
   comments: DocumentData[];
   postId: any;
   fetchComments: () => Promise<void>;
+  loginUser: string | null;
 }
 
-function Comment({ comments, postId }: CommentsProps) {
+function Comment({ comments, postId, fetchComments, loginUser }: CommentsProps) {
   const [commentItems, setCommentItems] = useState(comments);
   // 수정 상태를 관리하는 상태 변수
   const [editStatus, setEditStatus] = useState(false);
@@ -99,9 +85,10 @@ function Comment({ comments, postId }: CommentsProps) {
       console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
     }
   };
-  // useEffect(() => {
-  //   fetchCommentsList();
-  // }, []);
+
+  useEffect(() => {
+    fetchCommentsList();
+  }, []);
 
   const commentDelete = async (commentId: string) => {
     try {
@@ -162,6 +149,7 @@ function Comment({ comments, postId }: CommentsProps) {
                 handleEditClick={handleEditClick}
                 commentDelete={commentDelete}
                 editStatus={editStatus}
+                loginUser={loginUser}
               />
 
               {selectedCommentId === comment.commentId && editStatus ? (

@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 import { HiMenu } from "react-icons/hi";
 import { CgClose } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { FlexColumnDiv } from "../../module/styled/FlexDiv";
-import { useSelector } from "react-redux";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-// import { persistor } from "../..";
 
 const MobileNavBox = styled.div`
   position: relative;
@@ -138,24 +136,7 @@ const MobileNav = () => {
     setSelectedMenu(index);
     setIsOpen(!isOpen);
   };
-  const auth = getAuth(); // Firebase Auth 객체를 가져옴
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
-      if (user) {
-        // 사용자가 로그인한 경우
-        setIsUserLoggedIn(true);
-      } else {
-        // 사용자가 로그아웃한 경우
-        setIsUserLoggedIn(false);
-      }
-    });
-    console.log(unsubscribe, "unsubscribe");
-    return () => {
-      // 컴포넌트가 언마운트될 때 감시 중단
-      unsubscribe();
-    };
-  }, [auth]);
   return (
     <MobileNavBox>
       <MenuButton onClick={handleOpenClick}>

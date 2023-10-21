@@ -1,6 +1,5 @@
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../../firebaseConfig";
@@ -62,9 +61,6 @@ function BoardList() {
   const [posts, setPosts] = useState<PostItemData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const accessToken = useSelector(
-    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
-  );
 
   const navigate = useNavigate();
   // 현재 페이지의 게시물 목록을 계산합니다.
@@ -124,13 +120,13 @@ function BoardList() {
     return navigate("/auth/signIn");
   };
 
-  const renderCreatePostLink = () => {
-    return accessToken ? (
-      <Link to="/PostCreate">글쓰기</Link>
-    ) : (
-      <span onClick={AccessTokenError}>글쓰기</span>
-    );
-  };
+  // const renderCreatePostLink = () => {
+  //   return accessToken ? (
+  //     <Link to="/PostCreate">글쓰기</Link>
+  //   ) : (
+  //     <span onClick={AccessTokenError}>글쓰기</span>
+  //   );
+  // };
 
   const renderPostList = () => {
     return currentPosts.length ? (
@@ -146,7 +142,7 @@ function BoardList() {
         <ListContainer>
           <PostListBox>
             <Title>허심탄회</Title>
-            <SearchBox>{renderCreatePostLink()}</SearchBox>
+            {/* <SearchBox>{renderCreatePostLink()}</SearchBox> */}
           </PostListBox>
           {renderPostList()}
         </ListContainer>

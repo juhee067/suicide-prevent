@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Btn } from "../../../module/styled/styledFont";
-import { createPost, getUserNickname, getUserNicknameByEmail } from "../../../module/firestore";
+import { createPost, getUserNickname } from "../../../module/firestore";
 import FileDragArea from "../file/FileDragArea";
 import UploadedFileList from "../file/UploadedFileList";
 import { Link } from "react-router-dom";
@@ -72,7 +71,6 @@ function PostCreate() {
   const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
 
   const navigate = useNavigate();
-  const userData = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -121,9 +119,7 @@ function PostCreate() {
   // };
 
   useEffect(() => {
-    const userEmailData = userData.userEmail;
-
-    getUserNickname(userEmailData, setUserNickname);
+    // getUserNickname(userEmailData, setUserNickname);
   }, []);
 
   return (

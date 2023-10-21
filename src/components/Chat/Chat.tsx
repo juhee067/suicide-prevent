@@ -1,8 +1,9 @@
-import { collection, DocumentData, limit, onSnapshot, orderBy, query } from "firebase/firestore";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { DocumentData } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { styled } from "styled-components";
 import { fetchMessages } from "../../api/message";
+import { auth } from "../../firebaseConfig";
 import ChatInputForm from "./ChatInputForm";
 import ChatMessage from "./ChatMessage";
 
@@ -23,24 +24,42 @@ const ChatMessageBox = styled.div`
 
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<DocumentData[]>([]);
-  const userData = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
-  let currentUser = userData.nickName;
+  const [userName, setUserName] = useState<string | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // 현재 로그인 유저를 local or session에서 가지고 와야한다
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUserName(user?.displayName ?? null); // 사용자 상태 업데이트
+    });
+
+    return () => {
+      unsubscribe(); // 컴포넌트가 언마운트될 때 관찰 해제
+    };
+  }, [messages]);
+
   useEffect(() => {
     // 컴포넌트가 마운트될 때 Firestore에서 메시지를 가져오는 함수를 호출
-
     fetchMessages(setMessages);
   }, []); // 빈 배열을 전달하여 한 번만 호출되도록 함
 
+  // 새로운 메시지가 추가되면 스크롤을 아래로 이동
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <ChatContainer>
-      <ChatMessageBox>
+      <ChatMessageBox ref={messagesContainerRef}>
         {messages.map((msg, index) => (
           <ChatMessage
             key={index}
             message={msg.text}
             user={msg.nickname}
             time={msg.createdAt}
-            currentUser={currentUser}
+            currentUser={userName}
           />
         ))}
       </ChatMessageBox>

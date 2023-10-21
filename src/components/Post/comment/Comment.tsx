@@ -9,8 +9,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { FiDelete, FiEdit } from "react-icons/fi";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { db } from "../../../firebaseConfig";
 import { displayCreatedAt } from "../../../module/postTime";
@@ -76,11 +74,6 @@ function Comment({ comments, postId }: CommentsProps) {
   const [editedComment, setEditedComment] = useState("");
   const [selectedCommentId, setSelectedCommentId] = useState("");
 
-  const accessToken = useSelector(
-    (state: { userLoginAccessTokenSlice: any }) => state.userLoginAccessTokenSlice
-  );
-  const currentUser = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
-
   const fetchCommentsList = async () => {
     try {
       const commentsRef = collection(db, `posts/${postId}/comments`);
@@ -106,9 +99,9 @@ function Comment({ comments, postId }: CommentsProps) {
       console.error("댓글을 불러오는 중 오류가 발생했습니다.", error);
     }
   };
-  useEffect(() => {
-    fetchCommentsList();
-  }, []);
+  // useEffect(() => {
+  //   fetchCommentsList();
+  // }, []);
 
   const commentDelete = async (commentId: string) => {
     try {
@@ -166,8 +159,6 @@ function Comment({ comments, postId }: CommentsProps) {
             <CommentBox>
               <CommentUser
                 commentItems={comment}
-                accessToken={accessToken}
-                currentUser={currentUser}
                 handleEditClick={handleEditClick}
                 commentDelete={commentDelete}
                 editStatus={editStatus}

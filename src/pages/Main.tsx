@@ -141,29 +141,8 @@ const Main = () => {
     fetchMessagesCount();
   }, []);
 
-  const updateWidth = () => {
-    setWidth("300px");
-  };
-
-  const updateOpacity = () => {
-    setOpacity(0);
-  };
-
-  useEffect(() => {
-    // 1초 후에 updateWidth 함수 실행
-    const timer = setTimeout(() => {
-      updateWidth();
-      updateOpacity();
-    }, 200);
-
-    // 컴포넌트 언마운트 시 타이머 클리어
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <MainWrapper>
-      <BlackBox opacity={opacity} />
-      {/* <Door side="left" width={width} /> */}
       <MainContentBox>
         <MainContent>
           <TitleBox>

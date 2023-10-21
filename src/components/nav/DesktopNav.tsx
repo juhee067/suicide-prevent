@@ -73,9 +73,9 @@ const Logout = styled.div`
 
 const DesktopNav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
-
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState({});
+  const [user, setUser] = useState<User | null>(null);
   const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleMenuClick = (index: number) => {
     setSelectedMenu(index);
@@ -94,15 +94,6 @@ const DesktopNav = () => {
     setSelectedMenu(undefined);
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      window.location.reload();
-    } catch (error) {
-      console.error("로그아웃 오류:", error);
-    }
-  };
-
   useEffect(() => {
     const pathname = location.pathname;
     const matchingIndex = menuItems.findIndex((item) => item.to === pathname);
@@ -112,18 +103,21 @@ const DesktopNav = () => {
     }
   }, [location]);
 
+  // 사용자의 로그인 상태 변경을 관찰하고 변경되면 실행됩니다.
   useEffect(() => {
-    onAuthStateChanged(auth, (user: User | null) => {
-      if (user) {
-        setIsUserLoggedIn(user);
-
-        console.log("사용자가 로그인했습니다.");
-      } else {
-        setIsUserLoggedIn("");
-        console.log("사용자가 로그아웃했습니다.");
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user); // 사용자 상태 업데이트
+      setIsLoading(false);
     });
+
+    return () => {
+      unsubscribe(); // 컴포넌트가 언마운트될 때 관찰 해제
+    };
   }, [auth]);
+
+  const handleLogout = () => {
+    auth.signOut();
+  };
 
   return (
     <DesktopNavBox>
@@ -142,7 +136,7 @@ const DesktopNav = () => {
         ))}
       </Menus>
       <RightBox>
-        {isUserLoggedIn ? (
+        {user ? (
           <Logout onClick={handleLogout}>로그아웃</Logout>
         ) : (
           <Login onClick={handleLogIn}>

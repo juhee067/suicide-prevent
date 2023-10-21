@@ -1,17 +1,14 @@
 import {
   browserLocalPersistence,
   browserSessionPersistence,
-  getAuth,
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { auth } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
-import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
 
 const Form = styled.form``;
 
@@ -75,40 +72,39 @@ const SignInForm = () => {
   const [userId, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isChecked, setIsChecked] = useState(false);
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
 
-  const handleLogin = async (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const userEmail = `${userId}@myapp.com`;
-    const persistence = isChecked ? browserLocalPersistence : browserSessionPersistence;
-
+    let email = `${userId}@myapp.com`;
     try {
+      let persistence = isChecked ? browserLocalPersistence : browserSessionPersistence;
+      // 먼저 인증 상태 지속성을 설정합니다.
       await setPersistence(auth, persistence);
-      const userCredential = await signInWithEmailAndPassword(auth, userEmail, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
-      const user = userCredential.user;
-      const idToken = await user.getIdToken();
-
-      const userData = {
-        uid: user.uid,
-        userEmail: user.email || "",
-        nickName: user.displayName || "",
-        authToken: idToken,
-      };
-
-      dispatch(setUserLoginDataSlice(userData));
-      alert("로그인되었습니다.");
       navigate("/");
-    } catch (error) {
-      console.error("로그인 오류:", error);
+    } catch (e) {
+      console.error(e);
     }
   };
+
+  // const handleLogin = () => {
+  //   const auth = firebase.auth();
+  //   const provider = new firebase.auth.GoogleAuthProvider();
+
+  //   auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  //     .then(() => {
+  //       return auth.signInWithPopup(provider);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   return (
     <Form onSubmit={handleLogin}>

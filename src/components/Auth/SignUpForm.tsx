@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -157,7 +157,6 @@ const SignUpForm = ({ onLogin, onChange }: any) => {
   };
 
   const auth = getAuth();
-  const db = getFirestore();
 
   const handleSubmitSignUp = async (
     e: React.FormEvent,
@@ -171,16 +170,10 @@ const SignUpForm = ({ onLogin, onChange }: any) => {
       const userCredential = await createUserWithEmailAndPassword(auth, `${userId}@myapp.com`, password);
       const user = userCredential.user;
 
-      // 사용자 정보를 Firestore에 저장
-      await setDoc(doc(db, "nickName", user.uid), {
-        email: `${userId}@myapp.com`,
-        nickname: nickName,
-      });
+      updateProfile(user, { displayName: nickName });
       alert("회원가입이 완료되었습니다.");
       navigate("/auth/signIn");
-      console.log("회원가입 성공:", user);
       setError("");
-      // 회원가입 성공 시에 원하는 동작을 추가해주세요.
     } catch (error) {
       console.error("회원가입 실패:", error.message);
       setError(error.message);

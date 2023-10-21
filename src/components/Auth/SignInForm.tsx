@@ -1,11 +1,16 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import {
+  browserLocalPersistence,
+  browserSessionPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { db, loginEmail } from "../../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
-import { setUserLoginAccessTokenSlice } from "../../store/reducer/userData/userData/userLoginAccessTokenSlice";
 import { setUserLoginDataSlice } from "../../store/reducer/userData/userData/userLoginDataSlice";
 
 const Form = styled.form``;
@@ -69,85 +74,39 @@ const SignInBtn = styled(Btn)`
 const SignInForm = () => {
   const [userId, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  // const handleCheckboxChange = () => {
-  //   const newChecked = !isChecked;
-  //   setIsChecked(newChecked);
-  // };
-
-  type UserLoginInput = {
-    userEmail: string;
-    password: string;
-    // isChecked: boolean;
-  };
-
-  const loginUser = async ({ userEmail, password }: UserLoginInput) => {
-    try {
-      const result = await loginEmail(userEmail, password);
-      const user = result.user;
-
-      if (user) {
-        const idToken = await user.getIdToken();
-
-        // 사용자가 자동 로그인 체크박스를 선택한 경우, 로컬 스토리지에 해당 정보 저장
-        // if (isChecked) {
-        //   localStorage.setItem("autoLogin", "true");
-        // } else {
-        //   localStorage.setItem("autoLogin", "false");
-        // }
-
-        const refreshToken = user.refreshToken;
-
-        // Firestore 쿼리 생성
-        const q = query(collection(db, "nickName"), where("email", "==", userEmail));
-
-        // Firestore에서 유저의 닉네임 조회
-        const querySnapshot = await getDocs(q);
-
-        let nickName = "";
-        if (!querySnapshot.empty) {
-          // 첫 번째 문서의 닉네임을 가져옴
-          const userDoc = querySnapshot.docs[0];
-          const userData = userDoc.data();
-          nickName = userData.nickname;
-        } else {
-          console.log("해당 이메일 주소의 닉네임을 찾을 수 없습니다.");
-        }
-
-        return { uid: user.uid, userEmail, authToken: idToken, refreshToken, nickName };
-      }
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-    return null;
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
   };
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const userEmail = `${userId}@myapp.com`;
-
-    const userLoginInput: UserLoginInput = {
-      userEmail,
-      password, // 패스워드 변수는 어디서 가져오는지 확인 필요
-      // isChecked,
-    };
+    const persistence = isChecked ? browserLocalPersistence : browserSessionPersistence;
 
     try {
-      const userData = await loginUser(userLoginInput);
+      await setPersistence(auth, persistence);
+      const userCredential = await signInWithEmailAndPassword(auth, userEmail, password);
 
-      if (userData) {
-        dispatch(setUserLoginDataSlice(userData));
-        dispatch(setUserLoginAccessTokenSlice({ authToken: userData.authToken }));
-        alert("로그인되었습니다.");
-        navigate("/");
-      }
+      const user = userCredential.user;
+      const idToken = await user.getIdToken();
+
+      const userData = {
+        uid: user.uid,
+        userEmail: user.email || "",
+        nickName: user.displayName || "",
+        authToken: idToken,
+      };
+
+      dispatch(setUserLoginDataSlice(userData));
+      alert("로그인되었습니다.");
+      navigate("/");
     } catch (error) {
-      console.error(error);
+      console.error("로그인 오류:", error);
     }
   };
 
@@ -176,10 +135,10 @@ const SignInForm = () => {
         />
       </Passwordbox>
       <ProcessBox>
-        {/* <CheckboxLabel>
+        <CheckboxLabel>
           <CheckboxInput type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
           <AutoLoginText>자동 로그인</AutoLoginText>
-        </CheckboxLabel> */}
+        </CheckboxLabel>
       </ProcessBox>
       <SignInBtn type="submit">로그인</SignInBtn>
       <Register>

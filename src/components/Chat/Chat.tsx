@@ -8,7 +8,7 @@ import ChatMessage from "./ChatMessage";
 
 const ChatContainer = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   max-width: 1200px;
   background-color: ${({ theme }) => theme.color.mainWhite};
   transform: translateY(50px);
@@ -23,10 +23,11 @@ const ChatMessageBox = styled.div`
 
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<DocumentData[]>([]);
-
+  const userData = useSelector((state: { userLoginDataSlice: any }) => state.userLoginDataSlice);
+  let currentUser = userData.nickName;
   useEffect(() => {
     // 컴포넌트가 마운트될 때 Firestore에서 메시지를 가져오는 함수를 호출
-    console.log(messages);
+
     fetchMessages(setMessages);
   }, []); // 빈 배열을 전달하여 한 번만 호출되도록 함
 
@@ -34,7 +35,13 @@ const Chat: React.FC = () => {
     <ChatContainer>
       <ChatMessageBox>
         {messages.map((msg, index) => (
-          <ChatMessage key={index} message={msg.text} isUser={msg.nickname} time={msg.createdAt} />
+          <ChatMessage
+            key={index}
+            message={msg.text}
+            user={msg.nickname}
+            time={msg.createdAt}
+            currentUser={currentUser}
+          />
         ))}
       </ChatMessageBox>
       <ChatInputForm />

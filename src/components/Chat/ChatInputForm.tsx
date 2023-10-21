@@ -64,7 +64,7 @@ const ChatInputForm = () => {
           createdAt: formatDateTime(new Date()).toLocaleString(),
           nickname: userData.nickName,
         });
-        console.log(formatDateTime(new Date()).toLocaleString());
+
         // 입력 필드 초기화
         setMessage("");
       } catch (error) {

@@ -92,6 +92,10 @@ function BoardList() {
         const fetchedPosts = await getPosts();
         setPosts(fetchedPosts);
         setLoading(false);
+
+        // postTime을 기준으로 오래된 순서로 정렬
+        fetchedPosts.sort((a, b) => new Date(b.postTime).getTime() - new Date(a.postTime).getTime());
+
         for (const post of fetchedPosts) {
           if (post && post.postId) {
             await updateCommentCount(post.postId);

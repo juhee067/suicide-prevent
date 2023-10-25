@@ -6,6 +6,10 @@ import { FaRegWindowMaximize } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
 import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setUserLoginDataSlice } from "../../redux/auth/userLoginDataSlice";
+import { persistor, store } from "../../redux/store";
+import { persistStore } from "redux-persist";
 
 const DesktopNavBox = styled(FlexRowDiv)`
   padding: 0 20px;
@@ -73,10 +77,10 @@ const Logout = styled.div`
 
 const DesktopNav = () => {
   const [selectedMenu, setSelectedMenu] = useState<number>();
-  const [user, setUser] = useState<User | null>(null);
   const location = useLocation(); // 현재 URL 경로를 가져오기 위한 Hook
-  const [isLoading, setIsLoading] = useState(true);
 
+  const dispatch = useDispatch();
+  const results = useSelector((state: RootState) => state.setUserLoginDataSlice);
   const handleMenuClick = (index: number) => {
     setSelectedMenu(index);
   };
@@ -103,20 +107,9 @@ const DesktopNav = () => {
     }
   }, [location]);
 
-  // 사용자의 로그인 상태 변경을 관찰하고 변경되면 실행됩니다.
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user); // 사용자 상태 업데이트
-      setIsLoading(false);
-    });
-
-    return () => {
-      unsubscribe(); // 컴포넌트가 언마운트될 때 관찰 해제
-    };
-  }, [auth]);
-
   const handleLogout = () => {
     auth.signOut();
+    dispatch(setUserLoginDataSlice(false));
   };
 
   return (
@@ -136,13 +129,14 @@ const DesktopNav = () => {
         ))}
       </Menus>
       <RightBox>
-        {user ? (
+        {results ? (
           <Logout onClick={handleLogout}>로그아웃</Logout>
         ) : (
           <Login onClick={handleLogIn}>
             <Link to="/auth/signIn">로그인</Link>
           </Login>
         )}
+
         <IconBox>
           <FaRegWindowMaximize />
           <CgClose style={{ fontSize: "3rem" }} />

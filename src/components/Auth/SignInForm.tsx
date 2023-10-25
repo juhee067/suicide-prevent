@@ -5,10 +5,12 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import React, { FormEvent, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { auth } from "../../firebaseConfig";
 import { Btn, HighlightText } from "../../module/styled/styledFont";
+import { setUserLoginDataSlice } from "../../redux/auth/userLoginDataSlice";
 
 const Form = styled.form``;
 
@@ -73,7 +75,7 @@ const SignInForm = () => {
   const [password, setPassword] = useState<string>("");
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -85,26 +87,13 @@ const SignInForm = () => {
       let persistence = isChecked ? browserLocalPersistence : browserSessionPersistence;
       // 먼저 인증 상태 지속성을 설정합니다.
       await setPersistence(auth, persistence);
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-
+      await signInWithEmailAndPassword(auth, email, password);
+      dispatch(setUserLoginDataSlice(true));
       navigate("/");
     } catch (e) {
       console.error(e);
     }
   };
-
-  // const handleLogin = () => {
-  //   const auth = firebase.auth();
-  //   const provider = new firebase.auth.GoogleAuthProvider();
-
-  //   auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  //     .then(() => {
-  //       return auth.signInWithPopup(provider);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
 
   return (
     <Form onSubmit={handleLogin}>

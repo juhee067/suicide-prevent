@@ -89,12 +89,11 @@ function EditPostForm() {
   }
 
   useEffect(() => {
-    fetchPost().then(() => {
-      if (detailPost && detailPost.title) {
-        setTitle(detailPost.title);
-        setContent(detailPost.content);
-      }
-    });
+    const fetchData = async () => {
+      await fetchPost();
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {

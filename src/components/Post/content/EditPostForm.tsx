@@ -7,6 +7,7 @@ import { db } from "../../../firebaseConfig";
 import UploadedFileList from "../file/UploadedFileList";
 import FileDragArea from "../file/FileDragArea";
 import { getPosts } from "../../../module/firestore";
+
 const FormContainer = styled.div`
   width: 80%;
   max-width: 1000px;
@@ -88,13 +89,20 @@ function EditPostForm() {
   }
 
   useEffect(() => {
-    let a = fetchPost();
-    console.log(a);
+    fetchPost().then(() => {
+      if (detailPost && detailPost.title) {
+        setTitle(detailPost.title);
+        setContent(detailPost.content);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     if (detailPost && detailPost.title) {
       setTitle(detailPost.title);
       setContent(detailPost.content);
     }
-  }, []);
+  }, [detailPost]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);

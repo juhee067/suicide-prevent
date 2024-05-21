@@ -86,7 +86,6 @@ const ChatInputForm = () => {
   const guestInput = (
     <InputContainer>
       <InputField type="text" placeholder="로그인해주세요" disabled />
-      <SendButton type="submit">전송</SendButton>
     </InputContainer>
   );
 

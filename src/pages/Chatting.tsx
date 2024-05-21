@@ -1,6 +1,6 @@
-import React from "react";
-import { styled } from "styled-components";
-import Chat from "../components/Chat/Chat";
+import React from 'react';
+import { styled } from 'styled-components';
+import Chat from '../components/Chat/Chat';
 
 const ChatWrapper = styled.div`
   padding: 50px;

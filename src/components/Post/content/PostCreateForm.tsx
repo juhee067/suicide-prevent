@@ -7,6 +7,8 @@ import { createPost, getUserNickname } from "../../../module/firestore";
 import FileDragArea from "../file/FileDragArea";
 import UploadedFileList from "../file/UploadedFileList";
 import { Link } from "react-router-dom";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "../../../firebaseConfig";
 
 const FormContainer = styled.div`
   width: 80%;
@@ -66,11 +68,24 @@ const FormButton = styled(Btn)``;
 function PostCreate() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [userNickname, setUserNickname] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [isDragOver, setIsDragOver] = useState(false); // 드래그 오버 상태 관리
+  const [user, setUser] = useState<User | null>(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      unsubscribe(); // 컴포넌트가 언마운트될 때 관찰 해제
+    };
+  }, [auth]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -78,11 +93,13 @@ function PostCreate() {
       alert("제목과 내용을 모두 입력하세요.");
       return;
     }
+
     createPost({
-      userNickname: userNickname,
+      userNickname: user?.displayName || "",
       title: title,
       content: content,
     });
+
     setTitle("");
     setContent("");
     navigate("/post");
@@ -117,10 +134,6 @@ function PostCreate() {
   //   e.stopPropagation();
   //   setIsDragOver(false);
   // };
-
-  useEffect(() => {
-    // getUserNickname(userEmailData, setUserNickname);
-  }, []);
 
   return (
     <FormContainer>

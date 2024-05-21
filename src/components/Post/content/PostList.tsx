@@ -1,8 +1,9 @@
+import { onAuthStateChanged, User } from "firebase/auth";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { db } from "../../../firebaseConfig";
+import { auth, db } from "../../../firebaseConfig";
 import { getPosts } from "../../../module/firestore";
 import { FlexRowDiv } from "../../../module/styled/FlexDiv";
 import { Btn, Title } from "../../../module/styled/styledFont";
@@ -61,6 +62,18 @@ function BoardList() {
   const [posts, setPosts] = useState<PostItemData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  // 현재 로그인 유저를 local or session에서 가지고 와야한다
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user); // 사용자 상태 업데이트
+    });
+
+    return () => {
+      unsubscribe(); // 컴포넌트가 언마운트될 때 관찰 해제
+    };
+  }, [auth]);
 
   const navigate = useNavigate();
   // 현재 페이지의 게시물 목록을 계산합니다.
@@ -79,6 +92,10 @@ function BoardList() {
         const fetchedPosts = await getPosts();
         setPosts(fetchedPosts);
         setLoading(false);
+
+        // postTime을 기준으로 오래된 순서로 정렬
+        fetchedPosts.sort((a, b) => new Date(b.postTime).getTime() - new Date(a.postTime).getTime());
+
         for (const post of fetchedPosts) {
           if (post && post.postId) {
             await updateCommentCount(post.postId);
@@ -120,13 +137,9 @@ function BoardList() {
     return navigate("/auth/signIn");
   };
 
-  // const renderCreatePostLink = () => {
-  //   return accessToken ? (
-  //     <Link to="/PostCreate">글쓰기</Link>
-  //   ) : (
-  //     <span onClick={AccessTokenError}>글쓰기</span>
-  //   );
-  // };
+  const renderCreatePostLink = () => {
+    return user ? <Link to="/PostCreate">글쓰기</Link> : <span onClick={AccessTokenError}>글쓰기</span>;
+  };
 
   const renderPostList = () => {
     return currentPosts.length ? (
@@ -142,7 +155,7 @@ function BoardList() {
         <ListContainer>
           <PostListBox>
             <Title>허심탄회</Title>
-            {/* <SearchBox>{renderCreatePostLink()}</SearchBox> */}
+            <SearchBox>{renderCreatePostLink()}</SearchBox>
           </PostListBox>
           {renderPostList()}
         </ListContainer>

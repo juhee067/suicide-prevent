@@ -1,8 +1,9 @@
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, deleteDoc, doc, DocumentData, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { db } from "../../../firebaseConfig";
+import { auth, db } from "../../../firebaseConfig";
 import { formatDateTime } from "../../../module/postTime";
 import { FlexRowCenterDiv, FlexRowDiv } from "../../../module/styled/FlexDiv";
 import { Caption, Description } from "../../../module/styled/styledFont";
@@ -49,8 +50,19 @@ const PreviewImage = styled.div`
 
 const PostView = ({ postId }: any) => {
   const [detailPost, setDetailPost] = useState<DocumentData | null>(null);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
   // URL 파라미터에서 게시물 ID를 추출
   let navigator = useNavigate();
+  let userName = currentUser === detailPost?.userName;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user?.displayName ?? null); // 사용자 상태 업데이트
+    });
+
+    return () => {
+      unsubscribe(); // 컴포넌트가 언마운트될 때 관찰 해제
+    };
+  }, [auth]);
 
   useEffect(() => {
     // Firebase Firestore에서 해당 게시물의 정보를 가져오는 비동기 함수
@@ -98,7 +110,7 @@ const PostView = ({ postId }: any) => {
           <PostAuthor>{detailPost.userName}</PostAuthor>
           <PostTime>{formatDateTime(detailPost.postTime)}</PostTime>
         </WritingBox>
-        <PostActions postId={postId} postDelete={postDelete} />
+        {userName ? <PostActions postId={postId} postDelete={postDelete} /> : null}
       </PostHeaderBox>
       <PostContentBox>
         {detailPost.previewImage ? <PreviewImage>{detailPost.previewImage}</PreviewImage> : null}

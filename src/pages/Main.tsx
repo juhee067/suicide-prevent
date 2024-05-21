@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { Img } from "../components/common/Img";
-import { FlexColumnDiv, FlexRowDiv } from "../module/styled/FlexDiv";
-import { getDocs, collection } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { Btn, Paragraph } from "../module/styled/styledFont";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { Img } from '../components/common/Img';
+import { FlexColumnDiv, FlexRowDiv } from '../module/styled/FlexDiv';
+import { getDocs, collection } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+import { Btn, Paragraph } from '../module/styled/styledFont';
 
 const MainWrapper = styled.div`
   position: relative;
@@ -13,17 +13,6 @@ const MainWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-`;
-
-const BlackBox = styled.div<OpacityProps>`
-  display: ${({ opacity }) => (opacity === 0 ? "none" : "block")};
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: ${({ theme }) => theme.color.mainBlack};
-  z-index: 990;
-  opacity: ${({ opacity }) => opacity};
-  transition: opacity 1s ease;
 `;
 
 const MainContentBox = styled.div`
@@ -114,17 +103,11 @@ const MainBg = styled.div`
   width: 100%;
 `;
 
-interface OpacityProps {
-  opacity: number;
-}
-
 const Main = () => {
-  const [width, setWidth] = useState("50%");
-  const [opacity, setOpacity] = useState(1);
   const [messagesCount, setMessagesCount] = useState(0);
 
   useEffect(() => {
-    const usersCollectionRef = collection(db, "users");
+    const usersCollectionRef = collection(db, 'users');
 
     const fetchMessagesCount = async () => {
       try {
@@ -134,7 +117,7 @@ const Main = () => {
         // 메시지 갯수 업데이트
         setMessagesCount(data.docs.length);
       } catch (error) {
-        console.error("Error fetching messages:", error);
+        console.error('Error fetching messages:', error);
       }
     };
 
@@ -168,13 +151,12 @@ const Main = () => {
           </LetterBox>
         </MainContent>
         <LetterBtn>
-          <Link to="/letter">{messagesCount}개의 응원메세지</Link>
+          <Link to='/letter'>{messagesCount}개의 응원메세지</Link>
         </LetterBtn>
         <MainBg>
           <Img src={`${process.env.PUBLIC_URL}/images/mainBg.png`} />
         </MainBg>
       </MainContentBox>
-      {/* <Door side="right" width={width} /> */}
     </MainWrapper>
   );
 };

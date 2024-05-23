@@ -1,9 +1,21 @@
-const index = () => {
+import GNB from '@/types/gnb'
+import Head from 'next/head'
+import Link from 'next/link'
+
+function Header() {
   return (
-    <div>
-      <ul>ss</ul>
-    </div>
+    <Head>
+      <nav>
+        {GNB.map((item) => {
+          return (
+            <Link href={item.link} key={item.name}>
+              {item.name}
+            </Link>
+          )
+        })}
+      </nav>
+    </Head>
   )
 }
 
-export default index
+export default Header

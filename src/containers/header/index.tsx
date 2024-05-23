@@ -1,7 +1,19 @@
-import React from 'react';
+import GNB from '@/types/gnb'
 
-const index = () => {
-  return <div>index</div>;
-};
+import Link from 'next/link'
 
-export default index;
+const Header = () => {
+  return (
+    <nav>
+      {GNB.map((item) => {
+        return (
+          <Link href={item.link} key={item.name}>
+            {item.name}
+          </Link>
+        )
+      })}
+    </nav>
+  )
+}
+
+export default Header

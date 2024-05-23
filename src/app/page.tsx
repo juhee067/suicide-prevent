@@ -1,3 +1,3 @@
 export default function Home() {
-  return <main className=''>nextjs migration</main>;
+  return <main className="">nextjs migration</main>
 }
